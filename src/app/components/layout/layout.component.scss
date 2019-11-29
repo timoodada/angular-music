@@ -1,0 +1,14 @@
+@import "../../common/style/variable";
+@import "../../common/style/mixin";
+
+.default-container{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .default-content{
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

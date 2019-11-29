@@ -1,0 +1,6 @@
+{
+  "/service": {
+    "target": "https://zghnrc.gov.cn/",
+    "secure": false
+  }
+}

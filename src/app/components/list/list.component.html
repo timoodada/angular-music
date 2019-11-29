@@ -1,0 +1,10 @@
+<div class="app-list">
+  <div *ngIf="loading" class="loading">
+    <span>加载中...</span>
+  </div>
+  <div *ngTemplateOutlet="main"></div>
+  <app-pagination
+    [pager]="pager"
+    [onChange]="onChange"
+  ></app-pagination>
+</div>
