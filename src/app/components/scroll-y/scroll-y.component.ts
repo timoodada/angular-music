@@ -20,7 +20,7 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   @Input()
   probeType: 1 | 2 | 3 = 1;
   @Input()
-  pullUpLoad: boolean = false;
+  pullUpLoad = false;
   @Input()
   onPullingUp: (val?: any) => void;
   @Input()
@@ -75,12 +75,12 @@ export class ScrollYComponent implements OnInit, OnDestroy {
       if (onScroll) {
         onScroll(e);
       }
-    })
+    });
     this.wrapper.on('pullingUp', (e: any) => {
       if (onPullingUp) {
-        onPullingUp(e)
+        onPullingUp(e);
       }
-    })
+    });
 
   }
 
