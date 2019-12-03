@@ -15,7 +15,7 @@ export class RanksService {
     return {
       type: 'SET_RANKS',
       value
-    }
+    };
   }
 
   getRanks(): any {
@@ -33,7 +33,7 @@ export class RanksService {
         if (res.code === 0) {
           dispatch(this.setRanks(res.data.topList));
         }
-      })
+      });
     };
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpService} from './services/http/http.service';
 import {Router, RouteConfigLoadEnd, RouteConfigLoadStart} from '@angular/router';
 import './stores/index';
@@ -33,5 +33,6 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
   ngOnInit() {}
 }

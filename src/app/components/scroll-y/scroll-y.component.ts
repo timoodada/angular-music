@@ -1,13 +1,16 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, Input, OnChanges, SimpleChanges, AfterContentChecked} from '@angular/core';
 import BScroll from 'better-scroll';
+import lazyload from '../../helpers/lazy';
 
 @Component({
   selector: 'app-scroll-y',
   templateUrl: './scroll-y.component.html',
-  styleUrls: ['./scroll-y.component.scss']
+  styleUrls: ['./scroll-y.component.scss'],
+  exportAs: 'scrollY'
 })
-export class ScrollYComponent implements OnInit, OnDestroy {
+export class ScrollYComponent implements OnInit, OnDestroy, OnChanges, AfterContentChecked {
   private wrapper: any;
+  private afterDomUpdate: any;
 
   @ViewChild('wrapperDom', {static: true})
   public wrapperDom: any;
@@ -18,13 +21,15 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   * 当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件
   */
   @Input()
-  probeType: 1 | 2 | 3 = 1;
+  public probeType: 1 | 2 | 3 = 1;
   @Input()
-  pullUpLoad = false;
+  public pullUpLoad = false;
   @Input()
-  onPullingUp: (val?: any) => void;
+  public onPullingUp: (val?: any) => void;
   @Input()
-  onScroll: (val?: any) => void;
+  public onScroll: (val?: any) => void;
+  @Input()
+  private data: any;
 
   constructor() {}
 
@@ -59,6 +64,12 @@ export class ScrollYComponent implements OnInit, OnDestroy {
     this.refresh();
   }
 
+  destroy = () => {
+    if (this.wrapper) {
+      this.wrapper.destroy();
+    }
+  }
+
   ngOnInit() {
     this.initBS();
   }
@@ -84,6 +95,28 @@ export class ScrollYComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy() {}
+  updateLazy() {
+    lazyload.update();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.data) {
+      this.afterDomUpdate = () => {
+        this.refresh();
+        this.updateLazy();
+      };
+    }
+  }
+
+  ngAfterContentChecked(): void {
+    if (this.afterDomUpdate) {
+      this.afterDomUpdate();
+      this.afterDomUpdate = null;
+    }
+  }
+
+  ngOnDestroy() {
+    this.destroy();
+  }
 
 }

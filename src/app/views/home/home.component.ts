@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {State} from '../../stores/core';
 import {RanksService} from '../../stores/actions/ranks.service';
 import {List} from 'immutable';
@@ -9,9 +9,9 @@ import {List} from 'immutable';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
   @State('ranks')
   public ranks: List<any>;
+  public banners: any[] = [];
 
   constructor(
     private ranksService: RanksService
@@ -23,5 +23,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.ranksService.fetchRanks();
+    setTimeout(() => {
+      this.banners = this.listProducer(5);
+    }, 3000);
   }
 }

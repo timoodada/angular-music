@@ -1,0 +1,8 @@
+@import "src/app/common/style/mixin";
+.app-slider{
+  overflow: hidden;
+  width: 100%;
+  .slider-group{
+    @include clearFix;
+  }
+}

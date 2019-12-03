@@ -1,5 +1,10 @@
 <app-layout>
-  <app-scroll-y>
+  <app-scroll-y
+    [data]="ranks"
+  >
+    <app-slider [autoplay]="true" [data]="banners">
+      <div style="height: 200px;" *ngFor="let v of banners; index as i">slider{{i}}</div>
+    </app-slider>
     <div class="rank">
       <h1 class="list-title">热门榜单</h1>
       <div class="toplist">
@@ -15,14 +20,14 @@
             </div>
           </div>
         </div>
-        <div class="item" *ngFor="let item of ranks">
+        <a routerLink="/setting" class="item" *ngFor="let item of ranks">
           <div class="icon">
-              <img [src]="item.picUrl" [alt]="item.topTitle" width="100" height="100">
+              <img [appLazy]="item.picUrl" [alt]="item.topTitle" width="100" height="100">
           </div>
           <div class="songlist">
             <div class="song" *ngFor="let val of item.songList">{{val.songname}} - {{val.singername}}</div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </app-scroll-y>

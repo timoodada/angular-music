@@ -8,6 +8,8 @@ import {AnimationModule} from '../../components/animation/animation.module';
 import {ListModule} from '../../components/list/list.module';
 import {LayoutModule} from '../../components/layout/layout.module';
 import {ScrollYModule} from '../../components/scroll-y/scroll-y.module';
+import {LazyModule} from '../../directives/lazy/lazy.module';
+import {SliderModule} from '../../components/slider/slider.module';
 
 const routes: Routes = [{
   path: '',
@@ -33,7 +35,9 @@ const routes: Routes = [{
     AnimationModule,
     ListModule,
     LayoutModule,
-    ScrollYModule
+    ScrollYModule,
+    LazyModule,
+    SliderModule
   ]
 })
 export class HomeModule { }
