@@ -1616,10 +1616,10 @@ better-assert@~1.0.0:
   dependencies:
     callsite "1.0.0"
 
-better-scroll@1.14.1:
-  version "1.14.1"
-  resolved "https://registry.npm.taobao.org/better-scroll/download/better-scroll-1.14.1.tgz#65109c502a750d49543ffbb4208f421b33705c2f"
-  integrity sha1-ZRCcUCp1DUlUP/u0II9CGzNwXC8=
+better-scroll@^1.15.2:
+  version "1.15.2"
+  resolved "https://registry.npm.taobao.org/better-scroll/download/better-scroll-1.15.2.tgz#65ffc6058b8b4ff337b8dfad4bcb334d7699ceb6"
+  integrity sha1-Zf/GBYuLT/M3uN+tS8szTXaZzrY=
   dependencies:
     babel-runtime "^6.0.0"
 

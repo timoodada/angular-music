@@ -10,10 +10,8 @@ import lazyload from '../../helpers/lazy';
 })
 export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
   private wrapper: any;
-
   @ViewChild('wrapperDom', {static: true})
   public wrapperDom: any;
-
   /*
   * 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；
   * 当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；
@@ -22,14 +20,13 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   public probeType: 1 | 2 | 3 = 1;
   @Input()
-  public pullUpLoad = false;
+  public pullUpLoad: any = { threshold: 50 };
   @Input()
   public onPullingUp: (val?: any) => void;
   @Input()
   public onScroll: (val?: any) => void;
   @Input()
   private data: any;
-
   private afterDomUpdate = () => {
     this.refresh();
     this.updateLazy();
@@ -38,79 +35,58 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
   constructor() {}
 
   refresh = () => {
-    if (this.wrapper) {
-      this.wrapper.refresh();
-    }
+    if (this.wrapper) { this.wrapper.refresh(); }
   }
-
-  scrollToElement = (...args: any[]) => {
-    if (this.wrapper) {
-      this.wrapper.scrollToElement(...args);
-    }
+  scrollToElement = (el: any, time: number, offsetX?: number | boolean, offsetY?: number | boolean, easing?: any) => {
+    if (this.wrapper) { this.wrapper.scrollToElement(el, time, offsetX, offsetY, easing); }
   }
-
-  scrollTo = (...args: any[]) => {
-    if (this.wrapper) {
-      this.wrapper.scrollTo(...args);
-    }
+  scrollTo = (x: number, y: number, time: number, easing?: any) => {
+    if (this.wrapper) { this.wrapper.scrollTo(x, y, time, easing); }
   }
-
   finishPullDown = (...args: any[]) => {
-    if (this.wrapper) {
-      this.wrapper.finishPullDown(...args);
-    }
+    if (this.wrapper) { this.wrapper.finishPullDown(...args); }
   }
-
-  finishPullUp = (...args: any[]) => {
-    if (this.wrapper) {
-      this.wrapper.finishPullUp(...args);
-    }
+  finishPullUp = () => {
+    if (this.wrapper) { this.wrapper.finishPullUp(); }
     this.refresh();
   }
-
-  destroy = () => {
-    if (this.wrapper) {
-      this.wrapper.destroy();
-    }
+  openPullUp = (config?: any) => {
+    if (this.wrapper) { this.wrapper.openPullUp(config || this.pullUpLoad); }
   }
-
+  closePullUp = () => {
+    if (this.wrapper) { this.wrapper.closePullUp(); }
+  }
+  destroy = () => {
+    if (this.wrapper) { this.wrapper.destroy(); }
+  }
   ngOnInit() {
     this.initBS();
   }
-
   initBS = () => {
     const {probeType, pullUpLoad, onScroll, onPullingUp} = this;
-    this.wrapper = new BScroll(this.wrapperDom.nativeElement, {
+    const wrapper = this.wrapper = new BScroll(this.wrapperDom.nativeElement, {
       scrollY: true,
       click: true,
       probeType,
       pullUpLoad
     });
-    this.wrapper.on('scroll', (e: any) => {
-      if (onScroll) {
-        onScroll(e);
-      }
+    wrapper.on('scroll', (e: any) => {
+      if (onScroll) { onScroll(e); }
     });
-    this.wrapper.on('pullingUp', (e: any) => {
-      if (onPullingUp) {
-        onPullingUp(e);
-      }
+    wrapper.on('pullingUp', (e: any) => {
+      if (onPullingUp) { onPullingUp(e); }
     });
 
   }
-
   updateLazy() {
     lazyload.update();
   }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
       setTimeout(this.afterDomUpdate, 20);
     }
   }
-
   ngOnDestroy() {
     this.destroy();
   }
-
 }

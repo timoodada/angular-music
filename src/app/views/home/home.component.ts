@@ -28,6 +28,6 @@ export class HomeComponent implements OnInit, OnChanges {
     this.bannersService.fetchBanners();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+    // console.log(changes);
   }
 }

@@ -5,7 +5,7 @@ import {map, skipWhile} from 'rxjs/operators';
 import {Map} from 'immutable';
 
 /*
-* store.subscribe To Observable
+* store.subscribe To Observable<StateChanges>
 */
 type StateMap = Map<any, any>;
 interface StateChange {
