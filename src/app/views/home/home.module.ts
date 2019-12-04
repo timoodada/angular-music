@@ -10,6 +10,7 @@ import {LayoutModule} from '../../components/layout/layout.module';
 import {ScrollYModule} from '../../components/scroll-y/scroll-y.module';
 import {LazyModule} from '../../directives/lazy/lazy.module';
 import {SliderModule} from '../../components/slider/slider.module';
+import {PipeModule} from '../../pipes/pipe.module';
 
 const routes: Routes = [{
   path: '',
@@ -37,7 +38,8 @@ const routes: Routes = [{
     LayoutModule,
     ScrollYModule,
     LazyModule,
-    SliderModule
+    SliderModule,
+    PipeModule
   ]
 })
 export class HomeModule { }

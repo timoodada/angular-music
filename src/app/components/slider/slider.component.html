@@ -2,4 +2,7 @@
   <div class="slider-group" #sliderGroup>
     <ng-content></ng-content>
   </div>
+  <div class="dot-group" *ngIf="dot">
+    <span *ngFor="let item of totalSize | list" [ngClass]="{'active': item === currentIndex}"></span>
+  </div>
 </div>

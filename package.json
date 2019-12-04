@@ -2,7 +2,7 @@
   "name": "angular-music",
   "version": "0.0.0",
   "scripts": {
-    "start": "ng serve --proxy-config proxy.conf.json",
+    "start": "ng serve --proxy-config proxy.conf.json --port 4200 --host 0.0.0.0",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -18,7 +18,7 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
-    "better-scroll": "^1.15.2",
+    "better-scroll": "1.14.1",
     "classlist.js": "^1.1.20150312",
     "fastclick": "^1.0.6",
     "immutable": "^4.0.0-rc.12",

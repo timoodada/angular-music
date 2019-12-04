@@ -1,22 +1,25 @@
-<app-layout>
+<ng-template #slider></ng-template>
+<app-layout [header]="slider">
   <app-scroll-y
     [data]="ranks"
   >
     <app-slider [autoplay]="true" [data]="banners">
-      <div style="height: 200px;" *ngFor="let v of banners; index as i">slider{{i}}</div>
+      <div *ngFor="let v of banners">
+        <img width="100%" [src]="v.picUrl" alt="banner">
+      </div>
     </app-slider>
     <div class="rank">
       <h1 class="list-title">热门榜单</h1>
       <div class="toplist">
         <div *ngIf="!ranks.size">
-          <div class="item loading" *ngFor="let item of listProducer(4)">
+          <div class="item loading" *ngFor="let item of 4 | list">
             <div class="icon">
               <div class="icon-sub">
                 <div class=sub></div>
               </div>
             </div>
             <div class="songlist">
-              <div class="song" *ngFor="let val of listProducer(3)"></div>
+              <div class="song" *ngFor="let val of 3 | list"></div>
             </div>
           </div>
         </div>

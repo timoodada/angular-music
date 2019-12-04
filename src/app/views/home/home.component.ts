@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {State} from '../../stores/core';
 import {RanksService} from '../../stores/actions/ranks.service';
+import {BannersService} from '../../stores/actions/banners.service';
+import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 import {List} from 'immutable';
 
 @Component({
@@ -11,20 +13,18 @@ import {List} from 'immutable';
 export class HomeComponent implements OnInit {
   @State('ranks')
   public ranks: List<any>;
-  public banners: any[] = [];
+  @State('banners')
+  public banners: List<any>;
+  @ViewChild(ScrollYComponent, {static: true})
+  public scrollY: any;
 
   constructor(
-    private ranksService: RanksService
+    private ranksService: RanksService,
+    private bannersService: BannersService
   ) {}
-
-  listProducer(num: number): any[] {
-    return new Array(num).join('.').split('.');
-  }
 
   ngOnInit() {
     this.ranksService.fetchRanks();
-    setTimeout(() => {
-      this.banners = this.listProducer(5);
-    }, 3000);
+    this.bannersService.fetchBanners();
   }
 }

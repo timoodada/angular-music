@@ -2,7 +2,26 @@
 .app-slider{
   overflow: hidden;
   width: 100%;
+  position: relative;
   .slider-group{
     @include clearFix;
+  }
+  .dot-group{
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    span{
+      background: #cccccc;
+      display: inline-block;
+      margin: 0 3px;
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+      &.active{
+        background: #888888;
+      }
+    }
   }
 }

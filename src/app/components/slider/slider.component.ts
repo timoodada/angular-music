@@ -1,13 +1,14 @@
-import {Component, Input, OnInit, ViewChild, OnDestroy, AfterViewChecked, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, OnDestroy, OnChanges, SimpleChanges} from '@angular/core';
 import BScroll from 'better-scroll';
 import {addClass, debounce} from '../../helpers/util';
 
 @Component({
   selector: 'app-slider',
   templateUrl: './slider.component.html',
-  styleUrls: ['./slider.component.scss']
+  styleUrls: ['./slider.component.scss'],
+  exportAs: 'slider'
 })
-export class SliderComponent implements OnInit, OnDestroy, AfterViewChecked, OnChanges {
+export class SliderComponent implements OnInit, OnDestroy, OnChanges {
   private wrapper: any;
   private timer: any = null;
   @Input()
@@ -24,6 +25,8 @@ export class SliderComponent implements OnInit, OnDestroy, AfterViewChecked, OnC
   public autoplay = false;
   @Input()
   public data: any;
+  @Input()
+  public dot = true;
 
   @ViewChild('wrapperDom', {static: true})
   public wrapperDom: any;
@@ -31,8 +34,8 @@ export class SliderComponent implements OnInit, OnDestroy, AfterViewChecked, OnC
   @ViewChild('sliderGroup', {static: true})
   public sliderGroup: any;
 
-  private needUpdate = false;
   public currentIndex = 0;
+  public totalSize = 0;
 
   private onWindowResize = debounce(() => {
     if (!this.wrapper || !this.wrapper.enabled) {
@@ -48,6 +51,7 @@ export class SliderComponent implements OnInit, OnDestroy, AfterViewChecked, OnC
 
   private setSlideWidth = (isResize?: boolean) => {
     const children = this.sliderGroup.nativeElement.children;
+    this.totalSize = children.length;
     let width = 0;
     const slideWidth = this.wrapperDom.nativeElement.clientWidth;
     for (const v of children) {
@@ -85,7 +89,8 @@ export class SliderComponent implements OnInit, OnDestroy, AfterViewChecked, OnC
       },
       bounce: false,
       stopPropagation: true,
-      click: this.click
+      click: this.click,
+      observeDOM: false
     });
     wrapper.on('scrollEnd', this.onScrollEnd);
     wrapper.on('touchEnd', () => {
@@ -130,23 +135,10 @@ export class SliderComponent implements OnInit, OnDestroy, AfterViewChecked, OnC
       this.wrapper.refresh();
     }
   }
-  update = () => {
-    this.destroy();
-    this.needUpdate = true;
-  }
-  afterUpdated = () => {
-    if (this.needUpdate) {
-      this.init();
-      this.needUpdate = false;
-    }
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.update();
-  }
-
-  ngAfterViewChecked(): void {
-    this.afterUpdated();
+    this.destroy();
+    setTimeout(this.init, 20);
   }
   ngOnInit() {
     this.init();

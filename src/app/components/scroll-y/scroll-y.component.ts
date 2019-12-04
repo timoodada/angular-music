@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, Input, OnChanges, SimpleChanges, AfterContentChecked} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, Input, OnChanges, SimpleChanges} from '@angular/core';
 import BScroll from 'better-scroll';
 import lazyload from '../../helpers/lazy';
 
@@ -8,9 +8,8 @@ import lazyload from '../../helpers/lazy';
   styleUrls: ['./scroll-y.component.scss'],
   exportAs: 'scrollY'
 })
-export class ScrollYComponent implements OnInit, OnDestroy, OnChanges, AfterContentChecked {
+export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
   private wrapper: any;
-  private afterDomUpdate: any;
 
   @ViewChild('wrapperDom', {static: true})
   public wrapperDom: any;
@@ -30,6 +29,11 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   public onScroll: (val?: any) => void;
   @Input()
   private data: any;
+
+  private afterDomUpdate = () => {
+    this.refresh();
+    this.updateLazy();
+  }
 
   constructor() {}
 
@@ -101,17 +105,7 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges, AfterCont
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
-      this.afterDomUpdate = () => {
-        this.refresh();
-        this.updateLazy();
-      };
-    }
-  }
-
-  ngAfterContentChecked(): void {
-    if (this.afterDomUpdate) {
-      this.afterDomUpdate();
-      this.afterDomUpdate = null;
+      setTimeout(this.afterDomUpdate, 20);
     }
   }
 
