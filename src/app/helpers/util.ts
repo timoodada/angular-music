@@ -3,7 +3,7 @@ export function isDate(val: any): val is Date {
 }
 
 // plainObject
-// for example {[prop: string]: any}
+// {[prop: string]: any}
 export function isPlainObject(val: any): val is object {
   return toString.call(val) === '[object Object]';
 }
