@@ -1,6 +1,8 @@
-# Angular8Test
+# Angular Music
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.19.
+
+A music player written by angular8. 
 
 ## Development server
 
