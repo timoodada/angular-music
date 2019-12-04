@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, OnChanges, SimpleChanges} from '@angular/core';
 import {State} from '../../stores/core';
 import {RanksService} from '../../stores/actions/ranks.service';
 import {BannersService} from '../../stores/actions/banners.service';
@@ -10,7 +10,7 @@ import {List} from 'immutable';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnChanges {
   @State('ranks')
   public ranks: List<any>;
   @State('banners')
@@ -26,5 +26,8 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.ranksService.fetchRanks();
     this.bannersService.fetchBanners();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
   }
 }
