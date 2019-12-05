@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import {HttpService} from '../../services/http/http.service';
 import store from '../index';
-import {of} from 'rxjs';
+import {of, Observable} from 'rxjs';
 import {map, tap, mapTo, catchError} from 'rxjs/operators';
 import {getState} from '../core';
+import {List} from 'immutable';
+
+type Banners = Observable<List<any>>;
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,7 @@ export class BannersService {
     };
   }
 
-  getBanners(): any {
+  getBanners(): Banners {
     return this.http.jsonp('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg', {
       _:	Date.now(),
       uin: 0,
@@ -40,7 +43,7 @@ export class BannersService {
       );
   }
 
-  fetchBanners() {
+  fetchBanners(): Banners {
     const banners = getState('banners');
     if (banners.size) {
       return of(banners);
@@ -48,7 +51,7 @@ export class BannersService {
     return this.getBanners();
   }
 
-  updateBanners() {
+  updateBanners(): Banners {
     return this.getBanners();
   }
 }

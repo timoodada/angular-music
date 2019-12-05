@@ -24,8 +24,8 @@ export class HomeComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.ranksService.fetchRanks();
-    this.bannersService.fetchBanners();
+    this.ranksService.fetchRanks().subscribe();
+    this.bannersService.fetchBanners().subscribe();
   }
   ngOnChanges(changes: SimpleChanges): void {
     // console.log(changes);

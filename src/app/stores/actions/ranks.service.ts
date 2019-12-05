@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import {HttpService} from '../../services/http/http.service';
 import store from '../index';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {tap, map, mapTo, catchError} from 'rxjs/operators';
 import {getState} from '../core';
+import {List} from 'immutable';
+
+type Ranks = Observable<List<any>>;
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,7 @@ export class RanksService {
     };
   }
 
-  getRanks(): any {
+  getRanks(): Ranks {
     return this.http.jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_myqq_toplist.fcg', {
       _:	Date.now(),
       uin: 0,
@@ -40,7 +43,7 @@ export class RanksService {
       );
   }
 
-  fetchRanks() {
+  fetchRanks(): Ranks {
     const ranks = getState('ranks');
     if (ranks.size) {
       return of(ranks);
@@ -48,7 +51,7 @@ export class RanksService {
     return this.getRanks();
   }
 
-  updateRanks() {
+  updateRanks(): Ranks {
     return this.getRanks();
   }
 }
