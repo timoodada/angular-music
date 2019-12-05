@@ -9,6 +9,8 @@ import lazyload from '../../helpers/lazy';
   exportAs: 'scrollY'
 })
 export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
+
+  constructor() {}
   private wrapper: any;
   @ViewChild('wrapperDom', {static: true})
   public wrapperDom: any;
@@ -27,12 +29,17 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
   public onScroll: (val?: any) => void;
   @Input()
   private data: any;
+  @Input()
+  private pullDownRefresh = { threshold: 50, stop: 28 };
+  @Input()
+  private onPullingDown: any = null;
+
+  public bubbleY = 0;
+  private isPullingDown = false;
   private afterDomUpdate = () => {
     this.refresh();
     this.updateLazy();
   }
-
-  constructor() {}
 
   refresh = () => {
     if (this.wrapper) { this.wrapper.refresh(); }
@@ -44,7 +51,16 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
     if (this.wrapper) { this.wrapper.scrollTo(x, y, time, easing); }
   }
   finishPullDown = (...args: any[]) => {
-    if (this.wrapper) { this.wrapper.finishPullDown(...args); }
+    if (this.wrapper) {
+      this.isPullingDown = false;
+      this.wrapper.finishPullDown(...args);
+    }
+  }
+  openPullDown = (config: any) => {
+    if (this.wrapper) { this.wrapper.openPullDown(config || this.pullDownRefresh); }
+  }
+  closePullDown = () => {
+    if (this.wrapper) { this.wrapper.closePullDown(); }
   }
   finishPullUp = () => {
     if (this.wrapper) { this.wrapper.finishPullUp(); }
@@ -63,18 +79,24 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
     this.initBS();
   }
   initBS = () => {
-    const {probeType, pullUpLoad, onScroll, onPullingUp} = this;
+    const {probeType, pullUpLoad, onScroll, onPullingUp, pullDownRefresh, onPullingDown} = this;
     const wrapper = this.wrapper = new BScroll(this.wrapperDom.nativeElement, {
       scrollY: true,
       click: true,
       probeType,
-      pullUpLoad
+      pullUpLoad,
+      pullDownRefresh: onPullingDown ? pullDownRefresh : false
     });
     wrapper.on('scroll', (e: any) => {
       if (onScroll) { onScroll(e); }
+      this.bubbleY = Math.max(0, e.y);
     });
     wrapper.on('pullingUp', (e: any) => {
       if (onPullingUp) { onPullingUp(e); }
+    });
+    wrapper.on('pullingDown', (e: any) => {
+      this.isPullingDown = true;
+      if (onPullingDown) { onPullingDown(e); }
     });
 
   }

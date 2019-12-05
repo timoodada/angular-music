@@ -4,6 +4,7 @@ import {RanksService} from '../../stores/actions/ranks.service';
 import {BannersService} from '../../stores/actions/banners.service';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 import {List} from 'immutable';
+import {zip} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -23,9 +24,15 @@ export class HomeComponent implements OnInit, OnChanges {
     private bannersService: BannersService
   ) {}
 
+  onPullingDown = () => {
+    zip(
+      this.ranksService.fetchRanks(),
+      this.bannersService.fetchBanners()
+    ).subscribe(() => this.scrollY.finishPullDown());
+  }
   ngOnInit() {
-    this.ranksService.fetchRanks().subscribe();
-    this.bannersService.fetchBanners().subscribe();
+    this.ranksService.updateRanks().subscribe();
+    this.bannersService.updateBanners().subscribe();
   }
   ngOnChanges(changes: SimpleChanges): void {
     // console.log(changes);

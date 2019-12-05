@@ -1,5 +1,8 @@
-<div #wrapperDom class="scroll-y">
-  <div>
-    <ng-content></ng-content>
+<div class="scroll-y-wrapper">
+  <app-bubble *ngIf="bubbleY" [y]="bubbleY"></app-bubble>
+  <div #wrapperDom class="scroll-y">
+    <div>
+      <ng-content></ng-content>
+    </div>
   </div>
 </div>

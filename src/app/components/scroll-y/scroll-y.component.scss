@@ -1,3 +1,7 @@
-.scroll-y{
+.scroll-y-wrapper{
   height: 100%;
+  position: relative;
+  .scroll-y{
+    height: 100%;
+  }
 }

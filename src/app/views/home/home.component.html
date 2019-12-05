@@ -1,6 +1,7 @@
 <ng-template #slider></ng-template>
 <app-layout [header]="slider">
   <app-scroll-y
+    [onPullingDown]="onPullingDown"
     [data]="ranks"
   >
     <app-slider [autoplay]="true" [data]="banners">

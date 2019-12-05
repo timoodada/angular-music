@@ -39,7 +39,7 @@ export class RanksService {
         map(res => res.code === 0 ? res.data.topList : []),
         tap(list => store.dispatch(this.setRanks(list))),
         mapTo(getState('ranks')),
-        catchError(error => getState('ranks'))
+        catchError(error => of(getState('ranks')))
       );
   }
 

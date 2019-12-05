@@ -39,7 +39,7 @@ export class BannersService {
         map(res => res.code === 0 ? res.data.slider : getState('banners')),
         tap(list => store.dispatch(this.setBanners(list))),
         mapTo(getState('banners')),
-        catchError(error => getState('banners'))
+        catchError(error => of(getState('banners')))
       );
   }
 
