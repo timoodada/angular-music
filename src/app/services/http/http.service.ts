@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {queryString} from '../../helpers/query';
 import {deepMerge} from '../../helpers/util';
 import {compineUrl, buildUrl} from '../../helpers/url';
-import {race, timer, Observable} from 'rxjs';
+import {race, timer, Observable, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 interface PostData {
@@ -31,8 +31,10 @@ export class HttpService {
   timeoutHandler = (mission: Observable<any>): Observable<any> => {
     return race(
       mission,
-      timer(this.timeout).pipe(map(() => { throw new Error(`Timeout Of ${this.timeout}ms Exceeded`); }))
-    )
+      timer(this.timeout).pipe(
+        map(() => throwError(new Error(`Timeout Of ${this.timeout}ms Exceeded`)))
+      )
+    );
   }
 
   post = (url: string, data?: PostData, options?: PostData): Observable<any> => {

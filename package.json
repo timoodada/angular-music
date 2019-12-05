@@ -24,7 +24,6 @@
     "immutable": "^4.0.0-rc.12",
     "redux": "^4.0.4",
     "redux-immutable": "^4.0.0",
-    "redux-thunk": "^2.3.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "vanilla-lazyload": "^12.4.0",

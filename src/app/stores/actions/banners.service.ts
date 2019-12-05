@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpService} from '../../services/http/http.service';
 import store from '../index';
+import {of} from 'rxjs';
+import {map, tap, mapTo, catchError} from 'rxjs/operators';
+import {getState} from '../core';
 
 @Injectable({
   providedIn: 'root'
@@ -19,32 +22,33 @@ export class BannersService {
   }
 
   getBanners(): any {
-    return (dispatch: (val?: any) => any) => {
-      this.http.jsonp('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg', {
-        _:	Date.now(),
-        uin: 0,
-        format: 'jsonp',
-        inCharset: 'utf-8',
-        outCharset: 'utf-8',
-        notice: 0,
-        platform: 'h5',
-        needNewCode: 1
-      }, 'jsonpCallback').subscribe(res => {
-        if (res.code === 0) {
-          dispatch(this.setBanners(res.data.slider));
-        }
-      });
-    };
+    return this.http.jsonp('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg', {
+      _:	Date.now(),
+      uin: 0,
+      format: 'jsonp',
+      inCharset: 'utf-8',
+      outCharset: 'utf-8',
+      notice: 0,
+      platform: 'h5',
+      needNewCode: 1
+    }, 'jsonpCallback')
+      .pipe(
+        map(res => res.code === 0 ? res.data.slider : getState('banners')),
+        tap(list => store.dispatch(this.setBanners(list))),
+        mapTo(getState('banners')),
+        catchError(error => getState('banners'))
+      );
   }
 
   fetchBanners() {
-    if ((store.getState() as any).get('banners').size) {
-      return;
+    const banners = getState('banners');
+    if (banners.size) {
+      return of(banners);
     }
-    store.dispatch(this.getBanners());
+    return this.getBanners();
   }
 
   updateBanners() {
-    store.dispatch(this.getBanners());
+    return this.getBanners();
   }
 }

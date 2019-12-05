@@ -29,7 +29,7 @@ const observable: Observable<StateChanges> = new Observable(observer => {
   }};
 });
 
-function getState(state: string) {
+export function getState(state: string) {
   return (store.getState() as any).get(state);
 }
 
