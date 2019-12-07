@@ -1,5 +1,7 @@
-<ng-template #slider></ng-template>
-<app-layout [header]="slider">
+<ng-template #header>
+  <app-header></app-header>
+</ng-template>
+<app-layout [header]="header">
   <app-scroll-y
     [onPullingDown]="onPullingDown"
     [data]="ranks"

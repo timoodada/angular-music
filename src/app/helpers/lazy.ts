@@ -4,4 +4,4 @@ const lazyload = new LazyLoad({
   container: document.body
 });
 
-export default lazyload;
+export { lazyload };

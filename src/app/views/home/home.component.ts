@@ -5,6 +5,7 @@ import {BannersService} from '../../stores/actions/banners.service';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 import {List} from 'immutable';
 import {zip} from 'rxjs';
+import {lazyload} from '../../helpers/lazy';
 
 @Component({
   selector: 'app-home',
@@ -26,13 +27,19 @@ export class HomeComponent implements OnInit, OnChanges {
 
   onPullingDown = () => {
     zip(
-      this.ranksService.fetchRanks(),
-      this.bannersService.fetchBanners()
-    ).subscribe(() => this.scrollY.finishPullDown());
+      this.ranksService.updateRanks(),
+      this.bannersService.updateBanners()
+    ).subscribe(() => {
+      this.updateLazy();
+      this.scrollY.finishPullDown();
+    });
   }
   ngOnInit() {
-    this.ranksService.updateRanks().subscribe();
-    this.bannersService.updateBanners().subscribe();
+    this.ranksService.fetchRanks().subscribe(this.updateLazy);
+    this.bannersService.fetchBanners().subscribe();
+  }
+  updateLazy = () => {
+    setTimeout(() => lazyload.update(), 20);
   }
   ngOnChanges(changes: SimpleChanges): void {
     // console.log(changes);

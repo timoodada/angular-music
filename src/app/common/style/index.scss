@@ -14,10 +14,8 @@ html,body{
   -webkit-tap-highlight-color: transparent;
   color: $color-text;
 }
-#root{
+body{
   background: $color-background;
-  height: 100%;
-  position: relative;
 }
 *{
   box-sizing: border-box;

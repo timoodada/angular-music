@@ -12,6 +12,7 @@ import {AnimationModule} from './components/animation/animation.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {AsyncLoadComponent} from './components/async-load/async-load.component';
+import {LayoutModule} from './components/layout/layout.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {AsyncLoadComponent} from './components/async-load/async-load.component';
     FormsModule,
     AnimationModule,
     HttpClientModule,
-    HttpClientJsonpModule
+    HttpClientJsonpModule,
+    LayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

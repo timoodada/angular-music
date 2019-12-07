@@ -9,16 +9,7 @@ import './stores/index';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
-  private _keyword = '';
-  get keyword() {
-    return this._keyword;
-  }
-  set keyword(val) {
-    this._keyword = val;
-  }
   public loading: boolean;
-  public title = 'angular-music';
 
   constructor(
     public http: HttpService,

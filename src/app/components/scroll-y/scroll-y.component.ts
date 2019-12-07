@@ -1,6 +1,5 @@
-import {Component, OnInit, OnDestroy, ViewChild, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, Input} from '@angular/core';
 import BScroll from 'better-scroll';
-import lazyload from '../../helpers/lazy';
 
 @Component({
   selector: 'app-scroll-y',
@@ -8,7 +7,7 @@ import lazyload from '../../helpers/lazy';
   styleUrls: ['./scroll-y.component.scss'],
   exportAs: 'scrollY'
 })
-export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
+export class ScrollYComponent implements OnInit, OnDestroy {
 
   constructor() {}
   private wrapper: any;
@@ -30,16 +29,15 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   private data: any;
   @Input()
-  private pullDownRefresh = { threshold: 50, stop: 28 };
+  private pullDownRefresh = { threshold: 60, stop: 30 };
   @Input()
   private onPullingDown: any = null;
 
   public bubbleY = 0;
-  private isPullingDown = false;
-  private afterDomUpdate = () => {
-    this.refresh();
-    this.updateLazy();
-  }
+  public isPullingDown = false;
+  public pullingDownSuccess = false;
+  private pullingDownSuccessTime = 1000;
+  private isPullingUp = false;
 
   refresh = () => {
     if (this.wrapper) { this.wrapper.refresh(); }
@@ -52,8 +50,12 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
   }
   finishPullDown = (...args: any[]) => {
     if (this.wrapper) {
+      this.pullingDownSuccess = true;
       this.isPullingDown = false;
-      this.wrapper.finishPullDown(...args);
+      setTimeout(() => {
+        this.wrapper.finishPullDown(...args);
+        this.pullingDownSuccess = false;
+      }, this.pullingDownSuccessTime);
     }
   }
   openPullDown = (config: any) => {
@@ -63,8 +65,11 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
     if (this.wrapper) { this.wrapper.closePullDown(); }
   }
   finishPullUp = () => {
-    if (this.wrapper) { this.wrapper.finishPullUp(); }
-    this.refresh();
+    if (this.wrapper) {
+      this.isPullingUp = false;
+      this.wrapper.finishPullUp();
+    }
+    setTimeout(this.refresh, 20);
   }
   openPullUp = (config?: any) => {
     if (this.wrapper) { this.wrapper.openPullUp(config || this.pullUpLoad); }
@@ -92,21 +97,16 @@ export class ScrollYComponent implements OnInit, OnDestroy, OnChanges {
       this.bubbleY = Math.max(0, e.y);
     });
     wrapper.on('pullingUp', (e: any) => {
-      if (onPullingUp) { onPullingUp(e); }
+      if (onPullingUp) {
+        this.isPullingUp = true;
+        onPullingUp(e);
+      }
     });
     wrapper.on('pullingDown', (e: any) => {
       this.isPullingDown = true;
       if (onPullingDown) { onPullingDown(e); }
     });
 
-  }
-  updateLazy() {
-    lazyload.update();
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.data) {
-      setTimeout(this.afterDomUpdate, 20);
-    }
   }
   ngOnDestroy() {
     this.destroy();

@@ -6,7 +6,7 @@ import {compineUrl, buildUrl} from '../../helpers/url';
 import {race, timer, Observable, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-interface PostData {
+interface Data {
   [prop: string]: any;
 }
 
@@ -37,7 +37,16 @@ export class HttpService {
     );
   }
 
-  post = (url: string, data?: PostData, options?: PostData): Observable<any> => {
+  get = (url: string, params?: Data, options?: any): Observable<any> => {
+    return this.timeoutHandler(
+      this.http.get(
+        buildUrl(url, params),
+        deepMerge(this.defaults, options)
+      )
+    );
+  }
+
+  post = (url: string, data?: Data, options?: any): Observable<any> => {
     return this.timeoutHandler(
       this.http.post(
         compineUrl(this.baseUrl, url),
@@ -47,12 +56,19 @@ export class HttpService {
     );
   }
 
-  jsonp = (url: string, params?: any, callbackFuncName?: string): Observable<any> => {
+  jsonp = (url: string, params?: Data, callbackFuncName?: string): Observable<any> => {
     return this.timeoutHandler(
       this.http.jsonp(
         buildUrl(compineUrl(this.baseUrl, url), params),
         callbackFuncName
       )
     );
+  }
+
+  musicPost = (url: string, postData?: Data): Observable<any> => {
+    return this.post('/api/transmit/' + encodeURIComponent(url), postData);
+  }
+  musicGet = (url: string, params?: Data): Observable<any> => {
+    return this.get('http://49.235.160.182/api/transmit/' + encodeURIComponent(url), params);
   }
 }

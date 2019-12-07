@@ -1,8 +1,16 @@
 <div class="scroll-y-wrapper">
-  <app-bubble *ngIf="bubbleY" [y]="bubbleY"></app-bubble>
+  <div class="loading-wrapper" *ngIf="isPullingDown || pullingDownSuccess">
+    <app-loading *ngIf="isPullingDown"></app-loading>
+    <span *ngIf="pullingDownSuccess" class="success">刷新成功</span>
+  </div>
+  <app-bubble
+    *ngIf="bubbleY > 30 && !isPullingDown && !pullingDownSuccess"
+    [y]="bubbleY"
+  ></app-bubble>
   <div #wrapperDom class="scroll-y">
     <div>
       <ng-content></ng-content>
+      <app-loading *ngIf="isPullingUp"></app-loading>
     </div>
   </div>
 </div>

@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ListPipe} from './list/list.pipe';
+import {LoadingComponent} from './loading.component';
 
 
 @NgModule({
   declarations: [
-    ListPipe
+    LoadingComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    ListPipe
+    LoadingComponent
   ]
 })
-export class PipeModule { }
+export class LoadingModule { }

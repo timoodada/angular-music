@@ -1,6 +1,6 @@
-<div id="root">
-  <app-animation type="fade" [outlet]="outlet" style="height: 100%;">
+<app-layout>
+  <app-animation type="fade" [outlet]="outlet">
     <app-async-load *ngIf="loading"></app-async-load>
     <router-outlet #outlet="outlet"></router-outlet>
   </app-animation>
-</div>
+</app-layout>
