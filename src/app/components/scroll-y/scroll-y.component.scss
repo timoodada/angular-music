@@ -2,13 +2,17 @@
 .scroll-y-wrapper{
   height: 100%;
   position: relative;
+  background: $color-highlight-background;
   .scroll-y{
     height: 100%;
+    & > *{
+      background: $color-background;
+    }
   }
   .loading-wrapper{
     position: absolute;
-    top: 0;
     left: 0;
+    top: 0;
     width: 100%;
     height: 30px;
     display: flex;
@@ -18,5 +22,10 @@
       color: $color-text-d;
       font-size: $font-size-small;
     }
+  }
+  .bubble-wrapper{
+    position: absolute;
+    left: 0;
+    width: 100%;
   }
 }

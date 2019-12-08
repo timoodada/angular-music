@@ -19,6 +19,7 @@ export class BubbleComponent implements OnInit {
   public initCenterX = 0;
   public initCenterY = 0;
   public headCenter = { x: 0, y: 0 };
+  public headRadius = 0;
   public style = {};
   public get distance() {
     return Math.max(0, Math.min(this.y * this.ratio, this.maxDistance));
@@ -30,6 +31,7 @@ export class BubbleComponent implements OnInit {
     return this._y;
   }
   public set y(val: number) {
+    val = Math.max(0, val);
     if (this._y !== val) {
       this._y = val;
       this.draw();
@@ -48,7 +50,7 @@ export class BubbleComponent implements OnInit {
     ctx.save();
     ctx.beginPath();
     const rate = this.distance / this.maxDistance;
-    const headRadius = this.initRadius - (this.initRadius - this.minHeadRadius) * rate;
+    const headRadius = this.headRadius = this.initRadius - (this.initRadius - this.minHeadRadius) * rate;
     this.headCenter.y = this.initCenterY - (this.initRadius - this.minHeadRadius) * rate;
     // 画上半弧线
     ctx.arc(this.headCenter.x, this.headCenter.y, headRadius, 0, Math.PI, true);
@@ -107,7 +109,7 @@ export class BubbleComponent implements OnInit {
   constructor() {
     this.width *= this.ratio;
     this.height *= this.ratio;
-    this.initRadius = 18 * this.ratio;
+    this.initRadius = 16 * this.ratio;
     this.minHeadRadius = 12 * this.ratio;
     this.minTailRadius = 5 * this.ratio;
     this.initArrowRadius = 10 * this.ratio;
@@ -127,6 +129,6 @@ export class BubbleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.draw();
+    setTimeout(this.draw, 20);
   }
 }

@@ -1,5 +1,6 @@
 import {Component, OnInit, OnDestroy, ViewChild, Input} from '@angular/core';
 import BScroll from 'better-scroll';
+import {BubbleComponent} from '../bubble/bubble.component';
 
 @Component({
   selector: 'app-scroll-y',
@@ -13,6 +14,8 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   private wrapper: any;
   @ViewChild('wrapperDom', {static: true})
   public wrapperDom: any;
+  @ViewChild(BubbleComponent, {static: false})
+  private bubble: any;
   /*
   * 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；
   * 当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；
@@ -29,15 +32,25 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   @Input()
   private data: any;
   @Input()
-  private pullDownRefresh = { threshold: 60, stop: 30 };
-  @Input()
   private onPullingDown: any = null;
 
+  private pullDownRefresh = { threshold: 60, stop: 30 };
+  public bubbleWrapperStyle = {};
   public bubbleY = 0;
+  public showBubble: boolean | null = true;
   public isPullingDown = false;
   public pullingDownSuccess = false;
   private pullingDownSuccessTime = 1000;
   private isPullingUp = false;
+  private fixBubble = (top: number) => {
+    if (top > 0 && this.showBubble === null) { this.showBubble = true; }
+    if (!this.bubble) { return; }
+    const bubbleHeight = this.bubble.headRadius / this.bubble.ratio * 2.5;
+    this.bubbleY = Math.max(0, top - bubbleHeight);
+    this.bubbleWrapperStyle = {
+      top: `${Math.min(top - bubbleHeight, 0) - 5}px`
+    };
+  }
 
   refresh = () => {
     if (this.wrapper) { this.wrapper.refresh(); }
@@ -55,11 +68,12 @@ export class ScrollYComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.wrapper.finishPullDown(...args);
         this.pullingDownSuccess = false;
+        setTimeout(() => this.showBubble = null, 500);
       }, this.pullingDownSuccessTime);
     }
   }
-  openPullDown = (config: any) => {
-    if (this.wrapper) { this.wrapper.openPullDown(config || this.pullDownRefresh); }
+  openPullDown = () => {
+    if (this.wrapper) { this.wrapper.openPullDown(this.pullDownRefresh); }
   }
   closePullDown = () => {
     if (this.wrapper) { this.wrapper.closePullDown(); }
@@ -94,7 +108,7 @@ export class ScrollYComponent implements OnInit, OnDestroy {
     });
     wrapper.on('scroll', (e: any) => {
       if (onScroll) { onScroll(e); }
-      this.bubbleY = Math.max(0, e.y);
+      this.fixBubble(e.y);
     });
     wrapper.on('pullingUp', (e: any) => {
       if (onPullingUp) {
@@ -104,6 +118,7 @@ export class ScrollYComponent implements OnInit, OnDestroy {
     });
     wrapper.on('pullingDown', (e: any) => {
       this.isPullingDown = true;
+      this.showBubble = false;
       if (onPullingDown) { onPullingDown(e); }
     });
 
