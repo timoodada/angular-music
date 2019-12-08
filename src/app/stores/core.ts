@@ -7,6 +7,9 @@ import {Map} from 'immutable';
 /*
 * store.subscribe To Observable<StateChanges>
 */
+type StateType =
+  'banners' |
+  'ranks';
 type StateMap = Map<any, any>;
 interface StateChange {
   previousValue: any;
@@ -29,7 +32,7 @@ const observable: Observable<StateChanges> = new Observable(observer => {
   }};
 });
 
-export function getState(state: string) {
+export function getState(state: StateType) {
   return (store.getState() as any).get(state);
 }
 
@@ -37,7 +40,7 @@ export function getState(state: string) {
 * Decorator
 * @State(state)
 */
-export function State(state: string): (target: any, prop: string) => any {
+export function State(state: StateType): (target: any, prop: string) => any {
   return (target: any, prop: string): any => {
     const onDestroy = target.ngOnDestroy;
     const onChanges: (change: SimpleChanges) => void = target.ngOnChanges;

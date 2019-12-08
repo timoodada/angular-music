@@ -28,7 +28,7 @@
         </div>
         <a routerLink="/setting" class="item" *ngFor="let item of ranks">
           <div class="icon">
-              <img [appLazy]="item.picUrl" [alt]="item.topTitle" width="100" height="100">
+              <img [appLazy]="item.picUrl" [alt]="item.topTitle" width="100" height="100" />
           </div>
           <div class="songlist">
             <div class="song" *ngFor="let val of item.songList">{{val.songname}} - {{val.singername}}</div>
