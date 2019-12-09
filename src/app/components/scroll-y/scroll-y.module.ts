@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ScrollYComponent} from './scroll-y.component';
-import {BubbleModule} from '../bubble/bubble.module';
 import {LoadingModule} from '../loading/loading.module';
+import {BubbleComponent} from './bubble/bubble.component';
 
 @NgModule({
   declarations: [
-    ScrollYComponent
+    ScrollYComponent,
+    BubbleComponent
   ],
   imports: [
     CommonModule,
-    BubbleModule,
     LoadingModule
   ],
   exports: [
