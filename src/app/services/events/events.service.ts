@@ -8,7 +8,7 @@ interface Listener {
 @Injectable({
   providedIn: 'root'
 })
-export class EventService {
+export class EventsService {
 
   public events: any[];
 
