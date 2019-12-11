@@ -66,7 +66,7 @@ export class HttpService {
   }
 
   musicPost = (url: string, postData?: Data): Observable<any> => {
-    return this.post('/api/transmit/' + encodeURIComponent(url), postData);
+    return this.post('http://49.235.160.182/api/transmit/' + encodeURIComponent(url), postData);
   }
   musicGet = (url: string, params?: Data): Observable<any> => {
     return this.get('http://49.235.160.182/api/transmit/' + encodeURIComponent(url), params);

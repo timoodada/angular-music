@@ -1,4 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import {MusicPlayer} from './player.core';
+
+function timeFormat(t = 0) {
+  const m = Math.round(t % 60);
+  return `${Math.floor(t / 60)}:${m < 10 ? '0' + m : m}`;
+}
+
+function unescapeHTML(lrc: string) {
+  const t = document.createElement('div');
+  t.innerHTML = lrc + '';
+  return t.innerText;
+}
+
 
 @Component({
   selector: 'app-player',
@@ -7,7 +20,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlayerComponent implements OnInit {
 
-  constructor() { }
+  public songReady = false;
+  public player: MusicPlayer;
+
+  constructor() {
+    this.player = new MusicPlayer();
+  }
 
   ngOnInit() {
   }
