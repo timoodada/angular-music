@@ -1,7 +1,8 @@
 <ng-template #header>
   <app-header></app-header>
 </ng-template>
-<app-layout [header]="header">
+<ng-template #extra></ng-template>
+<app-layout [header]="header" [extra]="extra">
   <app-scroll-y
     [onPullingDown]="onPullingDown"
     [data]="ranks"

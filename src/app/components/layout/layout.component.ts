@@ -11,6 +11,8 @@ export class LayoutComponent implements OnInit {
   @Input()
   public footer?: TemplateRef<any>;
   @Input()
+  public extra?: TemplateRef<any>;
+  @Input()
   public style: any;
 
   constructor() { }

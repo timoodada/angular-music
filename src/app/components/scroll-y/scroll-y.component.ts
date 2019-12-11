@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, ViewChild, Input} from '@angular/core';
 import BScroll from 'better-scroll';
-import {BubbleComponent} from '../bubble/bubble.component';
+import {BubbleComponent} from './bubble/bubble.component';
 
 @Component({
   selector: 'app-scroll-y',

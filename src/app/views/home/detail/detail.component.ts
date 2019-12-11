@@ -12,8 +12,4 @@ export class DetailComponent implements OnInit {
   ngOnInit() {
   }
 
-  back() {
-    history.go(-1);
-  }
-
 }

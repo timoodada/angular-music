@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home.component';
 import {DetailComponent} from './detail/detail.component';
-import {MessageComponent} from './message/message.component';
 import {NgModule} from '@angular/core';
 import {AnimationModule} from '../../components/animation/animation.module';
 import {ListModule} from '../../components/list/list.module';
@@ -16,19 +15,15 @@ const routes: Routes = [{
   path: '',
   component: HomeComponent,
   children: [{
-    path: 'detail',
+    path: ':id',
     component: DetailComponent
-  }, {
-    path: 'message',
-    component: MessageComponent
   }]
 }];
 
 @NgModule({
   declarations: [
     HomeComponent,
-    DetailComponent,
-    MessageComponent
+    DetailComponent
   ],
   imports: [
     CommonModule,
@@ -43,8 +38,7 @@ const routes: Routes = [{
   ],
   exports: [
     HomeComponent,
-    DetailComponent,
-    MessageComponent
+    DetailComponent
   ]
 })
 export class HomeRoutingModule {}
