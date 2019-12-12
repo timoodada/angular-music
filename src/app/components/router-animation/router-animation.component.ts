@@ -44,15 +44,15 @@ const isHistoryPush = (location: any, update: any): boolean => {
 };
 
 @Component({
-  selector: 'app-animation',
-  templateUrl: './animation.component.html',
-  styleUrls: ['./animation.component.scss'],
+  selector: 'app-router-animation',
+  templateUrl: './router-animation.component.html',
+  styleUrls: ['./router-animation.component.scss'],
   animations: [
     fadeAnimation,
     slideAnimation
   ]
 })
-export class AnimationComponent implements OnInit {
+export class RouterAnimationComponent implements OnInit {
   private outletComponent: any;
 
   @Input()

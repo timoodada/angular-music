@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {HttpClientModule, HttpClientJsonpModule} from '@angular/common/http';
-import {AnimationModule} from './components/animation/animation.module';
+import {RouterAnimationModule} from './components/router-animation/router-animation.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,7 +24,7 @@ import {LayoutModule} from './components/layout/layout.module';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    AnimationModule,
+    RouterAnimationModule,
     HttpClientModule,
     HttpClientJsonpModule,
     LayoutModule

@@ -2,9 +2,9 @@
   <app-header></app-header>
 </ng-template>
 <ng-template #extra>
-  <app-animation type="slide" [outlet]="outlet">
+  <app-router-animation type="slide" [outlet]="outlet">
     <router-outlet #outlet=outlet></router-outlet>
-  </app-animation>
+  </app-router-animation>
 </ng-template>
 <app-layout
   [header]="header"

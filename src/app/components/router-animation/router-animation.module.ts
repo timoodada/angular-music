@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {AnimationComponent} from './animation.component';
+import {RouterAnimationComponent} from './router-animation.component';
 
 @NgModule({
   declarations: [
-    AnimationComponent
+    RouterAnimationComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    AnimationComponent
+    RouterAnimationComponent
   ]
 })
-export class AnimationModule { }
+export class RouterAnimationModule { }

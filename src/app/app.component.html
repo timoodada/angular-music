@@ -1,6 +1,6 @@
 <app-layout>
-  <app-animation type="fade" [outlet]="outlet">
+  <app-router-animation type="fade" [outlet]="outlet">
     <app-async-load *ngIf="loading"></app-async-load>
     <router-outlet #outlet="outlet"></router-outlet>
-  </app-animation>
+  </app-router-animation>
 </app-layout>
