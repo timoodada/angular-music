@@ -1,8 +1,15 @@
 <ng-template #header>
   <app-header></app-header>
 </ng-template>
-<ng-template #extra></ng-template>
-<app-layout [header]="header" [extra]="extra">
+<ng-template #extra>
+  <app-animation type="slide" [outlet]="outlet">
+    <router-outlet #outlet=outlet></router-outlet>
+  </app-animation>
+</ng-template>
+<app-layout
+  [header]="header"
+  [extra]="extra"
+>
   <app-scroll-y
     [onPullingDown]="onPullingDown"
     [data]="ranks"
@@ -27,7 +34,7 @@
             </div>
           </div>
         </div>
-        <a routerLink="/setting" class="item" *ngFor="let item of ranks">
+        <a [routerLink]="'/' + item.id" class="item" *ngFor="let item of ranks">
           <div class="icon">
               <img [appLazy]="item.picUrl" [alt]="item.topTitle" width="100" height="100" />
           </div>

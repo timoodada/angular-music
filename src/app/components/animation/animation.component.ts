@@ -65,19 +65,19 @@ export class AnimationComponent implements OnInit {
   private fadeTriggers: string[] = ['fadein', 'fadeout'];
 
   private slideTrigger: 'forward' | 'backward' | 'bridge' | 'none' = 'none';
-  private slideToEmpty() {
+  private slideToEmpty = () => {
     this.slideTrigger = 'none';
   }
-  private slideForward() {
+  private slideForward = () => {
     this.slideTrigger = this.slideTrigger === 'forward' ? 'bridge' : 'forward';
   }
-  private slideBackward() {
+  private slideBackward = () => {
     this.slideTrigger = this.slideTrigger === 'backward' ? 'bridge' : 'backward';
   }
 
   constructor() {}
 
-  handleFade(outlet: RouterOutlet) {
+  handleFade = (outlet: RouterOutlet) => {
     if (
       (outlet && outlet.isActivated && this.outletComponent !== outlet.component) ||
       outlet && !outlet.isActivated && this.outletComponent
@@ -86,7 +86,7 @@ export class AnimationComponent implements OnInit {
     }
     return this.fadeTriggers[this.fadeTriggerIndex];
   }
-  prepareRoute(outlet: RouterOutlet) {
+  prepareRoute = (outlet: RouterOutlet) => {
     let triggerName: string | null;
     if (this.type !== 'fade') { return null; }
     triggerName = this.handleFade(outlet);
@@ -98,7 +98,7 @@ export class AnimationComponent implements OnInit {
     return triggerName;
   }
 
-  handleSlide(outlet: RouterOutlet) {
+  handleSlide = (outlet: RouterOutlet) => {
     if (this.outletComponent) {
       if (outlet && outlet.isActivated && this.outletComponent !== outlet.component) {
         if (isHistoryPush(location, true)) {
@@ -114,7 +114,7 @@ export class AnimationComponent implements OnInit {
     }
     return this.slideTrigger;
   }
-  prepareSlideRoute(outlet: RouterOutlet) {
+  prepareSlideRoute = (outlet: RouterOutlet) => {
     let triggerName: string | null;
     if (this.type !== 'slide') { return null; }
     triggerName = this.handleSlide(outlet);

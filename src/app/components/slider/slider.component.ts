@@ -36,9 +36,13 @@ export class SliderComponent implements OnInit, OnDestroy, OnChanges {
 
   public currentIndex = 0;
   public totalSize = 0;
+  public wrapperWidth = 0;
 
   private onWindowResize = debounce(() => {
     if (!this.wrapper || !this.wrapper.enabled) {
+      return;
+    }
+    if (this.wrapperWidth === this.wrapperDom.nativeElement.clientWidth) {
       return;
     }
     if (this.wrapper.isInTransition) {
@@ -53,7 +57,7 @@ export class SliderComponent implements OnInit, OnDestroy, OnChanges {
     const children = this.sliderGroup.nativeElement.children;
     this.totalSize = children.length;
     let width = 0;
-    const slideWidth = this.wrapperDom.nativeElement.clientWidth;
+    const slideWidth = this.wrapperWidth = this.wrapperDom.nativeElement.clientWidth;
     for (const v of children) {
       addClass(v, 'slider-item');
       v.style.width = slideWidth + 'px';
