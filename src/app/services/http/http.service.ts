@@ -46,7 +46,7 @@ export class HttpService {
     );
   }
 
-  post = (url: string, data?: Data, options?: any): Observable<any> => {
+  post = (url: string, data?: Data | string, options?: any): Observable<any> => {
     return this.timeoutHandler(
       this.http.post(
         compineUrl(this.baseUrl, url),
@@ -65,8 +65,20 @@ export class HttpService {
     );
   }
 
-  musicPost = (url: string, postData?: Data): Observable<any> => {
-    return this.post('http://49.235.160.182/api/transmit/' + encodeURIComponent(url), postData);
+  musicPost = (url: string, postData?: Data | string): Observable<any> => {
+    const options = {
+      headers: {}
+    };
+    if (typeof postData === 'string') {
+      options.headers = {
+        'Content-Type': 'application/json'
+      };
+    }
+    return this.post(
+      'http://49.235.160.182/api/transmit/' + encodeURIComponent(url),
+      postData,
+      options
+    );
   }
   musicGet = (url: string, params?: Data): Observable<any> => {
     return this.get('http://49.235.160.182/api/transmit/' + encodeURIComponent(url), params);

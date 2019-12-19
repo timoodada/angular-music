@@ -5,11 +5,13 @@ type AudioEvents =
   'onEnded' |
   'onError';
 
-export enum PlayMode {
+enum PlayMode {
   loop,
   sequence,
   random
 }
+
+export { PlayMode };
 
 export class MusicPlayer {
   public player: HTMLAudioElement;

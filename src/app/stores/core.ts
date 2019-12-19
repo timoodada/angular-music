@@ -9,7 +9,10 @@ import {Map} from 'immutable';
 */
 type StateType =
   'banners' |
-  'ranks';
+  'ranks' |
+  'currentSong' |
+  'playList' |
+  'playMode';
 type StateMap = Map<any, any>;
 interface StateChange {
   previousValue: any;

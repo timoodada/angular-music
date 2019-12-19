@@ -4,6 +4,7 @@
       class="item"
       *ngFor="let item of list;index as key"
       @delAnimation
+      (click)="onClick(item, key)"
     >
       <div class="rank" *ngIf="rank">
         <span [ngClass]="getRankCls(key)">{{getRankText(key)}}</span>

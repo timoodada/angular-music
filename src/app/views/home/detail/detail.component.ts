@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HttpService} from '../../../services/http/http.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {switchMap, tap} from 'rxjs/operators';
-import {Music} from '../../../components/player';
+import {Music} from '../../../business/player';
 
 @Component({
   selector: 'app-detail',

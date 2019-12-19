@@ -1,7 +1,8 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Music} from '../../components/player';
+import {Music} from '../player';
 import {prefixStyle} from '../../helpers/util';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
+import {PlayListService} from '../../stores/actions/play-list.service';
 
 const transform = prefixStyle('transform');
 const backdropFilter = prefixStyle('backdropFilter');
@@ -40,7 +41,9 @@ export class MusicListComponent implements OnInit {
   public scrollY: any;
   public imgHeight = 0;
 
-  constructor() {}
+  constructor(
+    private playListService: PlayListService
+  ) {}
 
   ngOnInit() {
     this.imgHeight = this.bgImage.nativeElement.clientHeight;
@@ -77,5 +80,9 @@ export class MusicListComponent implements OnInit {
   }
   back = () => {
     history.go(-1);
+  }
+  onClick = (item: Music) => {
+    const list = this.list.filter(val => !val.vip);
+    this.playListService.setPlayList(list, item);
   }
 }
