@@ -27,21 +27,16 @@ export const fadeAnimation = trigger('routeFadeAnimation', [
     ),
     query(
       ':leave',
-      animateChild(),
+      [style({ opacity: 1 })],
       { optional: true }
     ),
     group([
       query(':leave', [
-        animate('300ms ease-out', style({opacity: 0}))
+        animate('300ms ease', style({opacity: 0}))
       ], { optional: true }),
       query(':enter', [
-        animate('300ms ease-out', style({opacity: 1}))
+        animate('300ms ease', style({opacity: 1}))
       ], { optional: true })
-    ]),
-    query(
-      ':enter',
-      animateChild(),
-      { optional: true }
-    )
+    ])
   ])
 ]);

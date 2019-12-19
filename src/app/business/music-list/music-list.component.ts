@@ -4,6 +4,7 @@ import {prefixStyle} from '../../helpers/util';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 
 const transform = prefixStyle('transform');
+const backdropFilter = prefixStyle('backdropFilter');
 const HEAD_HEIGHT = 42;
 
 @Component({
@@ -72,7 +73,7 @@ export class MusicListComponent implements OnInit {
     }
     this.bgImage.nativeElement.style[transform] = `scale(${scale})`;
     // 高斯模糊处理(ios)
-    this.filter.nativeElement.style.backdropFilter = `blur(${blur}px)`;
+    this.filter.nativeElement.style[backdropFilter] = `blur(${blur}px)`;
   }
   back = () => {
     history.go(-1);

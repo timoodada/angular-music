@@ -2,11 +2,15 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [{
-  path: '',
+  path: 'home',
   loadChildren: () => import('./views/home/home.module').then(res => res.HomeModule)
 }, {
-  path: 'setting',
-  loadChildren: () => import('./views/settings/setting.module').then(res => res.SettingModule)
+  path: 'singer',
+  loadChildren: () => import('./views/singers/singers.module').then(res => res.SingersModule)
+}, {
+  path: '',
+  redirectTo: '/home',
+  pathMatch: 'full'
 }];
 
 @NgModule({
