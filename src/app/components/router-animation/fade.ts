@@ -1,6 +1,10 @@
 import {trigger, transition, query, style, animate, group, animateChild} from '@angular/animations';
 
 export const fadeAnimation = trigger('routeFadeAnimation', [
+  transition(':leave', [
+    style({ opacity: 1, overflow: 'hidden' }),
+    animate('0.3s ease', style({ opacity: 0 }))
+  ]),
   transition('fadein <=> fadeout', [
     style({
       position: 'relative'

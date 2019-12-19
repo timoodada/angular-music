@@ -3,7 +3,7 @@
 </ng-template>
 <ng-template #extra>
   <app-router-animation type="slide" [outlet]="outlet">
-    <router-outlet #outlet=outlet></router-outlet>
+    <router-outlet #outlet="outlet"></router-outlet>
   </app-router-animation>
 </ng-template>
 <app-layout

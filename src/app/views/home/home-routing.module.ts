@@ -10,6 +10,7 @@ import {ScrollYModule} from '../../components/scroll-y/scroll-y.module';
 import {LazyModule} from '../../directives/lazy/lazy.module';
 import {SliderModule} from '../../components/slider/slider.module';
 import {PipeModule} from '../../pipes/pipe.module';
+import {MusicListModule} from '../../business/music-list/music-list.module';
 
 const routes: Routes = [{
   path: '',
@@ -34,7 +35,8 @@ const routes: Routes = [{
     ScrollYModule,
     LazyModule,
     SliderModule,
-    PipeModule
+    PipeModule,
+    MusicListModule
   ],
   exports: [
     HomeComponent,

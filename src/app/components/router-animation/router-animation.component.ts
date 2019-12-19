@@ -86,7 +86,7 @@ export class RouterAnimationComponent implements OnInit {
     }
     return this.fadeTriggers[this.fadeTriggerIndex];
   }
-  prepareRoute = (outlet: RouterOutlet) => {
+  prepareFadeRoute = (outlet: RouterOutlet) => {
     let triggerName: string | null;
     if (this.type !== 'fade') { return null; }
     triggerName = this.handleFade(outlet);

@@ -95,6 +95,7 @@ export class ScrollYComponent implements OnInit, OnDestroy {
     if (this.wrapper) { this.wrapper.destroy(); }
   }
   ngOnInit() {
+    this.showBubble = !!this.onPullingDown;
     this.initBS();
   }
   initBS = () => {

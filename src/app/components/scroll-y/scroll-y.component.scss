@@ -1,13 +1,9 @@
-@import "~src/app/common/style/variable";
+@import "src/app/common/style/variable";
 .scroll-y-wrapper{
   height: 100%;
   position: relative;
-  background: $color-highlight-background;
   .scroll-y{
     height: 100%;
-    & > *{
-      background: $color-background;
-    }
   }
   .loading-wrapper{
     position: absolute;

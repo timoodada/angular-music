@@ -1,0 +1,40 @@
+<app-layout>
+  <div class="music-list">
+    <div
+      class="back"
+      (click)="back()"
+    >
+      <i class="icon-back"></i>
+    </div>
+    <div class="title">{{info ? info.ListName : 'loading...'}}</div>
+    <div
+      class="bg-image"
+      #bgImage
+    >
+      <div class="play-wrapper">
+        <div
+          #playBtn
+          class="play"
+        >
+          <i class="icon-play"></i>
+          <span class="text">随机播放全部</span>
+        </div>
+      </div>
+      <div class="filter" #filter></div>
+    </div>
+    <div class="bg-layer" #layer></div>
+    <div class="list" #listWrapper>
+      <div class="song-list-wrapper">
+        <app-scroll-y
+          [probeType]="3"
+          [onScroll]="onScroll"
+        >
+          <app-pure-music-list
+            [list]="list"
+            [rank]="true"
+          ></app-pure-music-list>
+        </app-scroll-y>
+      </div>
+    </div>
+  </div>
+</app-layout>
