@@ -82,7 +82,8 @@ export class PlayListService {
         musicid,
         songtype: 0,
         _: Date.now()
-      }
+      },
+      { responseType: 'text' }
     ).pipe(
       map(res => {
         // tslint:disable-next-line:no-eval

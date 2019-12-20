@@ -60,13 +60,14 @@ export function debounce(func: (args?: any) => any, delay = 300) {
 
 const elementStyle = document.createElement('div').style;
 
-const vendor = (() => {
+const vendor = (style: string) => {
+  const upStyle = style.charAt(0).toUpperCase() + style.substr(1);
   const transformNames = {
-    webkit: 'webkitTransform',
-    Moz: 'MozTransform',
-    O: 'OTransform',
-    ms: 'msTransform',
-    standard: 'transform'
+    standard: style,
+    webkit: `webkit${upStyle}`,
+    Moz: `Moz${upStyle}`,
+    O: `O${upStyle}`,
+    ms: `ms${upStyle}`
   };
 
   for (const key in transformNames) {
@@ -76,17 +77,18 @@ const vendor = (() => {
   }
 
   return false;
-})();
+};
 
 export function prefixStyle(style) {
-  if (vendor === false) {
+  const prefix = vendor(style);
+  if (prefix === false) {
     return false;
   }
 
-  if (vendor === 'standard') {
+  if (prefix === 'standard') {
     return style;
   }
 
-  return vendor + style.charAt(0).toUpperCase() + style.substr(1);
+  return prefix + style.charAt(0).toUpperCase() + style.substr(1);
 }
 

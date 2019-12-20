@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnInit, ViewChild, OnChanges, SimpleChanges, OnDestroy} from '@angular/core';
 import {State} from '../../stores/core';
 import {RanksService} from '../../stores/actions/ranks.service';
 import {BannersService} from '../../stores/actions/banners.service';
@@ -12,7 +12,7 @@ import {lazyload} from '../../helpers/lazy';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnChanges {
+export class HomeComponent implements OnInit, OnChanges, OnDestroy {
   @State('ranks')
   public ranks: List<any>;
   @State('banners')
@@ -43,5 +43,8 @@ export class HomeComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     // console.log(changes);
+  }
+  ngOnDestroy(): void {
+    // console.log('component destroyed');
   }
 }
