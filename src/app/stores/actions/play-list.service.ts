@@ -18,7 +18,7 @@ function unescapeHTML(lrc: string): string {
 export class PlayListService {
 
   private currentSongInfo: {
-    info?: Map<keyof Music, any>,
+    info?: Music,
     playInfo?: [string, string]
   } = {};
   constructor(
@@ -105,14 +105,14 @@ export class PlayListService {
     }
   }
   play = (): Observable<[string, string]> => {
-    const currentSong: Map<keyof Music, any> = this._getState().get('currentSong');
+    const currentSong: Music = this._getState().get('currentSong');
     if (currentSong) {
       if (currentSong === this.currentSongInfo.info) {
         return of(this.currentSongInfo.playInfo);
       }
       return zip(
-        this._getPlayUrl(currentSong.get('songmid')),
-        this._getLyric(currentSong.get('songid'))
+        this._getPlayUrl(currentSong.songmid),
+        this._getLyric(currentSong.songid)
       ).pipe(
         tap(([url, lyric]) => {
           this.currentSongInfo = {

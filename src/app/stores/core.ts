@@ -38,7 +38,12 @@ const observable: Observable<StateChanges> = new Observable(observer => {
 export function getState(state: StateType) {
   return (store.getState() as any).get(state);
 }
-
+function StateCls(target) {
+  Object.defineProperty(target.prototype, 'ngOnChanges', {
+    set() {
+    }
+  });
+}
 /*
 * Decorator
 * @State(state)
@@ -50,19 +55,21 @@ export function State(state: StateType): (target: any, prop: string) => any {
     let firstChange = true;
     target[prop] = getState(state);
     const subscribe = observable
-      .pipe(map(val => val.get(prop)))
+      .pipe(map(val => val.get(state)))
       .pipe(skipWhile(val => !val))
       .subscribe((change) => {
         target[prop] = change.currentValue;
         if (onChanges) {
-          onChanges({ [prop]: new SimpleChange(change.previousValue, change.currentValue, firstChange) });
+          onChanges.call(target, {
+            [prop]: new SimpleChange(change.previousValue, change.currentValue, firstChange)
+          });
         }
         firstChange = false;
       });
     target.ngOnDestroy = () => {
       subscribe.unsubscribe();
       if (onDestroy) {
-        onDestroy();
+        onDestroy.call(target);
       }
     };
   };

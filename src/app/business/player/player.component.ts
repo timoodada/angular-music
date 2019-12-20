@@ -30,13 +30,13 @@ export class PlayerComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges = (changes: SimpleChanges): void => {
     if (changes.currentSong) {
       this.handleCurrentSongChange();
     }
   }
 
-  handleCurrentSongChange = () => {
+  handleCurrentSongChange(): void {
     this.playListService.play().subscribe({
       next: res => {
         console.log(res);

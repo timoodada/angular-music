@@ -1,4 +1,9 @@
-<app-layout>
+<ng-template #footer>
+  <app-player></app-player>
+</ng-template>
+<app-layout
+  [footer]="footer"
+>
   <app-router-animation type="fade" [outlet]="outlet">
     <app-async-load *ngIf="loading"></app-async-load>
     <router-outlet #outlet="outlet"></router-outlet>
