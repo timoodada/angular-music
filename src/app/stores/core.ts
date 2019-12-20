@@ -83,7 +83,6 @@ export function State(state: StateType): (target: any, prop: string) => any {
         firstChange = false;
       });
     target.ngOnDestroy = () => {
-      console.log('destroy');
       subscribe.unsubscribe();
     };
   };
