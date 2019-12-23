@@ -5,6 +5,7 @@ import {Observable, of, throwError, zip} from 'rxjs';
 import {Music} from '../../business/player';
 import {map, tap} from 'rxjs/operators';
 import {PlayMode} from '../../business/player/player.core';
+import {List} from 'immutable';
 
 function unescapeHTML(lrc: string): string {
   const t = document.createElement('div');
@@ -98,6 +99,8 @@ export class PlayListService {
   setPlayList = (list: any[], current: Music) => {
     store.dispatch(this._setPlayList(list));
     const songs = this._getState().get('playList');
+    const playing: Music = this._getState().get('currentSong');
+    if (playing.songmid === current.songmid) { return; }
     const currentSong = songs.find(item => item.songmid === current.songmid);
     if (songs.size > 0) {
       store.dispatch(this._setCurrentSong(currentSong || songs.get(0)));
@@ -125,14 +128,18 @@ export class PlayListService {
     }
     return throwError(new Error('no current song'));
   }
-  playNext = () => {
+  playNext = (prev?: boolean) => {
     const mode = this._getState().get('playMode');
     const songs = this._getState().get('playList');
     const currentSong = this._getState().get('currentSong');
     let index = songs.findIndex(item => item === currentSong);
     switch (mode) {
       case PlayMode.sequence:
-        index = (index + 1) % songs.size;
+        if (prev) {
+          index = index - 1 < 0 ? songs.size - 1 : index - 1;
+        } else {
+          index = (index + 1) % songs.size;
+        }
         break;
       case PlayMode.loop:
         break;
@@ -148,5 +155,21 @@ export class PlayListService {
         break;
     }
     this._setCurrentSong(songs.get(index));
+  }
+  playPre = () => {
+    this.playNext(true);
+  }
+  insertTail = (song: Music) => {
+    const songs: List<Music> = this._getState().get('playList');
+    songs.push(song);
+  }
+  insertNext = (song: Music) => {
+    const songs: List<Music> = this._getState().get('playList');
+    const index = songs.indexOf(song);
+    if (index > -1) {
+      songs.insert(index + 1, song);
+    } else {
+      this.insertTail(song);
+    }
   }
 }

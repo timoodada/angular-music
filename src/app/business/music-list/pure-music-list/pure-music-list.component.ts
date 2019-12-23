@@ -18,7 +18,7 @@ export class PureMusicListComponent implements OnInit {
   @Input()
   public rank = false;
   @Input()
-  public onClick: (item: Music, key: string) => void = () => {}
+  public onClick: (item: Music, key: number) => void = () => {}
 
   constructor() { }
 

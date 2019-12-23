@@ -3,8 +3,12 @@
     class="loading-wrapper"
     *ngIf="isPullingDown || pullingDownSuccess"
   >
-    <app-loading *ngIf="isPullingDown"></app-loading>
-    <span *ngIf="pullingDownSuccess" class="success">刷新成功</span>
+    <div class="txt-center">
+      <app-loading *ngIf="isPullingDown" @fadeAnimation></app-loading>
+    </div>
+    <div class="txt-center">
+      <span *ngIf="pullingDownSuccess" class="success" @fadeAnimation>刷新成功</span>
+    </div>
   </div>
   <div
     class="bubble-wrapper"
@@ -13,6 +17,7 @@
     <app-bubble
       *ngIf="showBubble"
       [y]="bubbleY"
+      @fadeAnimation
     ></app-bubble>
   </div>
   <div #wrapperDom class="scroll-y">

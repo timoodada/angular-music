@@ -4,6 +4,7 @@ import {Music} from './index';
 import {State} from '../../stores/core';
 import {PlayListService} from '../../stores/actions/play-list.service';
 import Lyric from 'lyric-parser';
+import {FullscreenService} from '../../stores/actions/fullscreen.service';
 
 function timeFormat(t = 0) {
   const m = Math.round(t % 60);
@@ -22,12 +23,21 @@ export class PlayerComponent implements OnInit, OnChanges {
   public player: MusicPlayer;
   @State('currentSong')
   public currentSong: Music;
+  @State('fullscreen')
+  public fullscreen = false;
+  public playing = false;
+  public percent = 0;
+  public currentTime = 0;
+  public fmtCurrentTime = '0:00';
+  public fmtTotalTime = '0:00';
 
   constructor(
-    private playListService: PlayListService
+    private playListService: PlayListService,
+    private fullscreenService: FullscreenService
   ) {
     const player = this.player = new MusicPlayer();
     player.on('onPlay', this.handleOnPlay);
+    player.on('onTimeUpdate', this.handleTimeUpdate);
   }
 
   ngOnInit() {}
@@ -35,6 +45,7 @@ export class PlayerComponent implements OnInit, OnChanges {
   ngOnChanges = (changes: SimpleChanges): void => {
     if (changes.currentSong) {
       this.handleCurrentSongChange();
+      this.fmtTotalTime = timeFormat(changes.currentSong.currentValue.duration);
     }
   }
 
@@ -57,8 +68,22 @@ export class PlayerComponent implements OnInit, OnChanges {
   handleOnPlay = () => {
     this.songReady = true;
   }
+  handleTimeUpdate = (e) => {
+    const currentTime = e.target.currentTime;
+    this.currentTime = currentTime;
+    this.fmtCurrentTime = timeFormat(currentTime);
+    this.percent = currentTime / this.currentSong.duration;
+  }
   handleLyric = ({txt, lineNum}) => {
     // console.log(txt, lineNum);
   }
-
+  toggleFullscreen = () => {
+    this.fullscreenService.toggleFullScreen();
+  }
+  play = () => {
+    this.player.play();
+  }
+  pause = () => {
+    this.player.pause();
+  }
 }

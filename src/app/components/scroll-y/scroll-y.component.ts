@@ -1,12 +1,16 @@
 import {Component, OnInit, OnDestroy, ViewChild, Input} from '@angular/core';
 import BScroll from 'better-scroll';
 import {BubbleComponent} from './bubble/bubble.component';
+import fadeAnimation from './fade.animate';
 
 @Component({
   selector: 'app-scroll-y',
   templateUrl: './scroll-y.component.html',
   styleUrls: ['./scroll-y.component.scss'],
-  exportAs: 'scrollY'
+  exportAs: 'scrollY',
+  animations: [
+    fadeAnimation
+  ]
 })
 export class ScrollYComponent implements OnInit, OnDestroy {
 
@@ -37,13 +41,15 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   private pullDownRefresh = { threshold: 60, stop: 30 };
   public bubbleWrapperStyle = {};
   public bubbleY = 0;
-  public showBubble: boolean | null = true;
+  public showBubble: boolean | null = null;
   public isPullingDown = false;
   public pullingDownSuccess = false;
   private pullingDownSuccessTime = 1000;
+  private pullingDownStartTime = Date.now();
   private isPullingUp = false;
   private fixBubble = (top: number) => {
     if (top > 0 && this.showBubble === null) { this.showBubble = true; }
+    if (top <= 0) { this.showBubble = null; }
     if (!this.bubble) { return; }
     const bubbleHeight = this.bubble.headRadius / this.bubble.ratio * 2.5;
     this.bubbleY = Math.max(0, top - bubbleHeight);
@@ -63,13 +69,15 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   }
   finishPullDown = (...args: any[]) => {
     if (this.wrapper) {
-      this.pullingDownSuccess = true;
-      this.isPullingDown = false;
+      const freeTime = Math.max(500 - (Date.now() - this.pullingDownStartTime), 0);
       setTimeout(() => {
-        this.wrapper.finishPullDown(...args);
-        this.pullingDownSuccess = false;
-        setTimeout(() => this.showBubble = null, 500);
-      }, this.pullingDownSuccessTime);
+        this.pullingDownSuccess = true;
+        this.isPullingDown = false;
+        setTimeout(() => {
+          this.wrapper.finishPullDown(...args);
+          this.pullingDownSuccess = false;
+        }, this.pullingDownSuccessTime);
+      }, freeTime);
     }
   }
   openPullDown = () => {
@@ -109,7 +117,9 @@ export class ScrollYComponent implements OnInit, OnDestroy {
     });
     wrapper.on('scroll', (e: any) => {
       if (onScroll) { onScroll(e); }
-      this.fixBubble(e.y);
+      if (onPullingDown) {
+        this.fixBubble(e.y);
+      }
     });
     wrapper.on('pullingUp', (e: any) => {
       if (onPullingUp) {
@@ -120,6 +130,7 @@ export class ScrollYComponent implements OnInit, OnDestroy {
     wrapper.on('pullingDown', (e: any) => {
       this.isPullingDown = true;
       this.showBubble = false;
+      this.pullingDownStartTime = Date.now();
       if (onPullingDown) { onPullingDown(e); }
     });
 

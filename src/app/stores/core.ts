@@ -12,7 +12,8 @@ type StateType =
   'ranks' |
   'currentSong' |
   'playList' |
-  'playMode';
+  'playMode' |
+  'fullscreen';
 type StateMap = Map<any, any>;
 interface StateChange {
   previousValue: any;

@@ -5,6 +5,7 @@ export interface Music {
   vip: boolean;
   songmid: string;
   songid: string;
+  // seconds
   duration: number;
   image: string;
   playUrl?: string;

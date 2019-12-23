@@ -14,46 +14,49 @@ enum PlayMode {
 export { PlayMode };
 
 export class MusicPlayer {
-  public player: HTMLAudioElement;
+  public instance: HTMLAudioElement;
   public get src() {
-    return this.player ? this.player.currentSrc : null;
+    return this.instance ? this.instance.currentSrc : null;
   }
   public set src(src: string) {
-    if (this.player) {
-      this.player.src = src;
+    if (this.instance) {
+      this.instance.src = src;
     }
   }
   public get currentTime(): number {
-    if (this.player) { return this.player.currentTime; }
+    if (this.instance) { return this.instance.currentTime; }
     return 0;
   }
   public set currentTime(time: number) {
-    if (this.player) { this.player.currentTime = time; }
+    if (this.instance) { this.instance.currentTime = time; }
   }
   public get duration(): number {
-    if (this.player) { return this.player.duration; }
+    if (this.instance) { return this.instance.duration; }
     return 0;
   }
   public get readyState() {
-    if (this.player) { return this.player.readyState; }
+    if (this.instance) { return this.instance.readyState; }
     return false;
   }
 
   constructor() {
-    const player = this.player = document.createElement('audio');
+    const player = this.instance = document.createElement('audio');
     player.autoplay = true;
   }
 
-  play = (src?: string) => {
-    if (this.player) {
+  play = (src?: string): Promise<any> => {
+    if (this.instance) {
       if (src) {
         this.src = src;
       }
-      return this.player.play();
+      return this.instance.play();
     }
     return Promise.reject(new Error('player does not exist'));
   }
+  pause = () => {
+    this.instance.pause();
+  }
   on = (eventName: AudioEvents, fn): void => {
-    this.player[eventName.toLowerCase()] = fn;
+    this.instance[eventName.toLowerCase()] = fn;
   }
 }

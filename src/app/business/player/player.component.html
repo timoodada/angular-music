@@ -1,1 +1,30 @@
-<p>player works!</p>
+<div class="player" *ngIf="!!currentSong">
+  <div class="mini-player">
+    <div
+      class="icon"
+    >
+      <img width="40" height="40" class="play" [src]="currentSong.image" [ngClass]="{ pause: !playing }" alt="play" />
+    </div>
+    <div
+      class="text"
+    >
+      <h2 class="name">{{currentSong.name}}</h2>
+      <p class="desc">{{currentSong.singer}}</p>
+    </div>
+    <div
+      class="control"
+    >
+      <app-progress-circle
+        [radius]="32"
+        [percent]="percent"
+      >
+        <i class="icon-mini" [ngClass]="{ 'icon-pause-mini': playing, 'icon-play-mini': !playing }"></i>
+      </app-progress-circle>
+    </div>
+    <div
+      class="control"
+    >
+      <i class="icon-playlist"></i>
+    </div>
+  </div>
+</div>
