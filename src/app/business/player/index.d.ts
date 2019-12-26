@@ -8,5 +8,4 @@ export interface Music {
   // seconds
   duration: number;
   image: string;
-  playUrl?: string;
 }

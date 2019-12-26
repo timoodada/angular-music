@@ -21,7 +21,7 @@ export class EventManager {
       }
     }
   }
-  on = (eventName: string, callback: (args?: any) => void) => {
+  on = (eventName: string, callback) => {
     if (this.listeners[eventName]) {
       this.listeners[eventName].push(callback);
     } else {

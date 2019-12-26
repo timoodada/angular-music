@@ -3,7 +3,7 @@ import {HttpService} from '../../services/http/http.service';
 import store from '../index';
 import {Observable, of} from 'rxjs';
 import {tap, map, mapTo, catchError} from 'rxjs/operators';
-import {getState} from '../core';
+import {getState} from '../';
 import {List} from 'immutable';
 
 type Ranks = Observable<List<any>>;

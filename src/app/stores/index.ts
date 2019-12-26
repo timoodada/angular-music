@@ -1,6 +1,7 @@
 import {createStore, compose} from 'redux';
 import reducer from './reducers';
 import {environment} from '../../environments/environment';
+import {Map} from 'immutable';
 
 const isProd = environment.production;
 
@@ -12,4 +13,10 @@ const composeEnhancers = isProd ?
   compose :
   (window as ExtendWindow).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export default createStore(reducer, composeEnhancers());
+const store = createStore(reducer, composeEnhancers());
+
+export default store;
+
+export const getState = (state: string): any => {
+  return (store.getState() as Map<string, any>).get(state);
+};

@@ -21,9 +21,11 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   @ViewChild(BubbleComponent, {static: false})
   private bubble: any;
   /*
-  * 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；
-  * 当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；
-  * 当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件
+  * @Params probeType
+  * When setted to 1, The scroll event is non-real time fired (after the screen scrolled for some time)
+  * When setted to 2, the scroll event is real-time fired during the screen scrolling
+  * When setted to 3, the scroll event is real-time fired during not only the screen scrolling but also the momentum and bounce animation
+  * If not setted, the default value 0 means there is no scroll event is fired.
   */
   @Input()
   public probeType: 1 | 2 | 3 = 1;

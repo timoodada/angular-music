@@ -3,7 +3,7 @@ import {HttpService} from '../../services/http/http.service';
 import store from '../index';
 import {of, Observable} from 'rxjs';
 import {map, tap, mapTo, catchError} from 'rxjs/operators';
-import {getState} from '../core';
+import {getState} from '../';
 import {List} from 'immutable';
 
 type Banners = Observable<List<any>>;

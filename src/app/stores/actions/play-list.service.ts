@@ -100,7 +100,7 @@ export class PlayListService {
     store.dispatch(this._setPlayList(list));
     const songs = this._getState().get('playList');
     const playing: Music = this._getState().get('currentSong');
-    if (playing.songmid === current.songmid) { return; }
+    if (playing && playing.songmid === current.songmid) { return; }
     const currentSong = songs.find(item => item.songmid === current.songmid);
     if (songs.size > 0) {
       store.dispatch(this._setCurrentSong(currentSong || songs.get(0)));
@@ -154,7 +154,7 @@ export class PlayListService {
       default:
         break;
     }
-    this._setCurrentSong(songs.get(index));
+    store.dispatch(this._setCurrentSong(songs.get(index)));
   }
   playPre = () => {
     this.playNext(true);

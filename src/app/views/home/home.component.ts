@@ -1,11 +1,10 @@
 import {Component, OnInit, ViewChild, OnChanges, SimpleChanges, OnDestroy} from '@angular/core';
-import {State} from '../../stores/core';
 import {RanksService} from '../../stores/actions/ranks.service';
 import {BannersService} from '../../stores/actions/banners.service';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
-import {List} from 'immutable';
 import {zip} from 'rxjs';
 import {lazyload} from '../../helpers/lazy';
+import {StoresService} from '../../stores/stores.service';
 
 @Component({
   selector: 'app-home',
@@ -13,16 +12,13 @@ import {lazyload} from '../../helpers/lazy';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnChanges, OnDestroy {
-  @State('ranks')
-  public ranks: List<any>;
-  @State('banners')
-  public banners: List<any>;
   @ViewChild(ScrollYComponent, {static: true})
   public scrollY: any;
 
   constructor(
     private ranksService: RanksService,
-    private bannersService: BannersService
+    private bannersService: BannersService,
+    private stores: StoresService
   ) {}
 
   onPullingDown = () => {

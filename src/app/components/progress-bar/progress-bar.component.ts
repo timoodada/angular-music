@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {prefixStyle} from '../../helpers/util';
 
 const transform = prefixStyle('transform');
@@ -13,8 +13,6 @@ export class ProgressBarComponent implements OnInit {
 
   private _percent = 0;
   @Input()
-  public onChange: (percent: number) => void;
-  @Input()
   public get percent() {
     return this._percent;
   }
@@ -22,6 +20,8 @@ export class ProgressBarComponent implements OnInit {
     this._percent = num;
     setTimeout(this._initPosition, 20);
   }
+  @Output()
+  changed = new EventEmitter<number>();
   @ViewChild('progressBtn', {static: true})
   public progressBtn: any;
   @ViewChild('progressBar', {static: true})
@@ -60,9 +60,7 @@ export class ProgressBarComponent implements OnInit {
     const barWidth = this.progressBar.nativeElement.clientWidth;
     this.touch.status = false;
     this.touch.isMove = false;
-    if (typeof this.onChange === 'function') {
-      this.onChange(this.offset / barWidth);
-    }
+    this.changed.emit(this.offset / barWidth);
   }
   progressBarChange = (offset) => {
     const barWidth = this.progressBar.nativeElement.clientWidth;
