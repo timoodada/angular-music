@@ -36,15 +36,20 @@
           #scrollY
         >
           <div class="lyric-wrapper">
-            <p class="text" [ngClass]="{current: currentLine === k}" *ngFor="let v of lyricLines;index as k">{{v.txt}}</p>
+            <p
+              class="text"
+              [ngClass]="{
+                current: currentLine === k
+              }"
+              *ngFor="let v of lyricLines;index as k">{{v.txt}}</p>
           </div>
         </app-scroll-y>
       </div>
     </div>
     <div class="bottom">
       <div class="dot-wrapper">
-        <span class="dot active"></span>
-        <span class="dot"></span>
+        <span class="dot" [ngClass]="{ 'active': currentShow === 'cd'}"></span>
+        <span class="dot" [ngClass]="{ 'active': currentShow === 'lyric'}"></span>
       </div>
       <div class="progress-wrapper">
         <span class="time time-l">{{fmtCurrentTime}}</span>
@@ -54,8 +59,15 @@
         <span class="time time-r">{{fmtTotalTime}}</span>
       </div>
       <div class="operators">
-        <div class="icon i-left">
-          <i class="modeClass"></i>
+        <div class="icon i-left" (click)="togglePlayMode()">
+          <i
+            class="modeClass"
+            [ngClass]="{
+              'icon-sequence': stores.playMode === playModes.sequence,
+              'icon-loop': stores.playMode === playModes.loop,
+              'icon-random': stores.playMode === playModes.random
+            }"
+          ></i>
         </div>
         <div
           class="icon i-left"
@@ -69,11 +81,18 @@
           [ngClass]="{disable: !songReady}"
           (click)="togglePlaying()"
         >
-          <i [ngClass]="{'icon-pause': playing, 'icon-play': !playing}"></i>
+          <i
+            [ngClass]="{
+              'icon-pause': playing,
+              'icon-play': !playing
+            }"
+          ></i>
         </div>
         <div
           class="icon i-right"
-          [ngClass]="{disable: !songReady}"
+          [ngClass]="{
+            disable: !songReady
+          }"
           (click)="next()"
         >
           <i class="icon-next"></i>
@@ -95,7 +114,15 @@
       class="icon"
       (click)="toggleFullscreen()"
     >
-      <img width="40" height="40" class="play" [src]="stores.currentSong.image" [ngClass]="{ pause: !playing }" alt="play"/>
+      <img
+        width="40"
+        height="40"
+        class="play"
+        [src]="stores.currentSong.image"
+        [ngClass]="{
+          pause: !playing
+        }"
+        alt="play"/>
     </div>
     <div
       class="text"
@@ -112,13 +139,23 @@
         [radius]="32"
         [percent]="percent"
       >
-        <i class="icon-mini" [ngClass]="{ 'icon-pause-mini': playing, 'icon-play-mini': !playing }"></i>
+        <i
+          class="icon-mini"
+          [ngClass]="{
+            'icon-pause-mini': playing,
+            'icon-play-mini': !playing
+          }"></i>
       </app-progress-circle>
     </div>
     <div
       class="control"
+      (click)="togglePlayingListShow()"
     >
       <i class="icon-playlist"></i>
     </div>
   </div>
+  <app-playing-list
+    [show]="showPlayingList"
+    (closed)="togglePlayingListShow()"
+  ></app-playing-list>
 </div>

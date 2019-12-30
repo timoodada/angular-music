@@ -37,13 +37,18 @@ export class EventManager {
       });
     }
   }
+  observe = (eventName: string): Observable<any> => {
+    return new Observable((observer) => {
+      const off = this.on(eventName, (...args) => {
+        observer.next(...args);
+      });
+      return {
+        unsubscribe(): void {
+          off();
+        }
+      };
+    });
+  }
 }
 
 export const globalEvent = new EventManager();
-
-export function createObservableEventListener(eventName: string) {
-  return new Observable(observer => {
-    const unsubscribe = globalEvent.on(eventName, observer.next);
-    return { unsubscribe };
-  });
-}

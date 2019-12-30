@@ -1,11 +1,14 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MusicPlayer} from './player.core';
-import {PlayListService} from '../../stores/actions/play-list.service';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MusicPlayer, PlayMode} from './player.core';
+import {PlayListService} from '../../stores/actions/play-list/play-list.service';
 import Lyric from 'lyric-parser';
-import {FullscreenService} from '../../stores/actions/fullscreen.service';
+import {FullscreenService} from '../../stores/actions/fullscreen/fullscreen.service';
 import {miniAnimation, normalAnimation} from './player.animate';
 import {StoresService} from '../../stores/stores.service';
 import {prefixStyle} from '../../helpers/util';
+import {PlayModeService} from '../../stores/actions/play-mode/play-mode.service';
+import {switchMap, tap} from 'rxjs/operators';
+import {Observable, throwError} from 'rxjs';
 
 function timeFormat(t = 0) {
   const m = Math.round(t % 60);
@@ -23,10 +26,17 @@ const transitionDuration = prefixStyle('transitionDuration');
     normalAnimation
   ]
 })
-export class PlayerComponent implements OnInit {
+export class PlayerComponent implements OnInit, OnDestroy {
   public lyric: any;
   public lyricLines = [];
-  public songReady = true;
+  public playModes = PlayMode;
+  private _songReady = true;
+  public get songReady(): boolean {
+    return this._songReady && this.stores.playList.size > 1;
+  }
+  public set songReady(bool) {
+    this._songReady = bool;
+  }
   public player: MusicPlayer;
   public playing = false;
   public percent = 0;
@@ -56,42 +66,55 @@ export class PlayerComponent implements OnInit {
   public middleL;
   @ViewChild('scrollY', {static: false})
   public scrollY;
+  public currentSongWatcher: any;
+  public showPlayingList = false;
 
   constructor(
     private playListService: PlayListService,
     private fullscreenService: FullscreenService,
-    private stores: StoresService
+    private stores: StoresService,
+    private playMode: PlayModeService
   ) {
     const player = this.player = new MusicPlayer();
     player.on('onPlay', this.handleOnPlay);
     player.on('onTimeUpdate', this.handleTimeUpdate);
     player.on('onError', this.handleError);
+    player.on('onEnded', this.handleOnEnded);
   }
 
   ngOnInit() {
-    this.stores.watch('currentSong', (newVal) => {
-      this.handleCurrentSongChange();
-      this.fmtTotalTime = timeFormat(newVal.duration);
-    }, this);
+    this.currentSongWatcher = this.stores.observe('currentSong')
+      .pipe(
+        switchMap((res) => this.handleCurrentSongChange(res))
+      )
+      .subscribe({
+        error: (err) => {
+          this.songReady = true;
+        }
+      });
   }
 
-  handleCurrentSongChange(): void {
-    if (!this.songReady) { return; }
+  handleCurrentSongChange(change): Observable<any> {
+    if (!this.songReady) {
+      return throwError(new Error('The song is not ready to play'));
+    }
     this.songReady = false;
     this.playing = false;
-    this.playListService.play().subscribe({
-      next: res => {
-        const [src, lyric] = res;
-        if (this.lyric) {
-          this.lyric.stop();
-        }
-        this.lyric = new Lyric(lyric, this.handleLyric);
-        this.lyricLines = this.lyric.lines;
-        this.player.play(src).then(() => {
-          this.lyric.play();
-        });
-      }
-    });
+    return this.playListService.play()
+      .pipe(
+        tap(res => {
+          this.fmtTotalTime = timeFormat(change.newVal.duration);
+          const [src, lyric] = res;
+          if (this.lyric) {
+            this.lyric.stop();
+          }
+          this.lyric = new Lyric(lyric, this.handleLyric);
+          this.lyricLines = this.lyric.lines;
+          this.player.play(src).then(() => {
+            this.lyric.play();
+          });
+        })
+      );
   }
   handleOnPlay = () => {
     this.songReady = true;
@@ -112,6 +135,15 @@ export class PlayerComponent implements OnInit {
       if (this.lyric) {
         this.lyric.seek(currentTime * 1000);
       }
+    }
+  }
+  handleOnEnded = () => {
+    this.songReady = false;
+    this.playing = false;
+    if (this.stores.playMode === PlayMode.loop) {
+      this.player.play();
+    } else {
+      this.playListService.playNext();
     }
   }
   handleLyric = ({txt, lineNum}) => {
@@ -138,10 +170,12 @@ export class PlayerComponent implements OnInit {
   }
   next = () => {
     if (!this.songReady) { return; }
+    this.pause();
     this.playListService.playNext();
   }
   pre = () => {
     if (!this.songReady) { return; }
+    this.pause();
     this.playListService.playPre();
   }
   togglePlaying = () => {
@@ -152,13 +186,20 @@ export class PlayerComponent implements OnInit {
       this.play();
     }
   }
+  togglePlayMode = () => {
+    this.playMode.next();
+  }
   handleProgressChange = (percent) => {
     if (!this.songReady) { return; }
+    this.percent = percent;
     const time = percent * this.stores.currentSong.duration;
     this.player.currentTime = time;
     if (this.lyric) {
       this.lyric.seek(time * 1000);
     }
+  }
+  togglePlayingListShow = () => {
+    this.showPlayingList = !this.showPlayingList;
   }
   onTouchStart = (e) => {
     this.touch.status = true;
@@ -212,5 +253,8 @@ export class PlayerComponent implements OnInit {
     lyricList.style[transform] = `translate3d(${offsetX}px, 0, 0)`;
     lyricList.style[transitionDuration] = `300ms`;
     middleL.style[transitionDuration] = `300ms`;
+  }
+  ngOnDestroy(): void {
+    this.currentSongWatcher.unsubscribe();
   }
 }

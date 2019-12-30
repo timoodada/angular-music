@@ -4,6 +4,12 @@ import {List} from 'immutable';
 import {Music} from '../business/player';
 import {PlayMode} from '../business/player/player.core';
 import {EventManager} from '../helpers/event';
+import {Observable} from 'rxjs';
+
+interface StateChange {
+  newVal: any;
+  oldVal: any;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -45,16 +51,7 @@ export class StoresService {
       this.states = newStates;
     });
   }
-  watch = (stateName: string, callback: (newVal: any, oldVal: any) => void, context: any) => {
-    const unsubscribe = this.eventManager.on(stateName, (e) => {
-      callback(e.newVal, e.oldVal);
-    });
-    const ngOnDestroy = context.ngOnDestroy;
-    context.ngOnDestroy = () => {
-      if (typeof ngOnDestroy === 'function') {
-        ngOnDestroy.apply(context);
-        unsubscribe();
-      }
-    };
+  observe = (stateName: string): Observable<StateChange> => {
+    return this.eventManager.observe(stateName);
   }
 }

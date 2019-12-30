@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, OnChanges, SimpleChanges, OnDestroy} from '@angular/core';
-import {RanksService} from '../../stores/actions/ranks.service';
-import {BannersService} from '../../stores/actions/banners.service';
+import {RanksService} from '../../stores/actions/ranks/ranks.service';
+import {BannersService} from '../../stores/actions/banners/banners.service';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 import {zip} from 'rxjs';
 import {lazyload} from '../../helpers/lazy';

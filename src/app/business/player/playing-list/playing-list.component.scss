@@ -1,0 +1,114 @@
+@import "src/app/common/style/variable";
+@import "src/app/common/style/mixin";
+.playlist{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 200;
+  background-color: $color-background-d;
+  .list-wrapper{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: $color-highlight-background;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    .list-header{
+      position: relative;
+      padding: 10px 30px 10px 20px;
+      .title{
+        display: flex;
+        align-items: center;
+        .icon{
+          margin-right: 10px;
+          font-size: 30px;
+          color: $color-theme-d;
+        }
+        .text{
+          flex: 1;
+          font-size: $font-size-medium;
+          color: $color-text-l;
+        }
+        .clear{
+          @include extend-click;
+          .icon-clear{
+            font-size: $font-size-medium;
+            color: $color-text-d;
+          }
+        }
+      }
+    }
+    .playing-empty{
+      flex: 1;
+    }
+    .list-content{
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+      .item{
+        display: flex;
+        align-items: center;
+        height: 40px;
+        padding: 0 30px 0 20px;
+        overflow: hidden;
+        .current{
+          flex: 0 0 20px;
+          width: 20px;
+          font-size: $font-size-small;
+          color: $color-theme-d;
+        }
+        .text{
+          flex: 1;
+          @include no-wrap;
+          font-size: $font-size-medium;
+          color: $color-text-d;
+        }
+        .like{
+          @include extend-click;
+          margin-right: 15px;
+          font-size: $font-size-small;
+          color: $color-theme;
+          .icon-favorite{
+            color: $color-sub-theme;
+          }
+        }
+        .delete{
+          @include extend-click;
+          font-size: $font-size-small;
+          color: $color-theme;
+        }
+      }
+    }
+    .list-operate{
+      padding: 10px 0;
+      .add{
+        width: 140px;
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        border: 1px solid $color-text-l;
+        border-radius: 100px;
+        color: $color-text-l;
+        margin: 0 auto;
+        .icon-add{
+          margin-right: 5px;
+          font-size: $font-size-small-s;
+        }
+        .text{
+          font-size: $font-size-small;
+        }
+      }
+    }
+    .list-close{
+      text-align: center;
+      line-height: 50px;
+      background: $color-background;
+      font-size: $font-size-medium-x;
+      color: $color-text-l;
+    }
+  }
+}

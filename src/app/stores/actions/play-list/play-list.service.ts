@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import store from '../index';
-import {HttpService} from '../../services/http/http.service';
+import store, {getState} from '../../index';
+import {HttpService} from '../../../services/http/http.service';
 import {Observable, of, throwError, zip} from 'rxjs';
-import {Music} from '../../business/player';
+import {Music} from '../../../business/player';
 import {map, tap} from 'rxjs/operators';
-import {PlayMode} from '../../business/player/player.core';
+import {PlayMode} from '../../../business/player/player.core';
 import {List} from 'immutable';
 
 function unescapeHTML(lrc: string): string {
@@ -25,16 +25,13 @@ export class PlayListService {
   constructor(
     private http: HttpService
   ) {}
-  _getState(): any {
-    return store.getState();
-  }
   _setCurrentSong(value: Music): any {
     return {
       type: 'SET_CURRENT_SONG',
       value
     };
   }
-  _setPlayList = (value: Music[]) => {
+  _setPlayList = (value: Music[] | List<Music>) => {
     return {
       type: 'SET_PLAY_LIST',
       value
@@ -98,8 +95,8 @@ export class PlayListService {
   }
   setPlayList = (list: any[], current: Music) => {
     store.dispatch(this._setPlayList(list));
-    const songs = this._getState().get('playList');
-    const playing: Music = this._getState().get('currentSong');
+    const songs = getState('playList');
+    const playing: Music = getState('currentSong');
     if (playing && playing.songmid === current.songmid) { return; }
     const currentSong = songs.find(item => item.songmid === current.songmid);
     if (songs.size > 0) {
@@ -109,7 +106,7 @@ export class PlayListService {
     }
   }
   play = (): Observable<[string, string]> => {
-    const currentSong: Music = this._getState().get('currentSong');
+    const currentSong: Music = getState('currentSong');
     if (currentSong) {
       if (currentSong === this.currentSongInfo.info) {
         return of(this.currentSongInfo.playInfo);
@@ -126,22 +123,25 @@ export class PlayListService {
         })
       );
     }
-    return throwError(new Error('no current song'));
+    return throwError(new Error('Current song does not exist'));
   }
   playNext = (prev?: boolean) => {
-    const mode = this._getState().get('playMode');
-    const songs = this._getState().get('playList');
-    const currentSong = this._getState().get('currentSong');
+    const mode = getState('playMode');
+    const songs = getState('playList');
+    const currentSong = getState('currentSong');
     let index = songs.findIndex(item => item === currentSong);
+    let nextIndex;
+    if (prev) {
+      nextIndex = index - 1 < 0 ? songs.size - 1 : index - 1;
+    } else {
+      nextIndex = (index + 1) % songs.size;
+    }
     switch (mode) {
       case PlayMode.sequence:
-        if (prev) {
-          index = index - 1 < 0 ? songs.size - 1 : index - 1;
-        } else {
-          index = (index + 1) % songs.size;
-        }
+        index = nextIndex;
         break;
       case PlayMode.loop:
+        index = nextIndex;
         break;
       case PlayMode.random:
         const random = Math.floor(Math.random() * (songs.size - 1));
@@ -160,14 +160,18 @@ export class PlayListService {
     this.playNext(true);
   }
   insertTail = (song: Music) => {
-    const songs: List<Music> = this._getState().get('playList');
-    songs.push(song);
+    const songs: List<Music> = getState('playList');
+    store.dispatch(
+      this._setPlayList(songs.push(song))
+    );
   }
   insertNext = (song: Music) => {
-    const songs: List<Music> = this._getState().get('playList');
+    const songs: List<Music> = getState('playList');
     const index = songs.indexOf(song);
     if (index > -1) {
-      songs.insert(index + 1, song);
+      store.dispatch(
+        this._setPlayList(songs.insert(index + 1, song))
+      );
     } else {
       this.insertTail(song);
     }

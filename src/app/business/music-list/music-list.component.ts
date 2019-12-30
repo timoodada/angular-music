@@ -2,7 +2,7 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Music} from '../player';
 import {prefixStyle} from '../../helpers/util';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
-import {PlayListService} from '../../stores/actions/play-list.service';
+import {PlayListService} from '../../stores/actions/play-list/play-list.service';
 
 const transform = prefixStyle('transform');
 const backdropFilter = prefixStyle('backdropFilter');

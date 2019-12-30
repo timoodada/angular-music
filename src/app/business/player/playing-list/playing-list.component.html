@@ -1,0 +1,62 @@
+<div
+  class="playlist"
+  @slideFromBottom
+  *ngIf="show"
+  (click)="closed.emit()"
+>
+  <div
+    class="list-wrapper"
+    (click)="stopDefault($event)"
+  >
+    <div class="list-header">
+      <p class="title">
+        <i
+          class="icon"
+          [ngClass]="{
+            'icon-sequence': stores.playMode === playModes.sequence,
+            'icon-loop': stores.playMode === playModes.loop,
+            'icon-random': stores.playMode === playModes.random
+         }"
+        ></i>
+        <span
+          class="text">{{playModeName}}</span>
+        <span
+          class="clear"
+        ><i class="icon-clear"></i></span>
+      </p>
+    </div>
+    <div class="list-content">
+      <app-scroll-y>
+        <li
+          class="item"
+          *ngFor="let item of stores.playList"
+        >
+          <i class="current icon-play" *ngIf="stores.currentSong === item"></i>
+          <span class="text">{{item.name}} - {{item.singer}}</span>
+          <span
+            class="like"
+          >
+            <i class="icon-not-favorite" ></i>
+          </span>
+          <span class="delete">
+            <i class="icon-delete"></i>
+          </span>
+        </li>
+      </app-scroll-y>
+    </div>
+    <div class="list-operate">
+      <div
+        class="add"
+      >
+        <i class="icon-add"></i>
+        <span class="text">添加歌曲到队列</span>
+      </div>
+    </div>
+    <div
+      class="list-close"
+      (click)="closed.emit()"
+    >
+      <span>关闭</span>
+    </div>
+  </div>
+</div>
