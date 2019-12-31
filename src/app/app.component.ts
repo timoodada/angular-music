@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpService} from './services/http/http.service';
 import {Router, RouteConfigLoadEnd, RouteConfigLoadStart} from '@angular/router';
 import './stores/index';
+import {FavoriteService} from './stores/actions/favorite/favorite.service';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,9 @@ export class AppComponent implements OnInit {
   public loading: boolean;
 
   constructor(
-    public http: HttpService,
+    private http: HttpService,
     private router: Router,
+    private favorite: FavoriteService
   ) {
     router.events.subscribe(e => {
       if (e instanceof RouteConfigLoadStart) {
@@ -25,5 +27,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.favorite.init();
+  }
 }

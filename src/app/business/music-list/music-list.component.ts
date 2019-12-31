@@ -3,6 +3,7 @@ import {Music} from '../player';
 import {prefixStyle} from '../../helpers/util';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 import {PlayListService} from '../../stores/actions/play-list/play-list.service';
+import {globalEvent} from '../../helpers/event';
 
 const transform = prefixStyle('transform');
 const backdropFilter = prefixStyle('backdropFilter');
@@ -83,6 +84,7 @@ export class MusicListComponent implements OnInit {
   }
   onClick = (item: Music) => {
     const list = this.list.filter(val => !val.vip);
-    this.playListService.setPlayList(list, item);
+    this.playListService.setPlayList(list, item)
+      .subscribe(res => globalEvent.emit('playSong', res));
   }
 }

@@ -6,6 +6,7 @@ import playList from './play-list';
 import currentSong from './current-song';
 import playMode from './play-mode';
 import fullscreen from './fullscreen';
+import favorite from './favorite';
 
 export default combineReducers({
   ranks,
@@ -13,5 +14,6 @@ export default combineReducers({
   playList,
   currentSong,
   playMode,
-  fullscreen
+  fullscreen,
+  favorite
 });

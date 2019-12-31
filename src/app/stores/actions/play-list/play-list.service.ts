@@ -32,6 +32,9 @@ export class PlayListService {
     };
   }
   _setPlayList = (value: Music[] | List<Music>) => {
+    if (!value) {
+      value = [];
+    }
     return {
       type: 'SET_PLAY_LIST',
       value
@@ -96,17 +99,15 @@ export class PlayListService {
   setPlayList = (list: any[], current: Music) => {
     store.dispatch(this._setPlayList(list));
     const songs = getState('playList');
-    const playing: Music = getState('currentSong');
-    if (playing && playing.songmid === current.songmid) { return; }
-    const currentSong = songs.find(item => item.songmid === current.songmid);
+    const currentSong = songs.find(item => item.songmid === current.songmid) || songs.get(0);
     if (songs.size > 0) {
-      store.dispatch(this._setCurrentSong(currentSong || songs.get(0)));
+      store.dispatch(this._setCurrentSong(currentSong));
     } else {
       store.dispatch(this._setCurrentSong(null));
     }
+    return this.play(currentSong);
   }
-  play = (): Observable<[string, string]> => {
-    const currentSong: Music = getState('currentSong');
+  play = (currentSong: Music): Observable<[string, string]> => {
     if (currentSong) {
       if (currentSong === this.currentSongInfo.info) {
         return of(this.currentSongInfo.playInfo);
@@ -116,6 +117,7 @@ export class PlayListService {
         this._getLyric(currentSong.songid)
       ).pipe(
         tap(([url, lyric]) => {
+          store.dispatch(this._setCurrentSong(currentSong));
           this.currentSongInfo = {
             info: currentSong,
             playInfo: [url, lyric]
@@ -154,10 +156,10 @@ export class PlayListService {
       default:
         break;
     }
-    store.dispatch(this._setCurrentSong(songs.get(index)));
+    return this.play(songs.get(index));
   }
   playPre = () => {
-    this.playNext(true);
+    return this.playNext(true);
   }
   insertTail = (song: Music) => {
     const songs: List<Music> = getState('playList');

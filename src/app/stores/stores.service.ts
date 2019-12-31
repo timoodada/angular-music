@@ -16,7 +16,7 @@ interface StateChange {
 })
 export class StoresService {
   private states: any = store.getState();
-  private eventManager: EventManager;
+  private eventManager: EventManager = new EventManager();
 
   public get banners(): List<any> {
     return this.states.get('banners');
@@ -37,7 +37,6 @@ export class StoresService {
     return this.states.get('fullscreen');
   }
   constructor() {
-    this.eventManager = new EventManager();
     store.subscribe(() => {
       const newStates = store.getState() as Map<string, any>;
       newStates.forEach((val, key) => {
