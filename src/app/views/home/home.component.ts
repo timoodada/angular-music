@@ -9,7 +9,8 @@ import {StoresService} from '../../stores/stores.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  providers: [StoresService]
 })
 export class HomeComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(ScrollYComponent, {static: true})

@@ -16,7 +16,8 @@
             'icon-sequence': stores.playMode === playModes.sequence,
             'icon-loop': stores.playMode === playModes.loop,
             'icon-random': stores.playMode === playModes.random
-         }"
+          }"
+          (click)="changePlayMode()"
         ></i>
         <span
           class="text">{{playModeName}}</span>
@@ -25,11 +26,17 @@
         ><i class="icon-clear"></i></span>
       </p>
     </div>
-    <div class="list-content">
-      <app-scroll-y>
+    <div
+      class="list-content"
+      #listContent
+    >
+      <app-scroll-y
+        #scrollY
+      >
         <li
           class="item"
           *ngFor="let item of stores.playList"
+          (click)="playSong(item)"
         >
           <i class="current icon-play" *ngIf="stores.currentSong === item"></i>
           <span class="text">{{item.name}} - {{item.singer}}</span>
@@ -38,7 +45,7 @@
           >
             <i class="icon-not-favorite" ></i>
           </span>
-          <span class="delete">
+          <span class="delete" (click)="delOne($event, item)">
             <i class="icon-delete"></i>
           </span>
         </li>

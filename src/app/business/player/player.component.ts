@@ -7,7 +7,7 @@ import {miniAnimation, normalAnimation} from './player.animate';
 import {StoresService} from '../../stores/stores.service';
 import {prefixStyle} from '../../helpers/util';
 import {PlayModeService} from '../../stores/actions/play-mode/play-mode.service';
-import {globalEvent} from '../../helpers/event';
+import {PlayerEventService} from './player-event.service';
 
 function timeFormat(t = 0) {
   const m = Math.round(t % 60);
@@ -16,6 +16,11 @@ function timeFormat(t = 0) {
 const transform = prefixStyle('transform');
 const transitionDuration = prefixStyle('transitionDuration');
 
+/**
+ * @Author JiYuan.Chen
+ * @Description
+ * inject as root component
+ */
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -23,7 +28,8 @@ const transitionDuration = prefixStyle('transitionDuration');
   animations: [
     miniAnimation,
     normalAnimation
-  ]
+  ],
+  providers: [StoresService]
 })
 export class PlayerComponent implements OnInit, OnDestroy {
   public lyric: any;
@@ -65,27 +71,28 @@ export class PlayerComponent implements OnInit, OnDestroy {
   public middleL;
   @ViewChild('scrollY', {static: false})
   public scrollY;
-  public playSongObserver: any;
   public showPlayingList = false;
 
   constructor(
     private playListService: PlayListService,
     private fullscreenService: FullscreenService,
     private stores: StoresService,
-    private playMode: PlayModeService
+    private playMode: PlayModeService,
+    private playerEvent: PlayerEventService
   ) {
     const player = this.player = new MusicPlayer();
     player.on('onPlay', this.handleOnPlay);
     player.on('onTimeUpdate', this.handleTimeUpdate);
     player.on('onError', this.handleError);
     player.on('onEnded', this.handleOnEnded);
-    this.playSongObserver = globalEvent.observe('playSong')
-      .subscribe(this.handleCurrentSongChange);
+    this.playerEvent.on('playSong', this.handleCurrentSongChange);
+    this.playerEvent.on('pauseSong', this.pause);
   }
 
   ngOnInit() {}
 
-  handleCurrentSongChange = (res: [string, string]): void => {
+  handleCurrentSongChange = (res?: [string, string] | null): void => {
+    if (!res) { return; }
     this.fmtTotalTime = timeFormat(this.stores.currentSong.duration);
     const [src, lyric] = res;
     if (this.lyric) {
@@ -236,6 +243,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
     middleL.style[transitionDuration] = `300ms`;
   }
   ngOnDestroy(): void {
-    this.playSongObserver.unsubscribe();
+    this.playerEvent.off();
   }
 }

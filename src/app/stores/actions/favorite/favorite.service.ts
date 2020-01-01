@@ -32,7 +32,7 @@ export class FavoriteService {
   }
   del = (music: Music) => {
     const favorites = getState('favorite');
-    const index = favorites.find(item => item === music);
+    const index = favorites.indexOf(music);
     if (index > -1) {
       this.setFavorite(
         favorites.delete(index)

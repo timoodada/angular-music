@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpService} from '../../../services/http/http.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {switchMap, tap} from 'rxjs/operators';
 import {Music} from '../../../business/player';
+import {timer} from 'rxjs';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnDestroy {
 
   private albumId: string;
   public loading = false;
   public list: Music[] = [];
   public info: any;
+  public subscribe: any;
 
   constructor(
     private http: HttpService,
@@ -22,16 +24,19 @@ export class DetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.pipe(
+    this.subscribe = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.albumId = params.get('id');
         this.loading = true;
-        return this.getList();
+        return timer(300);
       })
+    ).pipe(
+      switchMap(() => this.getList())
     ).subscribe({
       complete: () => this.loading = false
     });
   }
+  ngOnDestroy(): void {}
 
   getList = () => {
     return this.http.jsonp(`https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg`, {

@@ -3,7 +3,7 @@ import {Music} from '../player';
 import {prefixStyle} from '../../helpers/util';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 import {PlayListService} from '../../stores/actions/play-list/play-list.service';
-import {globalEvent} from '../../helpers/event';
+import {PlayerEventService} from '../player/player-event.service';
 
 const transform = prefixStyle('transform');
 const backdropFilter = prefixStyle('backdropFilter');
@@ -40,10 +40,13 @@ export class MusicListComponent implements OnInit {
   public listWrapper: any;
   @ViewChild(ScrollYComponent, {static: true})
   public scrollY: any;
+  @ViewChild('title', {static: true})
+  public title: any;
   public imgHeight = 0;
 
   constructor(
-    private playListService: PlayListService
+    private playListService: PlayListService,
+    private playerEvent: PlayerEventService
   ) {}
 
   ngOnInit() {
@@ -64,6 +67,7 @@ export class MusicListComponent implements OnInit {
     } else {
       scale = 1;
       blur = Math.min(percent * 20, 20);
+      this.title.nativeElement.style.opacity = percent;
       if (pos.y < HEAD_HEIGHT - imgHeight) {
         this.bgImage.nativeElement.style.zIndex = 10;
         this.bgImage.nativeElement.style.paddingTop = 0;
@@ -85,6 +89,6 @@ export class MusicListComponent implements OnInit {
   onClick = (item: Music) => {
     const list = this.list.filter(val => !val.vip);
     this.playListService.setPlayList(list, item)
-      .subscribe(res => globalEvent.emit('playSong', res));
+      .subscribe(res => this.playerEvent.emit('playSong', res));
   }
 }

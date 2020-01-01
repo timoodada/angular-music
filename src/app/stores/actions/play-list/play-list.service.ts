@@ -96,30 +96,32 @@ export class PlayListService {
       })
     );
   }
-  setPlayList = (list: any[], current: Music) => {
+  setPlayList = (list: List<Music> | Music[], current: Music) => {
     store.dispatch(this._setPlayList(list));
     const songs = getState('playList');
     const currentSong = songs.find(item => item.songmid === current.songmid) || songs.get(0);
     if (songs.size > 0) {
       store.dispatch(this._setCurrentSong(currentSong));
     } else {
+      this.currentSongInfo = {};
       store.dispatch(this._setCurrentSong(null));
     }
     return this.play(currentSong);
   }
-  play = (currentSong: Music): Observable<[string, string]> => {
-    if (currentSong) {
-      if (currentSong === this.currentSongInfo.info) {
+  // Get music play url and lyric data
+  play = (music: Music): Observable<[string, string]> => {
+    if (music) {
+      if (music === this.currentSongInfo.info) {
         return of(this.currentSongInfo.playInfo);
       }
       return zip(
-        this._getPlayUrl(currentSong.songmid),
-        this._getLyric(currentSong.songid)
+        this._getPlayUrl(music.songmid),
+        this._getLyric(music.songid)
       ).pipe(
         tap(([url, lyric]) => {
-          store.dispatch(this._setCurrentSong(currentSong));
+          store.dispatch(this._setCurrentSong(music));
           this.currentSongInfo = {
-            info: currentSong,
+            info: music,
             playInfo: [url, lyric]
           };
         })
@@ -128,10 +130,10 @@ export class PlayListService {
     return throwError(new Error('Current song does not exist'));
   }
   playNext = (prev?: boolean) => {
-    const mode = getState('playMode');
-    const songs = getState('playList');
-    const currentSong = getState('currentSong');
-    let index = songs.findIndex(item => item === currentSong);
+    const mode: PlayMode = getState('playMode');
+    const songs: List<Music> = getState('playList');
+    const currentSong: Music = getState('currentSong');
+    let index = songs.indexOf(currentSong);
     let nextIndex;
     if (prev) {
       nextIndex = index - 1 < 0 ? songs.size - 1 : index - 1;
@@ -177,5 +179,29 @@ export class PlayListService {
     } else {
       this.insertTail(song);
     }
+  }
+  delOne = (music: Music) => {
+    const songs: List<Music> = getState('playList');
+    const currentSong: Music = getState('currentSong');
+    const index = songs.indexOf(music);
+    if (index > -1) {
+      store.dispatch(
+        this._setPlayList(songs.delete(index))
+      );
+      if (currentSong === music) {
+        return this.play(
+          songs.get((index + 1) % songs.size)
+        );
+      }
+    }
+    return of(null);
+  }
+  delAll = (): void => {
+    store.dispatch(
+      this._setPlayList([])
+    );
+    store.dispatch(
+      this._setCurrentSong(null)
+    );
   }
 }

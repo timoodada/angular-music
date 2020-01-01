@@ -1,23 +1,58 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import store from './';
 import {List} from 'immutable';
 import {Music} from '../business/player';
 import {PlayMode} from '../business/player/player.core';
-import {EventManager} from '../helpers/event';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 
 interface StateChange {
-  newVal: any;
-  oldVal: any;
+  currentValue: any;
+  previousValue: any;
 }
 
+interface StateChanges {
+  [prop: string]: StateChange;
+}
+/**
+ * @Author JiYuan.Chen
+ * inject this service for component
+ * for example:
+ * @Component({
+ *   providers: [StoresService]
+ * })
+ */
 @Injectable({
-  providedIn: 'root'
+  providedIn: null
 })
-export class StoresService {
+export class StoresService implements OnDestroy {
   private states: any = store.getState();
-  private eventManager: EventManager = new EventManager();
-
+  private observable: Observable<StateChanges>;
+  private subscriptions: Subscription[] = [];
+  private init() {
+    this.observable = new Observable<StateChanges>(observer => {
+      const unsubscribe = store.subscribe(() => {
+        const newStates = store.getState() as Map<string, any>;
+        const changes: StateChanges = {};
+        newStates.forEach((val, key) => {
+          if (val !== this.states.get(key)) {
+            changes[key] = {
+              currentValue: val,
+              previousValue: this.states.get(key)
+            };
+          }
+        });
+        observer.next(changes);
+        this.states = newStates;
+      });
+      return { unsubscribe };
+    });
+  }
+  constructor() {
+    this.init();
+    this.subscriptions.push(
+      this.observable.subscribe()
+    );
+  }
   public get banners(): List<any> {
     return this.states.get('banners');
   }
@@ -36,21 +71,17 @@ export class StoresService {
   public get fullscreen(): boolean {
     return this.states.get('fullscreen');
   }
-  constructor() {
-    store.subscribe(() => {
-      const newStates = store.getState() as Map<string, any>;
-      newStates.forEach((val, key) => {
-        if (val !== this.states.get(key)) {
-          this.eventManager.emit(key, {
-            newVal: val,
-            oldVal: this.states.get(key)
-          });
+  watch = (stateName: string, cb: (change: StateChange) => void) => {
+    if (typeof cb !== 'function') { return; }
+    this.subscriptions.push(
+      this.observable.subscribe(res => {
+        if (res[stateName]) {
+          cb(res[stateName]);
         }
-      });
-      this.states = newStates;
-    });
+      })
+    );
   }
-  observe = (stateName: string): Observable<StateChange> => {
-    return this.eventManager.observe(stateName);
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 }
