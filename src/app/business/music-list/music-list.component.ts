@@ -28,6 +28,8 @@ export class MusicListComponent implements OnInit {
       this.bgImage.nativeElement.style.backgroundImage = `url(${val.pic_h5})`;
     }
   }
+  @Input()
+  public loading = false;
   @ViewChild('layer', {static: true})
   public layer: any;
   @ViewChild('playBtn', {static: true})
@@ -80,7 +82,6 @@ export class MusicListComponent implements OnInit {
       }
     }
     this.bgImage.nativeElement.style[transform] = `scale(${scale})`;
-    // 高斯模糊处理(ios)
     this.filter.nativeElement.style[backdropFilter] = `blur(${blur}px)`;
   }
   back = () => {

@@ -16,7 +16,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   public loading = false;
   public list: Music[] = [];
   public info: any;
-  public subscribe: any;
 
   constructor(
     private http: HttpService,
@@ -24,7 +23,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.subscribe = this.route.paramMap.pipe(
+    this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.albumId = params.get('id');
         this.loading = true;
@@ -32,9 +31,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       })
     ).pipe(
       switchMap(() => this.getList())
-    ).subscribe({
-      complete: () => this.loading = false
-    });
+    ).subscribe();
   }
   ngOnDestroy(): void {}
 
@@ -68,6 +65,7 @@ export class DetailComponent implements OnInit, OnDestroy {
             };
           });
           this.info = res.topinfo;
+          this.loading = false;
         }
       })
     );

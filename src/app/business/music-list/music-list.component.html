@@ -1,4 +1,13 @@
-<app-layout>
+<ng-template #loadingWrapper>
+  <div class="loading-wrapper" *ngIf="loading">
+    <app-loading
+      title="loading..."
+    ></app-loading>
+  </div>
+</ng-template>
+<app-layout
+  [extra]="loadingWrapper"
+>
   <div class="music-list">
     <div
       class="back"
@@ -6,7 +15,7 @@
     >
       <i class="icon-back"></i>
     </div>
-    <div class="title" #title>{{info ? info.ListName : 'loading...'}}</div>
+    <div class="title" #title>{{info ? info.ListName : ''}}</div>
     <div
       class="bg-image"
       #bgImage
