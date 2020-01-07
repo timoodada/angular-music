@@ -190,11 +190,13 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.showPlayingList = !this.showPlayingList;
   }
   onTouchStart = (e) => {
+    e.preventDefault();
     this.touch.status = true;
     this.touch.startX = e.touches[0].pageX;
     this.touch.startY = e.touches[0].pageY;
   }
   onTouchMove = (e) => {
+    e.preventDefault();
     const lyricList = this.lyricList.nativeElement;
     if (!this.touch.status) { return; }
     const offsetY = e.touches[0].pageY - this.touch.startY;
@@ -209,6 +211,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
 
   }
   onTouchEnd = (e) => {
+    e.preventDefault();
     const lyricList = this.lyricList.nativeElement;
     const middleL = this.middleL.nativeElement;
     this.touch.status = false;
