@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Music} from '../player';
-import delAnimation from './del.animation';
+import {delAnimation} from './del.animation';
+import {List} from 'immutable';
+import vipLogo from './vip.png';
 
 @Component({
   selector: 'app-pure-music-list',
@@ -12,13 +14,16 @@ import delAnimation from './del.animation';
 })
 export class PureMusicListComponent implements OnInit {
   @Input()
-  public list: Music[] = [];
+  public list: Music[] | List<Music> = [];
   @Input()
   public del = false;
   @Input()
   public rank = false;
   @Output()
   public clicked = new EventEmitter<Music>();
+  @Output()
+  public remove = new EventEmitter<Music>();
+  public vip = vipLogo;
 
   constructor() { }
 
@@ -38,8 +43,8 @@ export class PureMusicListComponent implements OnInit {
     }
   }
 
-  delItem = (key) => {
-    this.list.splice(key, 1);
+  delItem = (val: Music) => {
+    this.remove.emit(val);
   }
 
   ngOnInit() {

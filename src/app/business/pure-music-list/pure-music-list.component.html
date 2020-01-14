@@ -12,7 +12,7 @@
       <div class="content">
         <h2 class="name">
           <img
-            src="assets/images/vip.png"
+            [src]="vip"
             alt="vip"
             width="20"
             style="margin-right: 5px;"
@@ -24,7 +24,7 @@
       <div
         class="delete"
         *ngIf="del"
-        (click)="delItem(key)"
+        (click)="delItem(item)"
       >
         <i class="icon-delete"></i>
       </div>

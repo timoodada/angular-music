@@ -1,0 +1,10 @@
+<ul class="switches">
+  <li
+    class="switch-item"
+    *ngFor="let v of items; index as key;"
+    (click)="onClick(key)"
+    [ngClass]="{active: key === active}"
+  >
+    <span>{{v}}</span>
+  </li>
+</ul>

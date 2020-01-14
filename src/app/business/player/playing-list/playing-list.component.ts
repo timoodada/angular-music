@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {StoresService} from '../../../stores/stores.service';
 import {PlayMode} from '../player.core';
 import {slideFromBottom} from './animate';

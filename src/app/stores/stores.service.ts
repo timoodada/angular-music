@@ -76,6 +76,9 @@ export class StoresService implements OnDestroy {
   public get fullscreen(): boolean {
     return this.states.get('fullscreen');
   }
+  public get recent(): List<Music> {
+    return this.states.get('recent');
+  }
   // return a function to unwatch
   watch = (stateName: string, cb: (change: StateChange) => void): () => void => {
     if (typeof cb !== 'function') { return; }

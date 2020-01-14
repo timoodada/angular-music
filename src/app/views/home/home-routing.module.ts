@@ -27,14 +27,14 @@ const routes: Routes = [{
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
     RouterAnimationModule,
     LayoutModule,
     ScrollYModule,
     LazyModule,
     SliderModule,
     PipeModule,
-    MusicListModule
+    MusicListModule,
+    RouterModule.forChild(routes)
   ],
   exports: [
     HomeComponent,

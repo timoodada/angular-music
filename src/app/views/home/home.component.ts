@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, OnChanges, SimpleChanges, OnDestroy} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {RanksService} from '../../stores/actions/ranks/ranks.service';
 import {BannersService} from '../../stores/actions/banners/banners.service';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
@@ -14,7 +14,7 @@ import {StoresService} from '../../stores/stores.service';
 })
 export class HomeComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild(ScrollYComponent, {static: true})
-  public scrollY: any;
+  public scrollY: ScrollYComponent;
 
   constructor(
     private ranksService: RanksService,

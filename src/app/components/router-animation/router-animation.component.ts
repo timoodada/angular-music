@@ -42,7 +42,6 @@ const isHistoryPush = (location: any, update: any): boolean => {
   }
   return lastLocation.isPush;
 };
-
 @Component({
   selector: 'app-router-animation',
   templateUrl: './router-animation.component.html',

@@ -30,13 +30,18 @@ export class ModalService {
     setTimeout(() => this.el.show = true, 20);
   }
   alert = ({title = '提示', content}) => {
-    this.show({
-      title,
-      content,
-      actions: [{
-        text: '确认',
-        callback: this.close
-      }]
+    return new Promise((resolve, reject) => {
+      this.show({
+        title,
+        content,
+        actions: [{
+          text: '确认',
+          callback: () => {
+            this.close();
+            resolve();
+          }
+        }]
+      });
     });
   }
   confirm = ({title = '提示', content}) => {
@@ -46,7 +51,10 @@ export class ModalService {
         content,
         actions: [{
           text: '取消',
-          callback: this.close
+          callback: () => {
+            this.close();
+            reject(new Error('closed'));
+          }
         }, {
           text: '确认',
           callback: () => {

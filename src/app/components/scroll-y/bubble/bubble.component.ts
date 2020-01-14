@@ -6,7 +6,7 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
   styleUrls: ['./bubble.component.scss']
 })
 export class BubbleComponent implements OnInit {
-  private ratio = window.devicePixelRatio;
+  public ratio = window.devicePixelRatio;
   public width = 50;
   public height = 80;
   public initRadius = 0;

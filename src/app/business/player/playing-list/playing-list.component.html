@@ -36,7 +36,7 @@
       >
         <li
           class="item"
-          *ngFor="let item of stores.playList"
+          *ngFor="let item of stores.playList;"
           (click)="playSong(item)"
         >
           <i class="current icon-play" *ngIf="stores.currentSong === item"></i>

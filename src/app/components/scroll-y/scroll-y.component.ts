@@ -1,7 +1,7 @@
-import {Component, OnInit, OnDestroy, ViewChild, Input} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import BScroll from 'better-scroll';
 import {BubbleComponent} from './bubble/bubble.component';
-import fadeAnimation from './fade.animate';
+import {fadeAnimation} from './fade.animate';
 
 @Component({
   selector: 'app-scroll-y',
@@ -13,19 +13,17 @@ import fadeAnimation from './fade.animate';
   ]
 })
 export class ScrollYComponent implements OnInit, OnDestroy {
-
-  constructor() {}
   private wrapper: any;
   @ViewChild('wrapperDom', {static: true})
-  public wrapperDom: any;
+  public wrapperDom: ElementRef;
   @ViewChild(BubbleComponent, {static: false})
-  private bubble: any;
+  private bubble: BubbleComponent;
   /*
   * @Params probeType
-  * When setted to 1, The scroll event is non-real time fired (after the screen scrolled for some time)
-  * When setted to 2, the scroll event is real-time fired during the screen scrolling
-  * When setted to 3, the scroll event is real-time fired during not only the screen scrolling but also the momentum and bounce animation
-  * If not setted, the default value 0 means there is no scroll event is fired.
+  * When set to 1, The scroll event is non-real time fired (after the screen scrolled for some time)
+  * When set to 2, the scroll event is real-time fired during the screen scrolling
+  * When set to 3, the scroll event is real-time fired during not only the screen scrolling but also the momentum and bounce animation
+  * If not set, the default value 0 means there is no scroll event is fired.
   */
   @Input()
   public probeType: 1 | 2 | 3 = 1;
@@ -59,6 +57,8 @@ export class ScrollYComponent implements OnInit, OnDestroy {
       top: `${Math.min(top - bubbleHeight, 0) - 5}px`
     };
   }
+
+  constructor() {}
 
   refresh = () => {
     if (this.wrapper) { this.wrapper.refresh(); }
