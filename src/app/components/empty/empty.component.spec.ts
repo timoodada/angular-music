@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AsyncLoadComponent } from './async-load.component';
+import { EmptyComponent } from './empty.component';
 
-describe('AsyncLoadComponent', () => {
-  let component: AsyncLoadComponent;
-  let fixture: ComponentFixture<AsyncLoadComponent>;
+describe('EmptyComponent', () => {
+  let component: EmptyComponent;
+  let fixture: ComponentFixture<EmptyComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AsyncLoadComponent ]
+      declarations: [ EmptyComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AsyncLoadComponent);
+    fixture = TestBed.createComponent(EmptyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

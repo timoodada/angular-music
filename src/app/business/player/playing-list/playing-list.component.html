@@ -20,9 +20,10 @@
           (click)="changePlayMode()"
         ></i>
         <span
-          class="text">{{playModeName}}</span>
+          class="text">{{playMode.playModeName}}</span>
         <span
           class="clear"
+          (click)="delAll()"
         ><i class="icon-clear"></i></span>
       </p>
     </div>
@@ -42,8 +43,9 @@
           <span class="text">{{item.name}} - {{item.singer}}</span>
           <span
             class="like"
+            (click)="toggleFavorite($event, item)"
           >
-            <i class="icon-not-favorite" ></i>
+            <i [ngClass]="favoriteService.isFavorite(item) ? 'icon-favorite' : 'icon-not-favorite'"></i>
           </span>
           <span class="delete" (click)="delOne($event, item)">
             <i class="icon-delete"></i>
@@ -54,6 +56,7 @@
     <div class="list-operate">
       <div
         class="add"
+        (click)="showAddSong = true"
       >
         <i class="icon-add"></i>
         <span class="text">添加歌曲到队列</span>
@@ -66,4 +69,9 @@
       <span>关闭</span>
     </div>
   </div>
+  <app-add-song
+    [show]="showAddSong"
+    (closed)="showAddSong = false"
+    (click)="stopDefault($event)"
+  ></app-add-song>
 </div>

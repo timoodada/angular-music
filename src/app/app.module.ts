@@ -11,25 +11,27 @@ import {RouterAnimationModule} from './components/router-animation/router-animat
 import {PlayerModule} from './business/player/player.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AsyncLoadComponent} from './components/async-load/async-load.component';
 import {LayoutModule} from './components/layout/layout.module';
+import {LoadingModule} from './components/loading/loading.module';
+import {ModalModule} from './components/modal/modal.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AsyncLoadComponent
+    AppComponent
   ],
-  imports: [
-    BrowserAnimationsModule,
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    RouterAnimationModule,
-    HttpClientModule,
-    HttpClientJsonpModule,
-    LayoutModule,
-    PlayerModule
-  ],
+    imports: [
+        BrowserAnimationsModule,
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        RouterAnimationModule,
+        HttpClientModule,
+        HttpClientJsonpModule,
+        LayoutModule,
+        PlayerModule,
+        LoadingModule,
+        ModalModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

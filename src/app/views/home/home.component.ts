@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private ranksService: RanksService,
     private bannersService: BannersService,
-    private stores: StoresService
+    public stores: StoresService
   ) {}
 
   onPullingDown = () => {

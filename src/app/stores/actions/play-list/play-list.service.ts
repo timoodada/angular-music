@@ -100,9 +100,7 @@ export class PlayListService {
     store.dispatch(this._setPlayList(list));
     const songs = getState('playList');
     const currentSong = songs.find(item => item.songmid === current.songmid) || songs.get(0);
-    if (songs.size > 0) {
-      store.dispatch(this._setCurrentSong(currentSong));
-    } else {
+    if (!currentSong) {
       this.currentSongInfo = {};
       store.dispatch(this._setCurrentSong(null));
     }

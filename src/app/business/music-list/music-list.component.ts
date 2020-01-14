@@ -25,14 +25,20 @@ export class MusicListComponent implements OnInit {
   set info(val) {
     this._info = val;
     if (val) {
-      this.bgImage.nativeElement.style.backgroundImage = `url(${val.pic_h5})`;
+      let bkg;
+      if (/\.(png|jpe?g)$/.test(val.pic_h5)) {
+        bkg = val.pic_h5;
+      } else {
+        bkg = val.pic_v12;
+      }
+      this.bgImage.nativeElement.style.backgroundImage = `url(${bkg})`;
     }
   }
   @Input()
   public loading = false;
   @ViewChild('layer', {static: true})
   public layer: any;
-  @ViewChild('playBtn', {static: true})
+  @ViewChild('playBtn', {static: false})
   public playBtn: any;
   @ViewChild('bgImage', {static: true})
   public bgImage: any;
@@ -57,6 +63,9 @@ export class MusicListComponent implements OnInit {
     this.scrollY.refresh();
   }
   onScroll = pos => {
+    if (!this.playBtn) {
+      return;
+    }
     const imgHeight = this.imgHeight;
     let blur = 0;
     let scale = 1;

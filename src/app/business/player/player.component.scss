@@ -21,7 +21,6 @@
     }
     .top {
       position: relative;
-      margin-bottom: 25px;
       .back {
         position: absolute;
         top: 0;
@@ -84,10 +83,10 @@
           align-items: center;
           justify-content: center;
           .playing-lyric {
-            height: 20px;
-            line-height: 20px;
             font-size: $font-size-medium;
             color: $color-text-l;
+            max-width: 100%;
+            @include no-wrap;
           }
         }
         .cd-wrapper {
@@ -267,77 +266,6 @@
         position: absolute;
         left: 0;
         top: 0;
-      }
-    }
-  }
-
-  .add-song {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    z-index: 200;
-    background: $color-background;
-    display: flex;
-    flex-direction: column;
-    .header {
-      position: relative;
-      height: 44px;
-      text-align: center;
-      .title {
-        line-height: 44px;
-        font-size: $font-size-large;
-        color: $color-text;
-      }
-      .close {
-        position: absolute;
-        top: 0;
-        right: 8px;
-        .icon-close {
-          display: block;
-          padding: 12px;
-          font-size: 20px;
-          color: $color-theme;
-        }
-      }
-    }
-    .search-box-wrapper {
-      margin: 20px;
-    }
-    .shortcut {
-      flex: 1;
-      height: 100%;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      .shortcut-list-wrapper {
-        width: 100%;
-        flex: 1;
-        height: 100%;
-        overflow: hidden;
-        padding: 10px 15px 0 15px;
-        .shortcut-list-scroll {
-          height: 100%;
-          overflow: hidden;
-          .shortcut-list-inner {
-            padding: 20px 30px;
-          }
-        }
-      }
-    }
-    .search-result {
-      flex: 1;
-      height: 100%;
-      overflow: hidden;
-    }
-    .add-songs-empty-wrapper{
-      position: relative;
-      height: 100%;
-      .add-song-empty{
-        position: absolute;
-        top: 50%;
-        width: 100%;
-        transform: translateY(-80%);
       }
     }
   }

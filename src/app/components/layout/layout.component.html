@@ -1,8 +1,12 @@
 <div class="default-container" [style]="style">
-  <div *ngTemplateOutlet="header"></div>
+  <div>
+    <ng-content select="[slot=header]"></ng-content>
+  </div>
   <div class="default-content">
     <ng-content></ng-content>
   </div>
-  <ng-container *ngTemplateOutlet="extra"></ng-container>
-  <div *ngTemplateOutlet="footer"></div>
+  <ng-content select="[slot=extra]"></ng-content>
+  <div>
+    <ng-content select="[slot=footer]"></ng-content>
+  </div>
 </div>

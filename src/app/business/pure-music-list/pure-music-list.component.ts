@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Music} from '../../player';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Music} from '../player';
 import delAnimation from './del.animation';
 
 @Component({
@@ -17,8 +17,8 @@ export class PureMusicListComponent implements OnInit {
   public del = false;
   @Input()
   public rank = false;
-  @Input()
-  public onClick: (item: Music, key: number) => void = () => {}
+  @Output()
+  public clicked = new EventEmitter<Music>();
 
   constructor() { }
 

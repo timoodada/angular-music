@@ -10,10 +10,10 @@ type eventData = [string, string];
 export class PlayerEventService {
   public eventManager = new EventManager();
   constructor() { }
-  emit = (type: eventType, data: eventData) => {
+  emit = (type: eventType, data?: eventData) => {
     this.eventManager.emit(type, data);
   }
-  on = (type: eventType, cb: (data: eventData) => void) => {
+  on = (type: eventType, cb: (data?: eventData) => void) => {
     return this.eventManager.on(type, cb);
   }
   off = (...args) => {

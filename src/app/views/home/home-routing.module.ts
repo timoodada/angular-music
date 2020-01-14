@@ -4,7 +4,6 @@ import {HomeComponent} from './home.component';
 import {DetailComponent} from './detail/detail.component';
 import {NgModule} from '@angular/core';
 import {RouterAnimationModule} from '../../components/router-animation/router-animation.module';
-import {ListModule} from '../../components/list/list.module';
 import {LayoutModule} from '../../components/layout/layout.module';
 import {ScrollYModule} from '../../components/scroll-y/scroll-y.module';
 import {LazyModule} from '../../directives/lazy/lazy.module';
@@ -30,7 +29,6 @@ const routes: Routes = [{
     CommonModule,
     RouterModule.forChild(routes),
     RouterAnimationModule,
-    ListModule,
     LayoutModule,
     ScrollYModule,
     LazyModule,

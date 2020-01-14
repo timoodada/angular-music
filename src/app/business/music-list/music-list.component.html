@@ -1,13 +1,4 @@
-<ng-template #loadingWrapper>
-  <div class="loading-wrapper" *ngIf="loading">
-    <app-loading
-      title="loading..."
-    ></app-loading>
-  </div>
-</ng-template>
-<app-layout
-  [extra]="loadingWrapper"
->
+<app-layout>
   <div class="music-list">
     <div
       class="back"
@@ -24,6 +15,7 @@
         <div
           #playBtn
           class="play"
+          *ngIf="list.length"
         >
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
@@ -37,13 +29,23 @@
         <app-scroll-y
           [onScroll]="onScroll"
         >
+          <div class="empty-wrapper" *ngIf="!loading && !list.length">
+            <app-empty
+              title="暂无歌曲~"
+            ></app-empty>
+          </div>
           <app-pure-music-list
             [list]="list"
             [rank]="true"
-            [onClick]="onClick"
+            (clicked)="onClick($event)"
           ></app-pure-music-list>
         </app-scroll-y>
       </div>
     </div>
+  </div>
+  <div class="loading-wrapper" *ngIf="loading" slot="extra">
+    <app-loading
+      title="loading..."
+    ></app-loading>
   </div>
 </app-layout>

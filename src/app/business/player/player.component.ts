@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MusicPlayer, PlayMode} from './player.core';
 import {PlayListService} from '../../stores/actions/play-list/play-list.service';
 import Lyric from 'lyric-parser';
@@ -8,6 +8,9 @@ import {StoresService} from '../../stores/stores.service';
 import {prefixStyle} from '../../helpers/util';
 import {PlayModeService} from '../../stores/actions/play-mode/play-mode.service';
 import {PlayerEventService} from './player-event.service';
+import {FavoriteService} from '../../stores/actions/favorite/favorite.service';
+import {RecentService} from '../../stores/actions/recent/recent.service';
+import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 
 function timeFormat(t = 0) {
   const m = Math.round(t % 60);
@@ -58,7 +61,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     percent: null
   };
   @ViewChild('middleWrapper', {static: false})
-  public set middleWrapper(el) {
+  public set middleWrapper(el: ElementRef) {
     if (el) {
       el.nativeElement.ontouchstart = this.onTouchStart;
       el.nativeElement.ontouchmove = this.onTouchMove;
@@ -66,19 +69,21 @@ export class PlayerComponent implements OnInit, OnDestroy {
     }
   }
   @ViewChild('lyricList', {static: false})
-  public lyricList;
+  public lyricList: ElementRef;
   @ViewChild('middleL', {static: false})
-  public middleL;
+  public middleL: ElementRef;
   @ViewChild('scrollY', {static: false})
-  public scrollY;
+  public scrollY: ScrollYComponent;
   public showPlayingList = false;
 
   constructor(
     private playListService: PlayListService,
     private fullscreenService: FullscreenService,
-    private stores: StoresService,
     private playMode: PlayModeService,
-    private playerEvent: PlayerEventService
+    private playerEvent: PlayerEventService,
+    public stores: StoresService,
+    public favoriteService: FavoriteService,
+    public recentService: RecentService
   ) {
     const player = this.player = new MusicPlayer();
     player.on('onPlay', this.handleOnPlay);
@@ -89,10 +94,21 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.playerEvent.on('pauseSong', this.pause);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.stores.watch('currentSong', change => {
+      if (!change.previousValue && change.currentValue) {
+        this.resetShow();
+      }
+    });
+  }
 
+  resetShow = () => {
+    this.showPlayingList = false;
+    this.fullscreenService.setFullScreen(false);
+  }
   handleCurrentSongChange = (res?: [string, string] | null): void => {
-    if (!res) { return; }
+    if (!res || !this.stores.currentSong) { return; }
+    this.recentService.add(this.stores.currentSong);
     this.fmtTotalTime = timeFormat(this.stores.currentSong.duration);
     const [src, lyric] = res;
     if (this.lyric) {
@@ -113,6 +129,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     // error occurred
   }
   handleTimeUpdate = (e) => {
+    if (!this.stores.currentSong) { return; }
     const currentTime = e.target.currentTime;
     this.currentTime = currentTime;
     this.fmtCurrentTime = timeFormat(currentTime);
@@ -120,8 +137,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
     const parse = String(Math.ceil(currentTime));
     // correct lyric position every 10 seconds
     if (/5$/.test(parse)) {
-      if (this.lyric) {
-        this.lyric.seek(currentTime * 1000);
+      this.correctLyric(currentTime);
+    }
+  }
+  correctLyric = (currentTime) => {
+    if (this.lyric) {
+      this.lyric.seek(currentTime * 1000);
+      if (!this.playing) {
+        this.lyric.stop();
       }
     }
   }
@@ -141,6 +164,11 @@ export class PlayerComponent implements OnInit, OnDestroy {
   toggleFullscreen = () => {
     this.currentShow = 'cd';
     this.fullscreenService.toggleFullScreen();
+    setTimeout(() => {
+      this.correctLyric(
+        this.player.currentTime
+      );
+    }, 20);
   }
   play = () => {
     this.player.play().then(() => {

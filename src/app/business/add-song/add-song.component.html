@@ -1,0 +1,38 @@
+<div
+  class="add-song"
+  @addSongAnimation
+  *ngIf="show"
+>
+  <div class="header">
+    <div class="title">添加歌曲到列表</div>
+    <div
+      class="close"
+      (click)="closed.emit()"
+    >
+      <i class="icon-close"></i>
+    </div>
+  </div>
+  <div class="search-box-wrapper">
+
+  </div>
+  <app-scroll-y>
+    <div class="shortcut-list-inner">
+
+    </div>
+  </app-scroll-y>
+  <div
+    class="add-songs-empty-wrapper"
+  >
+
+  </div>
+  <div class="shortcut-list-inner">
+
+  </div>
+  <div
+    class="add-songs-empty-wrapper"
+  >
+  </div>
+  <div class="search-result">
+
+  </div>
+</div>

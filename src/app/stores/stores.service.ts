@@ -4,6 +4,7 @@ import {List} from 'immutable';
 import {Music} from '../business/player';
 import {PlayMode} from '../business/player/player.core';
 import {Observable, Subscription} from 'rxjs';
+import {EventManager} from '../helpers/event';
 
 interface StateChange {
   currentValue: any;
@@ -25,24 +26,28 @@ interface StateChanges {
   providedIn: null
 })
 export class StoresService implements OnDestroy {
-  private states: any = store.getState();
+  private states: Map<string, any> = store.getState() as Map<string, any>;
   private observable: Observable<StateChanges>;
   private subscriptions: Subscription[] = [];
+  private eventManager: EventManager;
   private init() {
+    this.eventManager = new EventManager();
     this.observable = new Observable<StateChanges>(observer => {
       const unsubscribe = store.subscribe(() => {
         const newStates = store.getState() as Map<string, any>;
+        const oldStates = this.states;
+        this.states = newStates;
         const changes: StateChanges = {};
         newStates.forEach((val, key) => {
-          if (val !== this.states.get(key)) {
+          if (val !== oldStates.get(key)) {
             changes[key] = {
               currentValue: val,
-              previousValue: this.states.get(key)
+              previousValue: oldStates.get(key)
             };
+            this.eventManager.emit(key, changes[key]);
           }
         });
         observer.next(changes);
-        this.states = newStates;
       });
       return { unsubscribe };
     });
@@ -71,17 +76,13 @@ export class StoresService implements OnDestroy {
   public get fullscreen(): boolean {
     return this.states.get('fullscreen');
   }
-  watch = (stateName: string, cb: (change: StateChange) => void) => {
+  // return a function to unwatch
+  watch = (stateName: string, cb: (change: StateChange) => void): () => void => {
     if (typeof cb !== 'function') { return; }
-    this.subscriptions.push(
-      this.observable.subscribe(res => {
-        if (res[stateName]) {
-          cb(res[stateName]);
-        }
-      })
-    );
+    return this.eventManager.on(stateName, cb);
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach(item => item.unsubscribe());
+    this.eventManager.off();
   }
 }

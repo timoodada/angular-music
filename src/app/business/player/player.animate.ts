@@ -1,17 +1,5 @@
 import {trigger, transition, animate, style, query, group} from '@angular/animations';
 
-function getPosAndScale() {
-  const paddingLeft = 40;
-  const paddingTop = 80;
-  const paddingBottom = 30;
-  const targetWidth = 20;
-  const width = document.body.clientWidth * 0.8 / 2;
-  const x = -(document.body.clientWidth / 2 - paddingLeft);
-  const y = document.body.clientHeight - width / 2 - paddingTop - paddingBottom;
-  const scale = targetWidth / width;
-  return {x, y, scale};
-}
-
 export const miniAnimation = trigger('miniAnimation', [
   transition(':leave', [
     style({ opacity: 1 }),
@@ -23,7 +11,15 @@ export const miniAnimation = trigger('miniAnimation', [
   ])
 ]);
 
-const pos = getPosAndScale();
+const paddingLeft = 40;
+const paddingTop = 80;
+const paddingBottom = 30;
+const targetWidth = 20;
+const width = document.body.clientWidth * 0.8 / 2;
+const x = -(document.body.clientWidth / 2 - paddingLeft);
+const y = document.body.clientHeight - width / 2 - paddingTop - paddingBottom;
+const scale = targetWidth / width;
+const pos = {x, y, scale};
 export const normalAnimation = trigger('normalAnimation', [
   transition(':leave', [
     style({ opacity: 1 }),

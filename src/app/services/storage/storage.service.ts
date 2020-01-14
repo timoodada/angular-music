@@ -17,4 +17,8 @@ export class StorageService {
       this.localStorage.setItem(name, JSON.stringify(value));
     }
   }
+  remove = (name: string) => {
+    this.sessionStorage.removeItem(name);
+    this.localStorage.removeItem(name);
+  }
 }

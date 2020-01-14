@@ -1,0 +1,16 @@
+<div class="modal" *ngIf="show" @modalAnimation>
+  <div class="modal-wrapper">
+    <div class="modal-header" *ngIf="title">{{title}}</div>
+    <div class="modal-header" *ngIf="!title">
+      <ng-content select="[slot=header]"></ng-content>
+    </div>
+    <div class="modal-content" *ngIf="content">{{content}}</div>
+    <div class="modal-content" *ngIf="!content">
+      <ng-content></ng-content>
+    </div>
+    <div class="modal-footer">
+      <button class="button" *ngFor="let v of footer" (click)="onClick(v)">{{v.text}}</button>
+    </div>
+  </div>
+</div>
+

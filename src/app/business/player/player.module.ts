@@ -5,6 +5,7 @@ import {ProgressCircleModule} from '../../components/progress-circle/progress-ci
 import {ScrollYModule} from '../../components/scroll-y/scroll-y.module';
 import {ProgressBarModule} from '../../components/progress-bar/progress-bar.module';
 import {PlayingListComponent} from './playing-list/playing-list.component';
+import {AddSongModule} from '../add-song/add-song.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {PlayingListComponent} from './playing-list/playing-list.component';
     CommonModule,
     ProgressCircleModule,
     ScrollYModule,
-    ProgressBarModule
+    ProgressBarModule,
+    AddSongModule
   ],
   exports: [
     PlayerComponent

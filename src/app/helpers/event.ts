@@ -5,8 +5,10 @@ interface Listeners {
 }
 
 export class EventManager {
-  private listeners: Listeners = {};
-  constructor() {}
+  private listeners: Listeners;
+  constructor() {
+    this.listeners = {};
+  }
   off = (eventName?: string, callback?: any) => {
     if (!eventName) {
       this.listeners = {};

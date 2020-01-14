@@ -48,7 +48,7 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   public pullingDownSuccess = false;
   private pullingDownSuccessTime = 1000;
   private pullingDownStartTime = Date.now();
-  private isPullingUp = false;
+  public isPullingUp = false;
   private fixBubble = (top: number) => {
     if (top > 0 && this.showBubble === null) { this.showBubble = true; }
     if (top <= 0) { this.showBubble = null; }
@@ -78,6 +78,7 @@ export class ScrollYComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.wrapper.finishPullDown(...args);
           this.pullingDownSuccess = false;
+          setTimeout(() => this.showBubble = null, 500);
         }, this.pullingDownSuccessTime);
       }, freeTime);
     }
@@ -105,7 +106,6 @@ export class ScrollYComponent implements OnInit, OnDestroy {
     if (this.wrapper) { this.wrapper.destroy(); }
   }
   ngOnInit() {
-    this.showBubble = !!this.onPullingDown;
     this.initBS();
   }
   initBS = () => {

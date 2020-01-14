@@ -6,6 +6,8 @@ import {Music} from '../index';
 import {PlayListService} from '../../../stores/actions/play-list/play-list.service';
 import {PlayModeService} from '../../../stores/actions/play-mode/play-mode.service';
 import {PlayerEventService} from '../player-event.service';
+import {FavoriteService} from '../../../stores/actions/favorite/favorite.service';
+import {ModalService} from '../../../services/modal/modal.service';
 
 @Component({
   selector: 'app-playing-list',
@@ -26,24 +28,15 @@ export class PlayingListComponent implements OnInit, OnChanges {
   @ViewChild('scrollY', {static: false})
   public scrollY: any;
   public playModes = PlayMode;
-  public get playModeName() {
-    switch (this.stores.playMode) {
-      case PlayMode.loop:
-        return '单曲循环';
-      case PlayMode.random:
-        return '随机播放';
-      case PlayMode.sequence:
-        return '顺序播放';
-      default:
-        return '';
-    }
-  }
+  public showAddSong = false;
 
   constructor(
-    public stores: StoresService,
     private playList: PlayListService,
-    private playMode: PlayModeService,
-    private playerEvent: PlayerEventService
+    private playerEvent: PlayerEventService,
+    public stores: StoresService,
+    public playMode: PlayModeService,
+    public favoriteService: FavoriteService,
+    public modalService: ModalService
   ) {}
 
   ngOnInit() {}
@@ -69,11 +62,24 @@ export class PlayingListComponent implements OnInit, OnChanges {
   changePlayMode = () => {
     this.playMode.next();
   }
+  toggleFavorite = (e, music: Music) => {
+    e.stopPropagation();
+    e.preventDefault();
+    this.favoriteService.toggleFavorite(music);
+  }
   delOne = (e, music: Music) => {
     e.stopPropagation();
     e.preventDefault();
     this.playList.delOne(music)
       .subscribe(res => this.playerEvent.emit('playSong', res));
+  }
+  delAll = () => {
+    this.modalService.confirm({
+      content: '确定清空播放列表？'
+    }).then(() => {
+      this.playList.delAll();
+      this.playerEvent.emit('pauseSong');
+    });
   }
   stopDefault = (e) => {
     e.stopPropagation();

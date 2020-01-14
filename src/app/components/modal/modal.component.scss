@@ -1,0 +1,55 @@
+@import "src/app/common/style/variable";
+@import "src/app/common/style/mixin";
+
+.modal{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, .5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .modal-wrapper{
+    width: 270px;
+    border-radius: 7px;
+    background: #333333;
+    overflow: hidden;
+    .modal-header{
+      color: $color-text-d;
+      font-size: 16px;
+      padding: 10px 20px 0 20px;
+    }
+    .modal-content{
+      color: $color-text-l;
+      font-size: 14px;
+      padding: 20px 20px;
+    }
+    .modal-footer{
+      border-top: 1px solid #666666;
+      display: flex;
+      .button{
+        flex: 1;
+        text-align: center;
+        text-decoration: none;
+        outline: 0;
+        font-size: 16px;
+        padding: 10px 0;
+        display: block;
+        width: auto;
+        @include no-wrap;
+        background: transparent;
+        color: $color-text-d;
+        border: 0;
+        &:not(:last-child){
+          border-right: 1px solid #666666;
+        }
+        &:active{
+          background: #555555;
+        }
+      }
+    }
+  }
+}

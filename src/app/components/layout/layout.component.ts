@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, TemplateRef} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 
 @Component({
   selector: 'app-layout',
@@ -6,12 +6,6 @@ import {Component, OnInit, Input, TemplateRef} from '@angular/core';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
-  @Input()
-  public header?: TemplateRef<any>;
-  @Input()
-  public footer?: TemplateRef<any>;
-  @Input()
-  public extra?: TemplateRef<any>;
   @Input()
   public style: any;
 

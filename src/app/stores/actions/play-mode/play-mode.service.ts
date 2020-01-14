@@ -18,4 +18,17 @@ export class PlayModeService {
     const current = getState('playMode');
     this.setPlayMode((current + 1) % 3);
   }
+  public get playModeName() {
+    const current: PlayMode = getState('playMode');
+    switch (current) {
+      case PlayMode.loop:
+        return '单曲循环';
+      case PlayMode.random:
+        return '随机播放';
+      case PlayMode.sequence:
+        return '顺序播放';
+      default:
+        return '';
+    }
+  }
 }

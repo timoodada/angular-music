@@ -99,8 +99,12 @@
         </div>
         <div
           class="icon i-right"
+          (click)="favoriteService.toggleFavorite(stores.currentSong)"
         >
-          <i class="icon"></i>
+          <i
+            class="icon"
+            [ngClass]="favoriteService.isFavorite(stores.currentSong) ? 'icon-favorite' : 'icon-not-favorite'"
+          ></i>
         </div>
       </div>
     </div>
