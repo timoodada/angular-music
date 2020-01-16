@@ -21,14 +21,16 @@
       [(active)]="current"
     ></app-switch>
     <div class="shortcut-list-wrapper" *ngIf="current === 0">
-      <app-scroll-y *ngIf="stores.recent.size">
-        <div class="shortcut-list-inner">
-          <app-pure-music-list
-            [list]="stores.recent"
-            del
-          ></app-pure-music-list>
-        </div>
-      </app-scroll-y>
+      <div class="shortcut-list-scroll">
+        <app-scroll-y *ngIf="stores.recent.size">
+          <div class="shortcut-list-inner">
+            <app-pure-music-list
+              [list]="stores.recent"
+              del
+            ></app-pure-music-list>
+          </div>
+        </app-scroll-y>
+      </div>
       <div class="add-songs-empty-wrapper" *ngIf="!stores.recent.size">
         <app-empty></app-empty>
       </div>

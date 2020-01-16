@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Music} from '../player';
 import {delAnimation} from './del.animation';
 import {List} from 'immutable';
@@ -10,7 +10,8 @@ import vipLogo from './vip.png';
   styleUrls: ['./pure-music-list.component.scss'],
   animations: [
     delAnimation
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PureMusicListComponent implements OnInit {
   @Input()
