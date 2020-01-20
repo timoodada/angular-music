@@ -36,8 +36,9 @@
       >
         <li
           class="item"
-          *ngFor="let item of stores.playList;"
+          *ngFor="let item of stores.playList"
           (click)="playSong(item)"
+          @delAnimation
         >
           <i class="current icon-play" *ngIf="stores.currentSong === item"></i>
           <span class="text">{{item.name}} - {{item.singer}}</span>

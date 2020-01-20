@@ -1,0 +1,43 @@
+<div class="search-list-wrapper">
+  <app-scroll-y
+    #scrollY
+    [pullingUpEnable]="true"
+    (pullingUp)="onPullingUp()"
+  >
+    <ul class="search-list">
+      <li
+        *ngIf="zhida && zhida.type === 2"
+        class="search-item"
+      >
+        <div class="singer-avatar">
+          <img
+            [src]="urlJoinService.getSingerAvatar(zhida.singermid)"
+            [alt]="zhida.singername"
+          />
+        </div>
+        <div class="name">
+          <p class="text">{{zhida.singername}} - 歌手</p>
+        </div>
+      </li>
+      <li
+        class="search-item"
+        *ngFor="let item of list"
+        (click)="handleClickSong(item, $event)"
+      >
+        <div class="icon">
+          <i class="icon-music"></i>
+        </div>
+        <img
+          class="vip"
+          width="20"
+          [src]="vip"
+          alt="vip"
+          *ngIf="item.vip"
+        />
+        <div class="name">
+          <p class="text">{{item.name}} - {{item.singer}}</p>
+        </div>
+      </li>
+    </ul>
+  </app-scroll-y>
+</div>

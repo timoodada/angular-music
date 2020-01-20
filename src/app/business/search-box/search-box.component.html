@@ -1,0 +1,7 @@
+<div class="search-box">
+  <i class="icon-search"></i>
+  <form class="form" (submit)="onSubmit($event)">
+    <input #input class="box" type="search" autoComplete="off" [placeholder]="placeholder" />
+  </form>
+  <i class="icon-dismiss" *ngIf="!!inputVal" (click)="clear()"></i>
+</div>

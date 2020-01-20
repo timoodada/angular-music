@@ -1,7 +1,8 @@
 <app-layout>
   <app-header slot="header"></app-header>
   <app-scroll-y
-    [onPullingDown]="onPullingDown"
+    [pullingDownEnable]="true"
+    (pullingDown)="onPullingDown()"
     [data]="stores.ranks"
   >
     <app-slider [autoplay]="true" [data]="stores.banners">

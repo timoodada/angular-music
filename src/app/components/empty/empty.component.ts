@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class EmptyComponent implements OnInit {
   @Input()
-  public title: string;
+  public title = '暂无数据~';
 
   constructor() { }
 

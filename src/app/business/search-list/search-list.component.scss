@@ -1,0 +1,55 @@
+@import "src/app/common/style/variable";
+@import "src/app/common/style/mixin";
+
+.search-list-wrapper {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  .search-list {
+    padding: 0 30px;
+    .search-item {
+      display: flex;
+      align-items: center;
+      padding-bottom: 20px;
+      &:last-child{
+        padding-bottom: 10px;
+      }
+      .singer-avatar{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 10px 0 0;
+        img{
+          width: 100%;
+        }
+      }
+      .vip{
+        margin: 0 8px 0 0;
+      }
+    }
+    .icon {
+      flex: 0 0 30px;
+      width: 30px;
+      [class^="icon-"] {
+        font-size: 14px;
+        color: $color-text-d;
+      }
+    }
+    .name {
+      flex: 1;
+      font-size: $font-size-medium;
+      color: $color-text-d;
+      overflow: hidden;
+      .text {
+        @include no-wrap;
+      }
+    }
+  }
+  .no-result-wrapper{
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-75%);
+  }
+}

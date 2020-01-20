@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {StoresService} from '../../../stores/stores.service';
 import {PlayMode} from '../player.core';
-import {slideFromBottom} from './animate';
+import {slideFromBottom, delAnimation} from './animate';
 import {Music} from '../index';
 import {PlayListService} from '../../../stores/actions/play-list/play-list.service';
 import {PlayModeService} from '../../../stores/actions/play-mode/play-mode.service';
@@ -14,7 +14,8 @@ import {ModalService} from '../../../services/modal/modal.service';
   templateUrl: './playing-list.component.html',
   styleUrls: ['./playing-list.component.scss'],
   animations: [
-    slideFromBottom
+    slideFromBottom,
+    delAnimation
   ],
   providers: [StoresService]
 })

@@ -8,6 +8,7 @@ import playMode from './play-mode';
 import fullscreen from './fullscreen';
 import favorite from './favorite';
 import recent from './recent';
+import history from './history';
 
 export default combineReducers({
   ranks,
@@ -17,5 +18,6 @@ export default combineReducers({
   playMode,
   fullscreen,
   favorite,
-  recent
+  recent,
+  history
 });

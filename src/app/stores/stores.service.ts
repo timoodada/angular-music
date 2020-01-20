@@ -79,6 +79,9 @@ export class StoresService implements OnDestroy {
   public get recent(): List<Music> {
     return this.states.get('recent');
   }
+  public get history(): List<string> {
+    return this.states.get('history');
+  }
   // return a function to unwatch
   watch = (stateName: string, cb: (change: StateChange) => void): () => void => {
     if (typeof cb !== 'function') { return; }

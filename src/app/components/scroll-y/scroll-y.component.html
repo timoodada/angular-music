@@ -23,7 +23,9 @@
   <div #wrapperDom class="scroll-y">
     <div>
       <ng-content></ng-content>
-      <app-loading *ngIf="isPullingUp"></app-loading>
+      <div class="bottom-loading-wrapper" *ngIf="isPullingUp">
+        <app-loading></app-loading>
+      </div>
     </div>
   </div>
 </div>

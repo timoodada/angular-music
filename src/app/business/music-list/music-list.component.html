@@ -16,6 +16,7 @@
           #playBtn
           class="play"
           *ngIf="list.length"
+          (click)="randomPlay()"
         >
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
@@ -27,7 +28,7 @@
     <div class="list" #listWrapper>
       <div class="song-list-wrapper">
         <app-scroll-y
-          [onScroll]="onScroll"
+          (scrolling)="onScroll($event)"
         >
           <div class="empty-wrapper" *ngIf="!loading && !list.length">
             <app-empty

@@ -71,6 +71,6 @@ export class HttpService {
     );
   }
   musicGet = (url: string, params?: Data, options?: any): Observable<any> => {
-    return this.get('http://49.235.160.182/api/transmit/' + encodeURIComponent(url), params, options);
+    return this.get('http://49.235.160.182/api/transmit/' + encodeURIComponent(buildUrl(url, params)), null, options);
   }
 }

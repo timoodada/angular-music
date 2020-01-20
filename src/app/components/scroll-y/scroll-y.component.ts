@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, NgZone} from '@angular/core';
 import BScroll from 'better-scroll';
 import {BubbleComponent} from './bubble/bubble.component';
 import {fadeAnimation} from './fade.animate';
@@ -30,13 +30,17 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   @Input()
   public pullUpLoad: any = { threshold: 50 };
   @Input()
-  public onPullingUp: (val?: any) => void;
-  @Input()
-  public onScroll: (val?: any) => void;
+  public pullingUpEnable = false;
   @Input()
   private data: any;
   @Input()
-  private onPullingDown: any = null;
+  private pullingDownEnable = false;
+  @Output()
+  public scrolling = new EventEmitter<any>();
+  @Output()
+  public pullingDown = new EventEmitter<any>();
+  @Output()
+  public pullingUp = new EventEmitter<any>();
 
   private pullDownRefresh = { threshold: 60, stop: 30 };
   public bubbleWrapperStyle = {};
@@ -48,7 +52,9 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   private pullingDownStartTime = Date.now();
   public isPullingUp = false;
   private fixBubble = (top: number) => {
-    if (top > 0 && this.showBubble === null) { this.showBubble = true; }
+    if (top > 0 && this.showBubble === null) {
+      this.showBubble = true;
+    }
     if (top <= 0) { this.showBubble = null; }
     if (!this.bubble) { return; }
     const bubbleHeight = this.bubble.headRadius / this.bubble.ratio * 2.5;
@@ -58,7 +64,9 @@ export class ScrollYComponent implements OnInit, OnDestroy {
     };
   }
 
-  constructor() {}
+  constructor(
+    private zone: NgZone
+  ) {}
 
   refresh = () => {
     if (this.wrapper) { this.wrapper.refresh(); }
@@ -109,33 +117,42 @@ export class ScrollYComponent implements OnInit, OnDestroy {
     this.initBS();
   }
   initBS = () => {
-    const {probeType, pullUpLoad, onScroll, onPullingUp, pullDownRefresh, onPullingDown} = this;
-    const wrapper = this.wrapper = new BScroll(this.wrapperDom.nativeElement, {
-      scrollY: true,
-      click: true,
-      probeType,
-      pullUpLoad,
-      pullDownRefresh: onPullingDown ? pullDownRefresh : false
+    const {probeType, pullUpLoad, pullingUpEnable, pullDownRefresh, pullingDownEnable} = this;
+    this.zone.runOutsideAngular(() => {
+      const wrapper = this.wrapper = new BScroll(this.wrapperDom.nativeElement, {
+        scrollY: true,
+        click: true,
+        probeType,
+        pullUpLoad,
+        pullDownRefresh: pullingDownEnable ? pullDownRefresh : false
+      });
+      wrapper.on('scroll', (e: any) => {
+        this.zone.run(() => {
+          this.scrolling.emit(e);
+          if (pullingDownEnable) {
+            this.fixBubble(e.y);
+          }
+        });
+      });
+      wrapper.on('pullingUp', (e: any) => {
+        this.zone.run(() => {
+          if (pullingUpEnable) {
+            this.isPullingUp = true;
+            this.pullingUp.emit(e);
+          }
+        });
+      });
+      wrapper.on('pullingDown', (e: any) => {
+        this.zone.run(() => {
+          this.isPullingDown = true;
+          this.showBubble = false;
+          this.pullingDownStartTime = Date.now();
+          if (pullingDownEnable) {
+            this.pullingDown.emit(e);
+          }
+        });
+      });
     });
-    wrapper.on('scroll', (e: any) => {
-      if (onScroll) { onScroll(e); }
-      if (onPullingDown) {
-        this.fixBubble(e.y);
-      }
-    });
-    wrapper.on('pullingUp', (e: any) => {
-      if (onPullingUp) {
-        this.isPullingUp = true;
-        onPullingUp(e);
-      }
-    });
-    wrapper.on('pullingDown', (e: any) => {
-      this.isPullingDown = true;
-      this.showBubble = false;
-      this.pullingDownStartTime = Date.now();
-      if (onPullingDown) { onPullingDown(e); }
-    });
-
   }
   ngOnDestroy() {
     this.destroy();

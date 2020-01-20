@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, TemplateRef} from '@angular/core';
-import {modalAnimation} from './animate';
+import {modalAnimation} from './modal.animate';
 
 interface Footer {
   text: string;

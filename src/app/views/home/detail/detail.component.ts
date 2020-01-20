@@ -4,6 +4,7 @@ import {ActivatedRoute, ParamMap} from '@angular/router';
 import {switchMap, tap} from 'rxjs/operators';
 import {Music} from '../../../business/player';
 import {timer} from 'rxjs';
+import {UrlJoinService} from '../../../services/url-join/url-join.service';
 
 @Component({
   selector: 'app-detail',
@@ -19,7 +20,8 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private http: HttpService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private urlJoinService: UrlJoinService
   ) {}
 
   ngOnInit() {
@@ -61,7 +63,7 @@ export class DetailComponent implements OnInit, OnDestroy {
               songmid: item.data.songmid,
               songid: item.data.songid,
               duration: item.data.interval,
-              image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${item.data.albummid}.jpg?max_age=2592000`
+              image: this.urlJoinService.getSongAlbum(item.data.albummid)
             };
           });
           this.info = res.topinfo;

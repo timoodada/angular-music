@@ -1,9 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {HttpService} from './services/http/http.service';
 import {Router, RouteConfigLoadEnd, RouteConfigLoadStart} from '@angular/router';
 import './stores/index';
-import {FavoriteService} from './stores/actions/favorite/favorite.service';
-import {RecentService} from './stores/actions/recent/recent.service';
 import {ModalService} from './services/modal/modal.service';
 import {ModalComponent} from './components/modal/modal.component';
 
@@ -19,10 +16,7 @@ export class AppComponent implements OnInit {
     this.modalService.init(val);
   }
   constructor(
-    private http: HttpService,
     private router: Router,
-    private favorite: FavoriteService,
-    private recent: RecentService,
     private modalService: ModalService
   ) {
     router.events.subscribe(e => {
@@ -35,8 +29,5 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.favorite.init();
-    this.recent.init();
-  }
+  ngOnInit() {}
 }

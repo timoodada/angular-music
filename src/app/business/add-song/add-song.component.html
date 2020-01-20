@@ -13,9 +13,12 @@
     </div>
   </div>
   <div class="search-box-wrapper">
-
+    <app-search-box
+      #searchBox
+      (submitted)="onSearch($event)"
+    ></app-search-box>
   </div>
-  <div class="shortcut">
+  <div class="shortcut" *ngIf="!keywords">
     <app-switch
       [items]="items"
       [(active)]="current"
@@ -26,7 +29,7 @@
           <div class="shortcut-list-inner">
             <app-pure-music-list
               [list]="stores.recent"
-              del
+              [del]="true"
             ></app-pure-music-list>
           </div>
         </app-scroll-y>
@@ -35,5 +38,25 @@
         <app-empty></app-empty>
       </div>
     </div>
+    <div class="shortcut-list-wrapper" *ngIf="current === 1">
+      <div class="shortcut-list-scroll">
+        <app-scroll-y *ngIf="stores.history.size">
+          <div class="shortcut-list-inner">
+            <app-search-history
+              (submitted)="handleHistory($event)"
+            ></app-search-history>
+          </div>
+        </app-scroll-y>
+        <div class="add-songs-empty-wrapper" *ngIf="!stores.history.size">
+          <app-empty></app-empty>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="search-result" *ngIf="!!keywords">
+    <app-search-list
+      #searchList
+      [keywords]="keywords"
+    ></app-search-list>
   </div>
 </div>

@@ -20,7 +20,9 @@ export class RecentService {
   }
   constructor(
     private storage: StorageService
-  ) {}
+  ) {
+    this.init();
+  }
   init = () => {
     this.setRecent(
       this.storage.get(this.STORAGE_KEY) as Music[]

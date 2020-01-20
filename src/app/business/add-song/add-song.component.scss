@@ -43,13 +43,13 @@
       flex: 1;
       height: 100%;
       overflow: hidden;
-      padding: 10px 15px 0 15px;
+      padding: 10px 0 0 0;
       .shortcut-list-scroll {
         height: 100%;
         overflow: hidden;
-        .shortcut-list-inner {
-          padding: 20px 30px;
-        }
+      }
+      .shortcut-list-inner{
+        padding: 0 15px 0 20px;
       }
     }
   }

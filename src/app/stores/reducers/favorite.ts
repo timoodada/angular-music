@@ -3,7 +3,7 @@ import {List} from 'immutable';
 
 const defaultState = List([]);
 
-export default (state: List<any> = defaultState, action: any): List<Music> => {
+export default (state: List<Music> = defaultState, action: any): List<Music> => {
   switch (action.type) {
     case 'SET_FAVORITE':
       return List(action.value || []);

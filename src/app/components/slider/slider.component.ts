@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild, OnDestroy, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, OnDestroy, OnChanges, SimpleChanges, NgZone} from '@angular/core';
 import BScroll from 'better-scroll';
 import {addClass, debounce} from '../../helpers/util';
 
@@ -51,7 +51,9 @@ export class SliderComponent implements OnInit, OnDestroy, OnChanges {
     this.refresh();
   }, 500);
 
-  constructor() {}
+  constructor(
+    private zone: NgZone
+  ) {}
 
   private setSlideWidth = (isResize?: boolean) => {
     const children = this.sliderGroup.nativeElement.children;
@@ -76,34 +78,38 @@ export class SliderComponent implements OnInit, OnDestroy, OnChanges {
     }, this.interval);
   }
   private onScrollEnd = () => {
-    this.currentIndex = this.wrapper.getCurrentPage().pageX;
+    this.zone.run(() => {
+      this.currentIndex = this.wrapper.getCurrentPage().pageX;
+    });
     if (this.autoplay) {
       this.play();
     }
   }
   initBS = () => {
-    const wrapper = this.wrapper = new BScroll(this.wrapperDom.nativeElement, {
-      scrollX: true,
-      scrollY: false,
-      momentum: false,
-      snap: {
-        loop: this.loop,
-        threshold: this.threshold,
-        speed: this.speed
-      },
-      bounce: false,
-      stopPropagation: true,
-      click: this.click,
-      observeDOM: false
-    });
-    wrapper.on('scrollEnd', this.onScrollEnd);
-    wrapper.on('touchEnd', () => {
-      if (this.autoplay) {
-        this.play();
-      }
-    });
-    wrapper.on('beforeScrollStart', () => {
-      clearTimeout(this.timer);
+    this.zone.runOutsideAngular(() => {
+      const wrapper = this.wrapper = new BScroll(this.wrapperDom.nativeElement, {
+        scrollX: true,
+        scrollY: false,
+        momentum: false,
+        snap: {
+          loop: this.loop,
+          threshold: this.threshold,
+          speed: this.speed
+        },
+        bounce: false,
+        stopPropagation: true,
+        click: this.click,
+        observeDOM: false
+      });
+      wrapper.on('scrollEnd', this.onScrollEnd);
+      wrapper.on('touchEnd', () => {
+        if (this.autoplay) {
+          this.play();
+        }
+      });
+      wrapper.on('beforeScrollStart', () => {
+        clearTimeout(this.timer);
+      });
     });
   }
   init = () => {

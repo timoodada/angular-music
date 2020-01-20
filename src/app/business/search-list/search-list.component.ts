@@ -1,0 +1,96 @@
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {SearchApiService} from '../../services/api/search-api.service';
+import {Music} from '../player';
+import {Subscription} from 'rxjs';
+import {UrlJoinService} from '../../services/url-join/url-join.service';
+import vip from '../pure-music-list/vip.png';
+import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
+import {PlayListService} from '../../stores/actions/play-list/play-list.service';
+import {ModalService} from '../../services/modal/modal.service';
+import {HistoryService} from '../../stores/actions/history/history.service';
+
+@Component({
+  selector: 'app-search-list',
+  templateUrl: './search-list.component.html',
+  styleUrls: ['./search-list.component.scss']
+})
+export class SearchListComponent implements OnInit, OnChanges {
+  @Input()
+  public keywords = '';
+  @ViewChild('scrollY', {static: false})
+  private scrollY: ScrollYComponent;
+  public page = 1;
+  public list: Music[] = [];
+  public totalnum = 0;
+  public subscription: Subscription;
+  public zhida: any;
+  public vip = vip;
+  public loading = false;
+  constructor(
+    private searchApi: SearchApiService,
+    private playListService: PlayListService,
+    private modal: ModalService,
+    private historyService: HistoryService,
+    public urlJoinService: UrlJoinService
+  ) {}
+
+  getList = () => {
+    this.loading = true;
+    if (this.page <= 1) {
+      this.list = [];
+    }
+    this.searchApi.getList(this.keywords, this.page).subscribe(res => {
+      if (res.code === 0) {
+        this.list = this.list.concat(res.data.song.list.map(item => {
+          return {
+            name: item.songname,
+            singer: item.singer.map(val => val.name).join(','),
+            album: item.albumname,
+            vip: !!item.pay.payplay,
+            songmid: item.songmid,
+            songid: item.songid,
+            duration: item.interval,
+            image: this.urlJoinService.getSongAlbum(item.albummid)
+          };
+        }));
+        this.zhida = res.zhida;
+        this.totalnum = res.data.song.totalnum;
+        if (this.scrollY) {
+          this.scrollY.finishPullUp();
+          if (this.totalnum <= this.list.length) {
+            this.scrollY.closePullUp();
+          }
+        }
+      }
+      this.loading = false;
+    }, () => {
+      this.loading = false;
+    });
+  }
+  onPullingUp = () => {
+    this.page += 1;
+    this.getList();
+  }
+  handleClickSong = (item: Music, e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (item.vip) {
+      this.modal.alert({ content: `${item.name}为vip歌曲，无法播放` });
+    }
+    this.historyService.add(this.keywords);
+    this.playListService.insertTail(item);
+  }
+  onKeywordsChange = () => {
+    if (!this.keywords) { return; }
+    if (this.subscription) { this.subscription.unsubscribe(); }
+    if (this.scrollY) { this.scrollY.openPullUp(); }
+    this.page = 1;
+    this.getList();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.keywords) {
+      this.onKeywordsChange();
+    }
+  }
+  ngOnInit() {}
+}

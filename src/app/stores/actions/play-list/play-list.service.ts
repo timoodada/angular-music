@@ -127,6 +127,16 @@ export class PlayListService {
     }
     return throwError(new Error('Current song does not exist'));
   }
+  getRandomIndex = (total: number, currentIndex: number = -1) => {
+    let index;
+    const random = Math.floor(Math.random() * (total - 1));
+    if (random < currentIndex) {
+      index = random;
+    } else {
+      index = random + 1;
+    }
+    return index;
+  }
   playNext = (prev?: boolean) => {
     const mode: PlayMode = getState('playMode');
     const songs: List<Music> = getState('playList');
@@ -146,12 +156,7 @@ export class PlayListService {
         index = nextIndex;
         break;
       case PlayMode.random:
-        const random = Math.floor(Math.random() * (songs.size - 1));
-        if (random < index) {
-          index = random;
-        } else {
-          index = random + 1;
-        }
+        index = this.getRandomIndex(songs.size, index);
         break;
       default:
         break;
@@ -163,6 +168,8 @@ export class PlayListService {
   }
   insertTail = (song: Music) => {
     const songs: List<Music> = getState('playList');
+    const index = songs.findIndex(item => item.songmid === song.songmid);
+    if (index > -1) { return; }
     store.dispatch(
       this._setPlayList(songs.push(song))
     );

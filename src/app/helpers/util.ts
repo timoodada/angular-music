@@ -43,7 +43,12 @@ export function extend<T, U>(to: T, from: U): T & U {
 }
 
 export function addClass(dom: HTMLElement, className: string): void {
-  dom.className = dom.className.split(/\s+/g).concat([className]).join(' ').trim();
+  dom.className = dom.className
+    .split(/\s+/g)
+    .filter(item => item !== className)
+    .concat([className])
+    .join(' ')
+    .trim();
 }
 
 export function debounce(func: (args?: any) => any, delay = 300) {

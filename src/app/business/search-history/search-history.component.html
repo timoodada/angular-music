@@ -1,0 +1,11 @@
+<ul class="search-list">
+  <li
+    class="search-item"
+    *ngFor="let item of stores.history"
+    (click)="onClick(item, $event)"
+    @delAnimation
+  >
+    <span class="text">{{item}}</span>
+    <span class="icon" (click)="onDel(item, $event)"><i class="icon-delete"></i></span>
+  </li>
+</ul>

@@ -40,7 +40,9 @@ export class FavoriteService {
   }
   constructor(
     private storage: StorageService
-  ) {}
+  ) {
+    this.init();
+  }
   init = () => {
     this.setFavorite(
       this.storage.get(this.STORAGE_KEY) as Music[]

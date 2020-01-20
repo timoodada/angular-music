@@ -11,6 +11,7 @@ import {PlayerEventService} from './player-event.service';
 import {FavoriteService} from '../../stores/actions/favorite/favorite.service';
 import {RecentService} from '../../stores/actions/recent/recent.service';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
+import {ModalService} from '../../services/modal/modal.service';
 
 function timeFormat(t = 0) {
   const m = Math.round(t % 60);
@@ -81,6 +82,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     private fullscreenService: FullscreenService,
     private playMode: PlayModeService,
     private playerEvent: PlayerEventService,
+    private modal: ModalService,
     public stores: StoresService,
     public favoriteService: FavoriteService,
     public recentService: RecentService
@@ -108,7 +110,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
   handleCurrentSongChange = (res?: [string, string] | null): void => {
     if (!res || !this.stores.currentSong) { return; }
-    this.recentService.add(this.stores.currentSong);
+    if (this.stores.currentSong.vip) {
+      this.modal.alert({ content: `${this.stores.currentSong.name}为vip歌曲，无法播放` });
+    }
     this.fmtTotalTime = timeFormat(this.stores.currentSong.duration);
     const [src, lyric] = res;
     if (this.lyric) {
@@ -116,6 +120,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     }
     this.lyric = new Lyric(lyric, this.handleLyric);
     this.lyricLines = this.lyric.lines;
+    this.recentService.add(this.stores.currentSong);
     this.player.play(src).then(() => {
       this.lyric.play();
     });
