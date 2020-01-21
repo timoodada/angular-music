@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {ModalComponent} from '../../components/modal/modal.component';
+import {ToastComponent} from '../../components/toast/toast.component';
 
 interface ModalAction {
   text: string;
@@ -16,9 +17,15 @@ interface ModalOptions {
 })
 export class ModalService {
   private el: ModalComponent;
+  private toastEl: ToastComponent;
+  private toastTimer: any;
   constructor() {}
-  init(el: ModalComponent) {
-    this.el = el;
+  init(el: ModalComponent | ToastComponent) {
+    if (el instanceof  ModalComponent) {
+      this.el = el;
+    } else {
+      this.toastEl = el;
+    }
   }
   close = () => {
     this.el.show = false;
@@ -64,5 +71,16 @@ export class ModalService {
         }]
       });
     });
+  }
+  toast = (title: string, interval = 1000) => {
+    clearTimeout(this.toastTimer);
+    this.toastEl.show = false;
+    this.toastTimer = setTimeout(() => {
+      this.toastEl.title = title;
+      this.toastEl.show = true;
+      this.toastTimer = setTimeout(() => {
+        this.toastEl.show = false;
+      }, interval);
+    }, 20);
   }
 }

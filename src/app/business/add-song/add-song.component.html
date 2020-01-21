@@ -30,12 +30,14 @@
             <app-pure-music-list
               [list]="stores.recent"
               [del]="true"
+              (remove)="onRemove($event)"
+              (clicked)="handleSongClick($event)"
             ></app-pure-music-list>
           </div>
         </app-scroll-y>
-      </div>
-      <div class="add-songs-empty-wrapper" *ngIf="!stores.recent.size">
-        <app-empty></app-empty>
+        <div class="add-songs-empty-wrapper" *ngIf="!stores.recent.size">
+          <app-empty></app-empty>
+        </div>
       </div>
     </div>
     <div class="shortcut-list-wrapper" *ngIf="current === 1">
@@ -57,6 +59,7 @@
     <app-search-list
       #searchList
       [keywords]="keywords"
+      (clicked)="handleSongClick($event)"
     ></app-search-list>
   </div>
 </div>

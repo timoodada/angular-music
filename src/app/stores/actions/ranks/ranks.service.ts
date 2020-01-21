@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpService} from '../../../services/http/http.service';
-import store from '../../index';
+import store, {getState} from '../../index';
 import {Observable, of} from 'rxjs';
 import {tap, map, mapTo, catchError} from 'rxjs/operators';
-import {getState} from '../../index';
 import {List} from 'immutable';
 
 type Ranks = Observable<List<any>>;

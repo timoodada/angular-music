@@ -9,7 +9,8 @@ import {delAnimation} from './del.animate';
   styleUrls: ['./search-history.component.scss'],
   animations: [
     delAnimation
-  ]
+  ],
+  providers: [StoresService]
 })
 export class SearchHistoryComponent implements OnInit {
   @Output()

@@ -24,7 +24,9 @@
     <div>
       <ng-content></ng-content>
       <div class="bottom-loading-wrapper" *ngIf="isPullingUp">
-        <app-loading></app-loading>
+        <app-loading
+          title="加载中..."
+        ></app-loading>
       </div>
     </div>
   </div>

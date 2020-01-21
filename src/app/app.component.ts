@@ -3,6 +3,7 @@ import {Router, RouteConfigLoadEnd, RouteConfigLoadStart} from '@angular/router'
 import './stores/index';
 import {ModalService} from './services/modal/modal.service';
 import {ModalComponent} from './components/modal/modal.component';
+import {ToastComponent} from './components/toast/toast.component';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,10 @@ export class AppComponent implements OnInit {
   public loading: boolean;
   @ViewChild(ModalComponent, {static: false})
   public set modal(val: ModalComponent) {
+    this.modalService.init(val);
+  }
+  @ViewChild(ToastComponent, {static: false})
+  public set toast(val: ToastComponent) {
     this.modalService.init(val);
   }
   constructor(

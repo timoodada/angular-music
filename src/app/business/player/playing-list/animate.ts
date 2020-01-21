@@ -6,9 +6,9 @@ export const slideFromBottom = trigger('slideFromBottom', [
     group([
       query('.list-wrapper', [
         style({transform: 'translate3d(0, 0, 0)'}),
-        animate('0.3s ease', style({transform: 'translate3d(0, 100%, 0)'}))
+        animate('300ms ease', style({transform: 'translate3d(0, 100%, 0)'}))
       ]),
-      animate('0.3s ease', style({ opacity: 0 }))
+      animate('300ms ease', style({ opacity: 0 }))
     ])
   ]),
   transition(':enter', [
@@ -16,9 +16,9 @@ export const slideFromBottom = trigger('slideFromBottom', [
     group([
       query('.list-wrapper', [
         style({transform: 'translate3d(0, 100%, 0)'}),
-        animate('0.3s ease', style({transform: 'translate3d(0, 0, 0)'}))
+        animate('300ms ease', style({transform: 'translate3d(0, 0, 0)'}))
       ]),
-      animate('0.3s ease', style({ opacity: 1 }))
+      animate('300ms ease', style({ opacity: 1 }))
     ])
   ])
 ]);
@@ -26,6 +26,6 @@ export const slideFromBottom = trigger('slideFromBottom', [
 export const delAnimation = trigger('delAnimation', [
   transition(':leave', [
     style({ opacity: 1, overflow: 'hidden' }),
-    animate('0.3s ease', style({ height: 0, opacity: 0 }))
+    animate('300ms ease', style({ height: 0, opacity: 0 }))
   ])
 ]);

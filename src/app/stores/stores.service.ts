@@ -82,6 +82,9 @@ export class StoresService implements OnDestroy {
   public get history(): List<string> {
     return this.states.get('history');
   }
+  public get hotWords(): List<string> {
+    return this.states.get('hotWords');
+  }
   // return a function to unwatch
   watch = (stateName: string, cb: (change: StateChange) => void): () => void => {
     if (typeof cb !== 'function') { return; }

@@ -9,6 +9,7 @@ import fullscreen from './fullscreen';
 import favorite from './favorite';
 import recent from './recent';
 import history from './history';
+import hotWords from './hot-words';
 
 export default combineReducers({
   ranks,
@@ -19,5 +20,6 @@ export default combineReducers({
   fullscreen,
   favorite,
   recent,
-  history
+  history,
+  hotWords
 });

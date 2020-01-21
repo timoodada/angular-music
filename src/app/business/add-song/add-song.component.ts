@@ -3,6 +3,10 @@ import {addSongAnimation} from './animate';
 import {StoresService} from '../../stores/stores.service';
 import {SearchListComponent} from '../search-list/search-list.component';
 import {SearchBoxComponent} from '../search-box/search-box.component';
+import {Music} from '../player';
+import {RecentService} from '../../stores/actions/recent/recent.service';
+import {ModalService} from '../../services/modal/modal.service';
+import {PlayListService} from '../../stores/actions/play-list/play-list.service';
 
 @Component({
   selector: 'app-add-song',
@@ -36,7 +40,10 @@ export class AddSongComponent implements OnInit {
   public items = ['最近播放', '搜索历史'];
 
   constructor(
-    public stores: StoresService
+    public stores: StoresService,
+    private recentService: RecentService,
+    private modal: ModalService,
+    private playListService: PlayListService
   ) {}
 
   onSearch = (val) => {
@@ -49,6 +56,16 @@ export class AddSongComponent implements OnInit {
     if (this.searchBox) {
       this.searchBox.setVal(val);
     }
+  }
+  handleSongClick = (val: Music) => {
+    this.playListService.insertTail(val).then(() => {
+      this.modal.toast('歌曲添加成功');
+    }).catch(err => {
+      this.modal.toast(err.message);
+    });
+  }
+  onRemove = (val: Music) => {
+    this.recentService.del(val);
   }
   ngOnInit() {}
 }

@@ -1,0 +1,40 @@
+<app-layout>
+  <app-header slot="header"></app-header>
+  <div class="search">
+    <div class="search-box-wrapper">
+      <app-search-box
+        #searchBox
+        (submitted)="onSearch($event)"
+      ></app-search-box>
+    </div>
+    <div class="shortcut-wrapper" *ngIf="!keywords">
+      <app-scroll-y>
+        <div class="hot-key">
+          <div class="title">热门搜索</div>
+          <ul>
+            <li *ngFor="let v of stores.hotWords" class="item" (click)="onBack(v)">
+              <span>{{v}}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="search-history" *ngIf="stores.history.size">
+          <div class="title">
+            <span class="text">搜索历史</span>
+            <span class="clear" (click)="clear()">
+              <i class="icon-clear"></i>
+            </span>
+          </div>
+          <app-search-history
+            (submitted)="onBack($event)"
+          ></app-search-history>
+        </div>
+      </app-scroll-y>
+    </div>
+    <div class="search-result" *ngIf="keywords">
+      <app-search-list
+        [keywords]="keywords"
+        (clicked)="onPlay($event)"
+      ></app-search-list>
+    </div>
+  </div>
+</app-layout>

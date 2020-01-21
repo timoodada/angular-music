@@ -1,12 +1,17 @@
 <div class="search-list-wrapper">
+  <app-loading *ngIf="loading"></app-loading>
+  <div class="no-result-wrapper">
+    <app-empty *ngIf="showEmpty"></app-empty>
+  </div>
   <app-scroll-y
+    *ngIf="!showEmpty"
     #scrollY
     [pullingUpEnable]="true"
     (pullingUp)="onPullingUp()"
   >
     <ul class="search-list">
       <li
-        *ngIf="zhida && zhida.type === 2"
+        *ngIf="showSinger && zhida && zhida.type === 2"
         class="search-item"
       >
         <div class="singer-avatar">

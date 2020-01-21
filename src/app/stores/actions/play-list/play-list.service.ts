@@ -166,24 +166,27 @@ export class PlayListService {
   playPre = () => {
     return this.playNext(true);
   }
-  insertTail = (song: Music) => {
+  insertTail = (song: Music): Promise<any> => {
     const songs: List<Music> = getState('playList');
     const index = songs.findIndex(item => item.songmid === song.songmid);
-    if (index > -1) { return; }
+    if (index > -1) { return Promise.reject(new Error('已在播放列表')); }
     store.dispatch(
       this._setPlayList(songs.push(song))
     );
+    return Promise.resolve();
   }
   insertNext = (song: Music) => {
-    const songs: List<Music> = getState('playList');
-    const index = songs.indexOf(song);
+    let songs: List<Music> = getState('playList');
+    const index = songs.findIndex(item => item.songmid === song.songmid);
     if (index > -1) {
-      store.dispatch(
-        this._setPlayList(songs.insert(index + 1, song))
-      );
-    } else {
-      this.insertTail(song);
+      songs = songs.splice(index, 1);
     }
+    const current: Music = getState('currentSong');
+    const currentIndex = songs.indexOf(current);
+    songs = songs.insert(currentIndex + 1, song);
+    store.dispatch(
+      this._setPlayList(songs)
+    );
   }
   delOne = (music: Music) => {
     const songs: List<Music> = getState('playList');

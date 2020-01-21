@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {StoresService} from '../../../stores/stores.service';
 import {PlayMode} from '../player.core';
 import {slideFromBottom, delAnimation} from './animate';
@@ -8,6 +8,7 @@ import {PlayModeService} from '../../../stores/actions/play-mode/play-mode.servi
 import {PlayerEventService} from '../player-event.service';
 import {FavoriteService} from '../../../stores/actions/favorite/favorite.service';
 import {ModalService} from '../../../services/modal/modal.service';
+import {ScrollYComponent} from '../../../components/scroll-y/scroll-y.component';
 
 @Component({
   selector: 'app-playing-list',
@@ -19,7 +20,7 @@ import {ModalService} from '../../../services/modal/modal.service';
   ],
   providers: [StoresService]
 })
-export class PlayingListComponent implements OnInit, OnChanges {
+export class PlayingListComponent implements OnInit {
   @Input()
   public show = false;
   @Output()
@@ -27,7 +28,11 @@ export class PlayingListComponent implements OnInit, OnChanges {
   @ViewChild('listContent', {static: false})
   public listContent: any;
   @ViewChild('scrollY', {static: false})
-  public scrollY: any;
+  public set scrollY(scroll: ScrollYComponent) {
+    if (scroll) {
+      this.scrollToCurrentPlaying(scroll);
+    }
+  }
   public playModes = PlayMode;
   public showAddSong = false;
 
@@ -41,16 +46,11 @@ export class PlayingListComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {}
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.show.currentValue) {
-      setTimeout(this.scrollToCurrentPlaying, 20);
-    }
-  }
 
-  scrollToCurrentPlaying = () => {
+  scrollToCurrentPlaying = (scroll: ScrollYComponent) => {
     const index = this.stores.playList.indexOf(this.stores.currentSong);
     if (index > -1) {
-      this.scrollY.scrollToElement(
+      scroll.scrollToElement(
         this.listContent.nativeElement.getElementsByClassName('item')[index],
         0
       );
@@ -80,6 +80,8 @@ export class PlayingListComponent implements OnInit, OnChanges {
     }).then(() => {
       this.playList.delAll();
       this.playerEvent.emit('pauseSong');
+    }).catch(() => {
+      // cancel
     });
   }
   stopDefault = (e) => {

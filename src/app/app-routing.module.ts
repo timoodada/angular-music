@@ -8,6 +8,9 @@ const routes: Routes = [{
   path: 'singer',
   loadChildren: () => import('./views/singers/singers.module').then(res => res.SingersModule)
 }, {
+  path: 'search',
+  loadChildren: () => import('./views/search/search.module').then(res => res.SearchModule)
+}, {
   path: '',
   redirectTo: '/home',
   pathMatch: 'full'

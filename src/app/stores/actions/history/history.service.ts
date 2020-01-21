@@ -33,7 +33,7 @@ export class HistoryService {
       let history = getState('history') as List<string>;
       const index = history.indexOf(str);
       if (index > -1) {
-        history = history.slice(index, 1);
+        history = history.splice(index, 1);
       }
       history = history.unshift(str);
       if (history.size > MAX_NUM) {
@@ -49,5 +49,8 @@ export class HistoryService {
       history = history.splice(index, 1);
       this.setHistory(history);
     }
+  }
+  clear = () => {
+    this.setHistory([]);
   }
 }

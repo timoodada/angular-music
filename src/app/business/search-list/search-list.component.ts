@@ -1,11 +1,10 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {SearchApiService} from '../../services/api/search-api.service';
 import {Music} from '../player';
 import {Subscription} from 'rxjs';
 import {UrlJoinService} from '../../services/url-join/url-join.service';
 import vip from '../pure-music-list/vip.png';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
-import {PlayListService} from '../../stores/actions/play-list/play-list.service';
 import {ModalService} from '../../services/modal/modal.service';
 import {HistoryService} from '../../stores/actions/history/history.service';
 
@@ -17,6 +16,10 @@ import {HistoryService} from '../../stores/actions/history/history.service';
 export class SearchListComponent implements OnInit, OnChanges {
   @Input()
   public keywords = '';
+  @Input()
+  public showSinger = false;
+  @Output()
+  public clicked = new EventEmitter<Music>();
   @ViewChild('scrollY', {static: false})
   private scrollY: ScrollYComponent;
   public page = 1;
@@ -26,18 +29,20 @@ export class SearchListComponent implements OnInit, OnChanges {
   public zhida: any;
   public vip = vip;
   public loading = false;
+  public get showEmpty() {
+    return (!this.showSinger || !this.zhida || this.zhida.type !== 2) && !this.list.length && !this.loading;
+  }
   constructor(
     private searchApi: SearchApiService,
-    private playListService: PlayListService,
     private modal: ModalService,
     private historyService: HistoryService,
     public urlJoinService: UrlJoinService
   ) {}
 
   getList = () => {
-    this.loading = true;
     if (this.page <= 1) {
       this.list = [];
+      this.loading = true;
     }
     this.searchApi.getList(this.keywords, this.page).subscribe(res => {
       if (res.code === 0) {
@@ -53,7 +58,7 @@ export class SearchListComponent implements OnInit, OnChanges {
             image: this.urlJoinService.getSongAlbum(item.albummid)
           };
         }));
-        this.zhida = res.zhida;
+        this.zhida = res.data.zhida;
         this.totalnum = res.data.song.totalnum;
         if (this.scrollY) {
           this.scrollY.finishPullUp();
@@ -76,9 +81,10 @@ export class SearchListComponent implements OnInit, OnChanges {
     e.preventDefault();
     if (item.vip) {
       this.modal.alert({ content: `${item.name}为vip歌曲，无法播放` });
+      return;
     }
     this.historyService.add(this.keywords);
-    this.playListService.insertTail(item);
+    this.clicked.emit(item);
   }
   onKeywordsChange = () => {
     if (!this.keywords) { return; }

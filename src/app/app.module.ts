@@ -14,24 +14,26 @@ import {AppComponent} from './app.component';
 import {LayoutModule} from './components/layout/layout.module';
 import {LoadingModule} from './components/loading/loading.module';
 import {ModalModule} from './components/modal/modal.module';
+import {ToastModule} from './components/toast/toast.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
-  imports: [
-    BrowserAnimationsModule,
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    RouterAnimationModule,
-    HttpClientModule,
-    HttpClientJsonpModule,
-    LayoutModule,
-    PlayerModule,
-    LoadingModule,
-    ModalModule
-  ],
+    imports: [
+        BrowserAnimationsModule,
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        RouterAnimationModule,
+        HttpClientModule,
+        HttpClientJsonpModule,
+        LayoutModule,
+        PlayerModule,
+        LoadingModule,
+        ModalModule,
+        ToastModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

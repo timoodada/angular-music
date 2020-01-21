@@ -1,0 +1,13 @@
+@import "src/app/common/style/variable";
+.toast{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: $color-text-ll;
+  padding: 5px 9px;
+  background: $color-highlight-background;
+  z-index: 1000;
+  border-radius: 8px;
+  font-size: 12px;
+}
