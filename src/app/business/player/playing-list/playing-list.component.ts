@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {StoresService} from '../../../stores/stores.service';
 import {PlayMode} from '../player.core';
 import {slideFromBottom, delAnimation} from './animate';
@@ -26,12 +26,16 @@ export class PlayingListComponent implements OnInit {
   @Output()
   public closed = new EventEmitter<any>();
   @ViewChild('listContent', {static: false})
-  public listContent: any;
+  public listContent: ElementRef;
+  public _scrollY: ScrollYComponent;
   @ViewChild('scrollY', {static: false})
-  public set scrollY(scroll: ScrollYComponent) {
-    if (scroll) {
-      this.scrollToCurrentPlaying(scroll);
+  public set scrollY(scrollY: ScrollYComponent) {
+    if (scrollY && !this._scrollY) {
+      setTimeout(() => {
+        this.scrollToCurrentPlaying(scrollY);
+      }, 20);
     }
+    this._scrollY = scrollY;
   }
   public playModes = PlayMode;
   public showAddSong = false;

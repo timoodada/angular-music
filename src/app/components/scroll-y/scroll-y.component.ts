@@ -71,7 +71,7 @@ export class ScrollYComponent implements OnInit, OnDestroy {
   refresh = () => {
     if (this.wrapper) { this.wrapper.refresh(); }
   }
-  scrollToElement = (el: any, time: number, offsetX?: number | boolean, offsetY?: number | boolean, easing?: any) => {
+  scrollToElement = (el: Element, time: number, offsetX?: number | boolean, offsetY?: number | boolean, easing?: any) => {
     if (this.wrapper) { this.wrapper.scrollToElement(el, time, offsetX, offsetY, easing); }
   }
   scrollTo = (x: number, y: number, time: number, easing?: any) => {
