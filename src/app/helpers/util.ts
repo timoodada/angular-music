@@ -13,6 +13,16 @@ export function isNull(val: any): val is null {
   return val === undefined || val === null;
 }
 
+// null | undefined | {}
+export function isEmpty(val): boolean {
+  if (typeof val === 'undefined') {
+    return true;
+  } else if (typeof val === 'object' && (val === null || Object.keys(val).length === 0)) {
+    return true;
+  }
+  return false;
+}
+
 export function deepMerge(...args: any[]): any {
   const ret = Object.create(null);
   args.forEach(obj => {

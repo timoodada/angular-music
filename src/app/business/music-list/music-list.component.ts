@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Music} from '../player';
-import {prefixStyle} from '../../helpers/util';
+import {isEmpty, prefixStyle} from '../../helpers/util';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 import {PlayListService} from '../../stores/actions/play-list/play-list.service';
 import {PlayerEventService} from '../player/player-event.service';
@@ -12,6 +12,12 @@ const transform = prefixStyle('transform');
 const backdropFilter = prefixStyle('backdropFilter');
 const HEAD_HEIGHT = 42;
 
+interface Info {
+  ListName?: string;
+  pic_h5?: string;
+  pic_v12?: string;
+}
+
 @Component({
   selector: 'app-music-list',
   templateUrl: './music-list.component.html',
@@ -20,16 +26,16 @@ const HEAD_HEIGHT = 42;
 export class MusicListComponent implements OnInit {
   @Input()
   list: Music[] = [];
-  private _info = null;
+  private _info: Info = {};
   @Input()
   get info() {
     return this._info;
   }
   set info(val) {
-    this._info = val;
-    if (val) {
+    if (!isEmpty(val)) {
+      this._info = val;
       let bkg;
-      if (/\.(png|jpe?g)$/.test(val.pic_h5)) {
+      if (/\.(png|jpe?g)\??.*$/.test(val.pic_h5)) {
         bkg = val.pic_h5;
       } else {
         bkg = val.pic_v12;
@@ -39,6 +45,8 @@ export class MusicListComponent implements OnInit {
   }
   @Input()
   public loading = false;
+  @Input()
+  public rank = true;
   @ViewChild('layer', {static: true})
   public layer: any;
   @ViewChild('playBtn', {static: false})
