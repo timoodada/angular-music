@@ -1,3 +1,41 @@
 <app-layout>
   <app-header slot="header"></app-header>
+  <div class="singer">
+    <div
+      class="list-fixed"
+      #fixed
+    >
+      <div class="fixed-title">{{fixedTitle}}</div>
+    </div>
+    <div class="listview">
+      <app-scroll-y
+        [probeType]="3"
+        (scrolling)="listenScroll($event)"
+        #scrollY
+      >
+        <div #listWrapper>
+          <div class="list-group" *ngFor="let item of stores.singers">
+            <h2 class="list-group-title">{{item.title}}</h2>
+            <div class="list-group-item" *ngFor="let val of item.items">
+              <img class="avatar" [appLazy]="val.avatar" alt="{{val.name}}">
+              <span class="name">{{val.name}}</span>
+            </div>
+          </div>
+        </div>
+      </app-scroll-y>
+      <div
+        class="list-shortcut"
+        #listShortcut
+      >
+        <ul>
+          <li
+            class="item"
+            [title]="key"
+            [ngClass]="{current: key === currentIndex}"
+            *ngFor="let item of stores.singers; index as key"
+          >{{item.title.substr(0, 1)}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </app-layout>

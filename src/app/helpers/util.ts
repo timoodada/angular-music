@@ -76,7 +76,7 @@ const vendor = (style: string) => {
   };
 
   for (const key in transformNames) {
-    if (elementStyle[transformNames[key]] !== undefined) {
+    if (typeof elementStyle[transformNames[key]] !== 'undefined') {
       return key;
     }
   }

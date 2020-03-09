@@ -1,7 +1,7 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import store from './';
 import {List} from 'immutable';
-import {Music} from '../business/player';
+import {FormatSingerItem, Music} from '../business/player';
 import {PlayMode} from '../business/player/player.core';
 import {Observable, Subscription} from 'rxjs';
 import {EventManager} from '../helpers/event';
@@ -84,6 +84,9 @@ export class StoresService implements OnDestroy {
   }
   public get hotWords(): List<string> {
     return this.states.get('hotWords');
+  }
+  public get singers(): List<FormatSingerItem> {
+    return this.states.get('singers');
   }
   // return a function to unwatch
   watch = (stateName: string, cb: (change: StateChange) => void): () => void => {

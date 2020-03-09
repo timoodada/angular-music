@@ -10,6 +10,7 @@ import favorite from './favorite';
 import recent from './recent';
 import history from './history';
 import hotWords from './hot-words';
+import singers from './singers';
 
 export default combineReducers({
   ranks,
@@ -21,5 +22,6 @@ export default combineReducers({
   favorite,
   recent,
   history,
-  hotWords
+  hotWords,
+  singers
 });

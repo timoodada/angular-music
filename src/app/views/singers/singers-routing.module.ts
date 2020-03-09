@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import {Routes, RouterModule} from '@angular/router';
 import {SingersComponent} from './singers.component';
 import {LayoutModule} from '../../components/layout/layout.module';
+import {ScrollYModule} from '../../components/scroll-y/scroll-y.module';
+import {LazyModule} from '../../directives/lazy/lazy.module';
 
 const routes: Routes = [{
   path: '',
@@ -13,11 +15,13 @@ const routes: Routes = [{
   declarations: [
     SingersComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    LayoutModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        LayoutModule,
+        ScrollYModule,
+        LazyModule
+    ],
   exports: [
     SingersComponent
   ]

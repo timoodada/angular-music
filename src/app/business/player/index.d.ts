@@ -9,3 +9,15 @@ export interface Music {
   duration: number;
   image: string;
 }
+
+export interface Singer {
+  name: string;
+  id: string;
+  index: string;
+  avatar: string;
+}
+
+export interface FormatSingerItem {
+  title: string;
+  items: Singer[];
+}
