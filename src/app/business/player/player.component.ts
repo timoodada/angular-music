@@ -130,7 +130,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.playing = true;
   }
   handleError = (err) => {
-    this.modal.alert({content: err.message}).then(() => {
+    this.modal.alert({content: err.message || 'Playing Error'}).then(() => {
       this.songReady = true;
     });
   }

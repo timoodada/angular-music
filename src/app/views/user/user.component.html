@@ -1,0 +1,48 @@
+<app-layout>
+  <div class="user-center-header" slot="header">
+    <div class="back" (click)="back()">
+      <i class="icon-back"></i>
+    </div>
+    <div class="switches-wrapper">
+      <app-switch
+        [items]="['我喜欢的', '最近听的']"
+        [active]="currentTab"
+        (activeChange)="onTabChange($event)"
+      ></app-switch>
+    </div>
+    <div>
+      <div
+        class="play-btn"
+        (click)="randomPlay()"
+      >
+        <i class="icon-play"></i>
+        <span class="text">随机播放全部</span>
+      </div>
+      <div class="clear" (click)="clear()">
+        <span><i class="icon-clear"></i>&nbsp;清空</span>
+      </div>
+    </div>
+  </div>
+  <div class="user-center">
+    <div class="list-wrapper">
+      <app-scroll-y>
+        <div class="list-inner">
+          <app-pure-music-list
+            [list]="stores.favorite"
+            [del]="true"
+            *ngIf="currentTab === 0"
+            (clicked)="onClick($event)"
+            (remove)="onDel($event)"
+          ></app-pure-music-list>
+          <app-pure-music-list
+            [list]="stores.recent"
+            [del]="true"
+            *ngIf="currentTab === 1"
+            (clicked)="onClick($event)"
+            (remove)="onDel($event)"
+          ></app-pure-music-list>
+        </div>
+      </app-scroll-y>
+    </div>
+  </div>
+</app-layout>

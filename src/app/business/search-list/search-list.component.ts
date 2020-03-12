@@ -7,6 +7,7 @@ import vip from '../pure-music-list/vip.png';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 import {ModalService} from '../../services/modal/modal.service';
 import {HistoryService} from '../../stores/actions/history/history.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-search-list',
@@ -36,7 +37,8 @@ export class SearchListComponent implements OnInit, OnChanges {
     private searchApi: SearchApiService,
     private modal: ModalService,
     private historyService: HistoryService,
-    public urlJoinService: UrlJoinService
+    public urlJoinService: UrlJoinService,
+    private router: Router
   ) {}
 
   getList = () => {
@@ -92,6 +94,9 @@ export class SearchListComponent implements OnInit, OnChanges {
     if (this.scrollY) { this.scrollY.openPullUp(); }
     this.page = 1;
     this.getList();
+  }
+  goSingerDetail = () => {
+    this.router.navigate([`/search/${this.zhida.singermid}`]);
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.keywords) {

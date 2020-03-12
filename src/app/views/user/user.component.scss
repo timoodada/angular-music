@@ -1,0 +1,67 @@
+@import "src/app/common/style/variable";
+
+.user-center-header{
+  background: $color-background;
+  position: relative;
+  .back {
+    position: absolute;
+    top: 7px;
+    left: 0;
+    z-index: 50;
+    .icon-back {
+      display: block;
+      padding: 10px;
+      font-size: $font-size-large-x;
+      color: $color-theme;
+    }
+  }
+  .switches-wrapper {
+    padding: 10px 0 30px 0;
+  }
+  .play-btn {
+    box-sizing: border-box;
+    width: 135px;
+    padding: 7px 0;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid $color-text-l;
+    color: $color-text-l;
+    border-radius: 100px;
+    font-size: 0;
+    .icon-play {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+      font-size: $font-size-medium-x;
+    }
+    .text {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: $font-size-small;
+    }
+  }
+  .clear {
+    text-align: right;
+    padding: 0 30px;
+    height: 20px;
+    color: $color-text-l;
+  }
+}
+.user-center {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  .list-wrapper {
+    height: 100%;
+    overflow: hidden;
+    .list-inner {
+      padding: 20px 30px;
+    }
+  }
+  .no-result-wrapper {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-75%);
+  }
+}

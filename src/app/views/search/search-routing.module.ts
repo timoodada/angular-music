@@ -7,7 +7,9 @@ import {SearchBoxModule} from '../../business/search-box/search-box.module';
 import {ScrollYModule} from '../../components/scroll-y/scroll-y.module';
 import {SearchHistoryModule} from '../../business/search-history/search-history.module';
 import {SearchListModule} from '../../business/search-list/search-list.module';
-import {DetailComponent} from './detail/detail.component';
+import {DetailComponent} from '../singers/detail/detail.component';
+import {SingerDetailModule} from '../singers/detail/singer-detail.module';
+import {RouterAnimationModule} from '../../components/router-animation/router-animation.module';
 
 const routes: Routes = [{
   path: '',
@@ -20,8 +22,7 @@ const routes: Routes = [{
 
 @NgModule({
   declarations: [
-    SearchComponent,
-    DetailComponent
+    SearchComponent
   ],
   imports: [
     CommonModule,
@@ -30,11 +31,12 @@ const routes: Routes = [{
     SearchBoxModule,
     ScrollYModule,
     SearchHistoryModule,
-    SearchListModule
+    SearchListModule,
+    SingerDetailModule,
+    RouterAnimationModule
   ],
   exports: [
-    SearchComponent,
-    DetailComponent
+    SearchComponent
   ]
 })
 export class SearchRoutingModule { }

@@ -38,4 +38,7 @@
       ></app-search-list>
     </div>
   </div>
+  <app-router-animation type="slide" [outlet]="outlet" slot="extra">
+    <router-outlet #outlet="outlet"></router-outlet>
+  </app-router-animation>
 </app-layout>

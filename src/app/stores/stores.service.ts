@@ -5,6 +5,7 @@ import {FormatSingerItem, Music} from '../business/player';
 import {PlayMode} from '../business/player/player.core';
 import {Observable, Subscription} from 'rxjs';
 import {EventManager} from '../helpers/event';
+import favorite from './reducers/favorite';
 
 interface StateChange {
   currentValue: any;
@@ -75,6 +76,9 @@ export class StoresService implements OnDestroy {
   }
   public get fullscreen(): boolean {
     return this.states.get('fullscreen');
+  }
+  public get favorite(): List<Music> {
+    return this.states.get('favorite');
   }
   public get recent(): List<Music> {
     return this.states.get('recent');

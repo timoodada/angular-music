@@ -2,9 +2,8 @@
 * Animation For Route Switching
 */
 
-import { Component, OnInit, Input } from '@angular/core';
-import {fadeAnimation} from './fade';
-import {slideAnimation} from './slide';
+import {Component, Input, OnInit} from '@angular/core';
+import {slideAnimation} from './router.animate';
 import {RouterOutlet} from '@angular/router';
 
 const HISTORIES_KEY = '__HISTORIES_KEY__';
@@ -47,12 +46,11 @@ const isHistoryPush = (location: any, update: any): boolean => {
   templateUrl: './router-animation.component.html',
   styleUrls: ['./router-animation.component.scss'],
   animations: [
-    fadeAnimation,
     slideAnimation
   ]
 })
 export class RouterAnimationComponent implements OnInit {
-  private outletComponent: any;
+  private currentPath: string;
 
   @Input()
   public type: 'fade' | 'slide';
@@ -60,8 +58,7 @@ export class RouterAnimationComponent implements OnInit {
   @Input()
   public outlet: RouterOutlet;
 
-  private fadeTriggerIndex = 0;
-  private fadeTriggers: string[] = ['fadein', 'fadeout'];
+  private fadeTrigger: 'hide' | 'fade' = 'hide';
 
   private slideTrigger: 'forward' | 'backward' | 'bridge' | 'none' = 'none';
   private slideToEmpty = () => {
@@ -77,29 +74,15 @@ export class RouterAnimationComponent implements OnInit {
   constructor() {}
 
   handleFade = (outlet: RouterOutlet) => {
-    if (
-      (outlet && outlet.isActivated && this.outletComponent !== outlet.component) ||
-      outlet && !outlet.isActivated && this.outletComponent
-    ) {
-      this.fadeTriggerIndex = (this.fadeTriggerIndex + 1) % this.fadeTriggers.length;
+    if (outlet && outlet.isActivated && location.pathname.indexOf(this.currentPath) !== 0) {
+      this.fadeTrigger = this.fadeTrigger === 'fade' ? 'hide' : 'fade';
     }
-    return this.fadeTriggers[this.fadeTriggerIndex];
-  }
-  prepareFadeRoute = (outlet: RouterOutlet) => {
-    let triggerName: string | null;
-    if (this.type !== 'fade') { return null; }
-    triggerName = this.handleFade(outlet);
-    if (outlet && outlet.isActivated) {
-      this.outletComponent = outlet.component;
-    } else {
-      this.outletComponent = null;
-    }
-    return triggerName;
+    return this.fadeTrigger;
   }
 
   handleSlide = (outlet: RouterOutlet) => {
-    if (this.outletComponent) {
-      if (outlet && outlet.isActivated && this.outletComponent !== outlet.component) {
+    if (this.currentPath) {
+      if (outlet && outlet.isActivated && this.currentPath !== location.pathname) {
         if (isHistoryPush(location, true)) {
           this.slideBackward();
         } else {
@@ -113,14 +96,21 @@ export class RouterAnimationComponent implements OnInit {
     }
     return this.slideTrigger;
   }
-  prepareSlideRoute = (outlet: RouterOutlet) => {
+  prepareRoute = (outlet: RouterOutlet) => {
     let triggerName: string | null;
-    if (this.type !== 'slide') { return null; }
-    triggerName = this.handleSlide(outlet);
+    switch (this.type) {
+      case 'fade':
+        triggerName = this.handleFade(outlet);
+        break;
+      case 'slide':
+        triggerName = this.handleSlide(outlet);
+        break;
+      default:
+    }
     if (outlet && outlet.isActivated) {
-      this.outletComponent = outlet.component;
+      this.currentPath = location.pathname;
     } else {
-      this.outletComponent = null;
+      this.currentPath = null;
     }
     return triggerName;
   }

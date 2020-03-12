@@ -11,6 +11,9 @@ const routes: Routes = [{
   path: 'search',
   loadChildren: () => import('./views/search/search.module').then(res => res.SearchModule)
 }, {
+  path: 'user',
+  loadChildren: () => import('./views/user/user.module').then(res => res.UserModule)
+}, {
   path: '',
   redirectTo: '/home',
   pathMatch: 'full'

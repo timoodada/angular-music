@@ -13,6 +13,7 @@
       <li
         *ngIf="showSinger && zhida && zhida.type === 2"
         class="search-item"
+        (click)="goSingerDetail()"
       >
         <div class="singer-avatar">
           <img

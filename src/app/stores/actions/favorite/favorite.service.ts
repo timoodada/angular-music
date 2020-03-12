@@ -61,4 +61,7 @@ export class FavoriteService {
     const favorites = this.getFavorites();
     return favorites.findIndex(item => item.songid === music.songid) > -1;
   }
+  clear = () => {
+    this.setFavorite([]);
+  }
 }
