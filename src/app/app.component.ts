@@ -11,6 +11,7 @@ import {ToastComponent} from './components/toast/toast.component';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  public title = 'Angular Music';
   public loading: boolean;
   @ViewChild(ModalComponent, {static: false})
   public set modal(val: ModalComponent) {

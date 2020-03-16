@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RouterAnimationComponent } from './router-animation.component';
+import {RouterAnimationModule} from './router-animation.module';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('AnimationComponent', () => {
   let component: RouterAnimationComponent;
@@ -8,7 +10,11 @@ describe('AnimationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RouterAnimationComponent ]
+      imports: [
+        RouterAnimationModule,
+        BrowserAnimationsModule
+      ],
+      declarations: []
     })
     .compileComponents();
   }));

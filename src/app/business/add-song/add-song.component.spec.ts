@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddSongComponent } from './add-song.component';
+import {AddSongModule} from './add-song.module';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('AddSongComponent', () => {
   let component: AddSongComponent;
@@ -8,7 +10,11 @@ describe('AddSongComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddSongComponent ]
+      imports: [
+        AddSongModule,
+        HttpClientModule
+      ],
+      declarations: []
     })
     .compileComponents();
   }));

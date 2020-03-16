@@ -5,7 +5,6 @@ import {FormatSingerItem, Music} from '../business/player';
 import {PlayMode} from '../business/player/player.core';
 import {Observable, Subscription} from 'rxjs';
 import {EventManager} from '../helpers/event';
-import favorite from './reducers/favorite';
 
 interface StateChange {
   currentValue: any;

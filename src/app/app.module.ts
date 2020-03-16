@@ -20,20 +20,20 @@ import {ToastModule} from './components/toast/toast.module';
   declarations: [
     AppComponent
   ],
-    imports: [
-        BrowserAnimationsModule,
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        RouterAnimationModule,
-        HttpClientModule,
-        HttpClientJsonpModule,
-        LayoutModule,
-        PlayerModule,
-        LoadingModule,
-        ModalModule,
-        ToastModule
-    ],
+  imports: [
+    BrowserAnimationsModule,
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    RouterAnimationModule,
+    HttpClientModule,
+    HttpClientJsonpModule,
+    LayoutModule,
+    PlayerModule,
+    LoadingModule,
+    ModalModule,
+    ToastModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
