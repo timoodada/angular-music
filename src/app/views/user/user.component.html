@@ -10,7 +10,9 @@
         (activeChange)="onTabChange($event)"
       ></app-switch>
     </div>
-    <div>
+    <div
+      *ngIf="(currentTab === 0 && stores.favorite.size) || (currentTab === 1 && stores.recent.size)"
+    >
       <div
         class="play-btn"
         (click)="randomPlay()"
@@ -43,6 +45,11 @@
           ></app-pure-music-list>
         </div>
       </app-scroll-y>
+    </div>
+    <div class="no-result-wrapper">
+      <app-empty
+        *ngIf="(currentTab === 0 && !stores.favorite.size) || (currentTab === 1 && !stores.recent.size)"
+      ></app-empty>
     </div>
   </div>
 </app-layout>

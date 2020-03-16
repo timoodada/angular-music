@@ -6,6 +6,7 @@ import {LayoutModule} from '../../components/layout/layout.module';
 import {SwitchModule} from '../../components/switch/switch.module';
 import {ScrollYModule} from '../../components/scroll-y/scroll-y.module';
 import {PureMusicListModule} from '../../business/pure-music-list/pure-music-list.module';
+import {EmptyModule} from '../../components/empty/empty.module';
 
 const routes: Routes = [{
   path: '',
@@ -16,14 +17,15 @@ const routes: Routes = [{
   declarations: [
     UserComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    LayoutModule,
-    SwitchModule,
-    ScrollYModule,
-    PureMusicListModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        LayoutModule,
+        SwitchModule,
+        ScrollYModule,
+        PureMusicListModule,
+        EmptyModule
+    ],
   exports: [
     UserComponent
   ]
