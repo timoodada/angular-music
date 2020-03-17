@@ -50,7 +50,7 @@ export function isAbsoluteUrl(url: string): boolean {
   return /^\//.test(url);
 }
 
-export function compineUrl(baseUrl: string, url: string): string {
+export function compileUrl(baseUrl: string, url: string): string {
   if (isWholeUrl(url) || !baseUrl) { return url; }
   return baseUrl.replace(/\/+$/, '') + '/' + url.replace(/^\/+/, '');
 }

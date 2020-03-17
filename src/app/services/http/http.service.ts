@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {queryString} from '../../helpers/query';
 import {deepMerge} from '../../helpers/util';
-import {compineUrl, buildUrl} from '../../helpers/url';
+import {compileUrl, buildUrl} from '../../helpers/url';
 import {race, timer, Observable, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
+
+const proxyUrl = 'http://49.235.160.182/api/transmit/';
 
 interface Data {
   [prop: string]: any;
@@ -48,7 +50,7 @@ export class HttpService {
   post = (url: string, data?: Data | string, options?: any): Observable<any> => {
     return this.timeoutHandler(
       this.http.post(
-        compineUrl(this.baseUrl, url),
+        compileUrl(this.baseUrl, url),
         queryString(data),
         deepMerge(this.defaults, options)
       )
@@ -58,7 +60,7 @@ export class HttpService {
   jsonp = (url: string, params?: Data, callbackFuncName?: string): Observable<any> => {
     return this.timeoutHandler(
       this.http.jsonp(
-        buildUrl(compineUrl(this.baseUrl, url), params),
+        buildUrl(compileUrl(this.baseUrl, url), params),
         callbackFuncName
       )
     );
@@ -66,11 +68,11 @@ export class HttpService {
 
   musicPost = (url: string, postData?: Data | string): Observable<any> => {
     return this.post(
-      'http://49.235.160.182/api/transmit/' + encodeURIComponent(url),
+      proxyUrl + encodeURIComponent(url),
       postData
     );
   }
   musicGet = (url: string, params?: Data, options?: any): Observable<any> => {
-    return this.get('http://49.235.160.182/api/transmit/' + encodeURIComponent(buildUrl(url, params)), null, options);
+    return this.get(proxyUrl + encodeURIComponent(buildUrl(url, params)), null, options);
   }
 }

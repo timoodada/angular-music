@@ -11,7 +11,7 @@ describe('PlayListService', () => {
   }));
 
   it('should be created', () => {
-    const service: PlayListService = TestBed.get(PlayListService);
+    const service: PlayListService = TestBed.inject(PlayListService);
     expect(service).toBeTruthy();
   });
 });

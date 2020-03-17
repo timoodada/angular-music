@@ -6,7 +6,7 @@ describe('UrlJoinService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: UrlJoinService = TestBed.get(UrlJoinService);
+    const service: UrlJoinService = TestBed.inject(UrlJoinService);
     expect(service).toBeTruthy();
   });
 });

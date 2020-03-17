@@ -6,7 +6,7 @@ describe('PlayerEventService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: PlayerEventService = TestBed.get(PlayerEventService);
+    const service: PlayerEventService = TestBed.inject(PlayerEventService);
     expect(service).toBeTruthy();
   });
 });

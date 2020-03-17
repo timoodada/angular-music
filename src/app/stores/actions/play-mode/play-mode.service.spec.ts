@@ -6,7 +6,7 @@ describe('PlayModeService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: PlayModeService = TestBed.get(PlayModeService);
+    const service: PlayModeService = TestBed.inject(PlayModeService);
     expect(service).toBeTruthy();
   });
 });

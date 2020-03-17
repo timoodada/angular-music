@@ -11,7 +11,7 @@ describe('HotWordsService', () => {
   }));
 
   it('should be created', () => {
-    const service: HotWordsService = TestBed.get(HotWordsService);
+    const service: HotWordsService = TestBed.inject(HotWordsService);
     expect(service).toBeTruthy();
   });
 });
