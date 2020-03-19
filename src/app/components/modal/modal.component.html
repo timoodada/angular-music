@@ -1,12 +1,15 @@
 <div class="modal" *ngIf="show" @modalAnimation>
   <div class="modal-wrapper">
-    <div class="modal-header" *ngIf="title">{{title}}</div>
-    <div class="modal-header" *ngIf="!title">
-      <ng-content select="[slot=header]"></ng-content>
+    <div class="modal-header" *ngIf="titleType === 'string'">{{title}}</div>
+    <div class="modal-header" *ngIf="titleType === 'template'">
+      <ng-container *ngTemplateOutlet="title"></ng-container>
     </div>
-    <div class="modal-content" *ngIf="content">{{content}}</div>
-    <div class="modal-content" *ngIf="!content">
-      <ng-content></ng-content>
+    <div class="modal-content" *ngIf="contentType === 'string'">{{content}}</div>
+    <div class="modal-content" *ngIf="contentType === 'component'">
+      <ng-container *ngComponentOutlet="content"></ng-container>
+    </div>
+    <div class="modal-content" *ngIf="contentType === 'template'">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
     </div>
     <div class="modal-footer">
       <button class="button" *ngFor="let v of footer" (click)="onClick(v)">{{v.text}}</button>

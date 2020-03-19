@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'list'
+  name: 'appList'
 })
 export class ListPipe implements PipeTransform {
 

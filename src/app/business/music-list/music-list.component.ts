@@ -4,9 +4,6 @@ import {isEmpty, prefixStyle} from '../../helpers/util';
 import {ScrollYComponent} from '../../components/scroll-y/scroll-y.component';
 import {PlayListService} from '../../stores/actions/play-list/play-list.service';
 import {PlayerEventService} from '../player/player-event.service';
-import {ModalService} from '../../services/modal/modal.service';
-import {PlayModeService} from '../../stores/actions/play-mode/play-mode.service';
-import {PlayMode} from '../player/player.core';
 
 const transform = prefixStyle('transform');
 const backdropFilter = prefixStyle('backdropFilter');
@@ -65,9 +62,7 @@ export class MusicListComponent implements OnInit {
 
   constructor(
     private playListService: PlayListService,
-    private playerEvent: PlayerEventService,
-    private modal: ModalService,
-    private playMode: PlayModeService
+    private playerEvent: PlayerEventService
   ) {}
 
   ngOnInit() {
@@ -109,29 +104,12 @@ export class MusicListComponent implements OnInit {
   back = () => {
     history.go(-1);
   }
-  getValidList = () => {
-    return this.list.filter(val => !val.vip);
-  }
   randomPlay = () => {
-    const list = this.getValidList();
-    if (list.length <= 0) {
-      this.modal.alert({ content: '没有可以播放的歌曲' }).then(() => {
-        // closed
-      });
-      return;
-    }
-    this.playMode.setPlayMode(PlayMode.random);
-    this.onClick(list[this.playListService.getRandomIndex(list.length)]);
+    this.playListService.randomPlay(this.list)
+      .subscribe(res => this.playerEvent.emit('playSong', res));
   }
   onClick = (item: Music) => {
-    if (item.vip) {
-      this.modal.alert({ content: '无法播放vip歌曲' }).then(() => {
-        // closed
-      });
-      return;
-    }
-    const list = this.getValidList();
-    this.playListService.setPlayList(list, item)
+    this.playListService.filterPlayList(item, this.list)
       .subscribe(res => this.playerEvent.emit('playSong', res));
   }
 }

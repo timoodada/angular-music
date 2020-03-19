@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {StoresService} from '../../stores/stores.service';
 import {PlayListService} from '../../stores/actions/play-list/play-list.service';
-import {PlayMode} from '../../business/player/player.core';
 import {Music} from '../../business/player';
 import {ModalService} from '../../services/modal/modal.service';
 import {PlayModeService} from '../../stores/actions/play-mode/play-mode.service';
@@ -33,30 +32,14 @@ export class UserComponent implements OnInit {
   back = () => {
     history.go(-1);
   }
-  getValidList = () => {
-    const list = this.currentTab === 0 ? this.stores.favorite : this.stores.recent;
-    return list.filter(val => !val.vip);
-  }
   randomPlay = () => {
-    const list = this.getValidList();
-    if (list.size <= 0) {
-      this.modal.alert({ content: '没有可以播放的歌曲' }).then(() => {
-        // closed
-      });
-      return;
-    }
-    this.playMode.setPlayMode(PlayMode.random);
-    this.onClick(list[this.playListService.getRandomIndex(list.size)]);
+    const list = this.currentTab === 0 ? this.stores.favorite : this.stores.recent;
+    this.playListService.randomPlay(list)
+      .subscribe(res => this.playerEvent.emit('playSong', res));
   }
   onClick = (item: Music) => {
-    if (item.vip) {
-      this.modal.alert({ content: '无法播放vip歌曲' }).then(() => {
-        // closed
-      });
-      return;
-    }
-    const list = this.getValidList();
-    this.playListService.setPlayList(list, item)
+    const list = this.currentTab === 0 ? this.stores.favorite : this.stores.recent;
+    this.playListService.filterPlayList(item, list)
       .subscribe(res => this.playerEvent.emit('playSong', res));
   }
   onDel = (val: Music) => {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, TemplateRef, Type} from '@angular/core';
 import {ModalComponent} from '../../components/modal/modal.component';
 import {ToastComponent} from '../../components/toast/toast.component';
 
@@ -7,9 +7,13 @@ interface ModalAction {
   callback: () => void;
 }
 interface ModalOptions {
-  title: string;
-  content: string;
+  title: TemplateRef<any> | string;
+  content: Type<any> | TemplateRef<any> | string;
   actions: ModalAction[];
+}
+interface ConfirmOption {
+  title?: TemplateRef<any> | string;
+  content: Type<any> | TemplateRef<any> | string;
 }
 
 @Injectable({
@@ -23,7 +27,7 @@ export class ModalService {
   init(el: ModalComponent | ToastComponent) {
     if (el instanceof  ModalComponent) {
       this.el = el;
-    } else {
+    } else if (el instanceof ToastComponent) {
       this.toastEl = el;
     }
   }
@@ -51,11 +55,12 @@ export class ModalService {
       });
     });
   }
-  confirm = ({title = '提示', content}) => {
+  confirm = (option: ConfirmOption) => {
+    if (!option.title) { option.title = '提示'; }
     return new Promise((resolve, reject) => {
       this.show({
-        title,
-        content,
+        title: option.title,
+        content: option.content,
         actions: [{
           text: '取消',
           callback: () => {

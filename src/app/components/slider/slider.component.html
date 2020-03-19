@@ -3,6 +3,6 @@
     <ng-content></ng-content>
   </div>
   <div class="dot-group" *ngIf="dot">
-    <span *ngFor="let item of totalSize | list" [ngClass]="{'active': item === currentIndex}"></span>
+    <span *ngFor="let item of totalSize | appList" [ngClass]="{'active': item === currentIndex}"></span>
   </div>
 </div>

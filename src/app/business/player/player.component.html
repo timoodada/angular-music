@@ -71,7 +71,7 @@
         </div>
         <div
           class="icon i-left"
-          [ngClass]="{disable: !songReady}"
+          [ngClass]="{disable: !switchEnable}"
           (click)="pre()"
         >
           <i class="icon-prev"></i>
@@ -91,7 +91,7 @@
         <div
           class="icon i-right"
           [ngClass]="{
-            disable: !songReady
+            disable: !switchEnable
           }"
           (click)="next()"
         >
@@ -147,7 +147,8 @@
           class="icon-mini"
           [ngClass]="{
             'icon-pause-mini': playing,
-            'icon-play-mini': !playing
+            'icon-play-mini': !playing,
+            disable: !songReady
           }"></i>
       </app-progress-circle>
     </div>

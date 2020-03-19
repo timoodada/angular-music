@@ -6,6 +6,8 @@ import {Music} from '../../../business/player';
 import {map, tap} from 'rxjs/operators';
 import {PlayMode} from '../../../business/player/player.core';
 import {List} from 'immutable';
+import {ModalService} from '../../../services/modal/modal.service';
+import {PlayModeService} from '../play-mode/play-mode.service';
 
 function unescapeHTML(lrc: string): string {
   const t = document.createElement('div');
@@ -23,7 +25,9 @@ export class PlayListService {
     playInfo?: [string, string]
   } = {};
   constructor(
-    private http: HttpService
+    private http: HttpService,
+    private modal: ModalService,
+    private playMode: PlayModeService
   ) {}
   _setCurrentSong(value: Music): any {
     return {
@@ -136,6 +140,30 @@ export class PlayListService {
       index = random + 1;
     }
     return index;
+  }
+  getValidList = (list: List<Music> | Music[]): List<Music> | Music[] => {
+    return (list as any).filter(val => !val.vip);
+  }
+  filterPlayList = (item: Music, list: List<Music> | Music[]): Observable<[string, string]> => {
+    if (item.vip) {
+      this.modal.alert({ content: '无法播放vip歌曲' }).then(() => {
+        // closed
+      });
+      return throwError(new Error('无法播放vip歌曲'));
+    }
+    const filterList = this.getValidList(list);
+    return this.setPlayList(filterList, item);
+  }
+  randomPlay = (list: List<Music> | Music[]): Observable<[string, string]> => {
+    const filterList = List(this.getValidList(list));
+    if (filterList.size <= 0) {
+      this.modal.alert({ content: '没有可以播放的歌曲' }).then(() => {
+        // closed
+      });
+      return throwError(new Error('没有可以播放的歌曲'));
+    }
+    this.playMode.setPlayMode(PlayMode.random);
+    return this.setPlayList(filterList, filterList.get(this.getRandomIndex(filterList.size)));
   }
   playNext = (prev?: boolean) => {
     const mode: PlayMode = getState('playMode');

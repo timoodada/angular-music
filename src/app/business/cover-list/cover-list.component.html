@@ -1,0 +1,24 @@
+<div>
+  <ng-container *ngIf="loading">
+    <div class="item loading" *ngFor="let item of 4 | appList">
+      <div class="icon">
+        <div class="icon-sub">
+          <div class=sub></div>
+        </div>
+      </div>
+      <div class="songlist">
+        <div class="song" *ngFor="let val of 3 | appList"></div>
+      </div>
+    </div>
+  </ng-container>
+  <div (click)="clicked.emit(item)" class="item" *ngFor="let item of list" >
+    <div class="icon">
+      <ng-container *ngTemplateOutlet="img;context: item;"></ng-container>
+    </div>
+    <div class="songlist">
+      <div class="song" *ngFor="let val of item.songList">
+        <ng-container *ngTemplateOutlet="song;context: val;"></ng-container>
+      </div>
+    </div>
+  </div>
+</div>

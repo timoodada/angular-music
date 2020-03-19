@@ -39,12 +39,9 @@ export class PlayerComponent implements OnInit, OnDestroy {
   public lyric: any;
   public lyricLines = [];
   public playModes = PlayMode;
-  private _songReady = true;
-  public get songReady(): boolean {
-    return this._songReady && this.stores.playList.size > 1;
-  }
-  public set songReady(bool) {
-    this._songReady = bool;
+  public songReady = true;
+  public get switchEnable() {
+    return this.songReady && this.stores.playList.size > 1;
   }
   public player: MusicPlayer;
   public playing = false;
@@ -110,9 +107,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
   handleCurrentSongChange = (res?: [string, string] | null): void => {
     if (!res || !this.stores.currentSong) { return; }
-    if (this.stores.currentSong.vip) {
-      this.modal.alert({ content: `${this.stores.currentSong.name}为vip歌曲，无法播放` });
-    }
     this.fmtTotalTime = timeFormat(this.stores.currentSong.duration);
     const [src, lyric] = res;
     if (this.lyric) {
@@ -189,13 +183,13 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.playing = false;
   }
   next = () => {
-    if (!this.songReady) { return; }
+    if (!this.switchEnable) { return; }
     this.pause();
     this.playListService.playNext()
       .subscribe(this.handleCurrentSongChange, this.handleError);
   }
   pre = () => {
-    if (!this.songReady) { return; }
+    if (!this.switchEnable) { return; }
     this.pause();
     this.playListService.playPre()
       .subscribe(this.handleCurrentSongChange, this.handleError);

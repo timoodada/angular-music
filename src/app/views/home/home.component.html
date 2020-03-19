@@ -12,31 +12,30 @@
     </app-slider>
     <div class="rank">
       <h1 class="list-title">热门榜单</h1>
-      <div class="toplist">
-        <div *ngIf="!stores.ranks.size">
-          <div class="item loading" *ngFor="let item of 4 | list">
-            <div class="icon">
-              <div class="icon-sub">
-                <div class=sub></div>
-              </div>
-            </div>
-            <div class="songlist">
-              <div class="song" *ngFor="let val of 3 | list"></div>
-            </div>
-          </div>
-        </div>
-        <a [routerLink]="item.id" class="item" *ngFor="let item of stores.ranks">
-          <div class="icon">
-              <img [appLazy]="item.picUrl" [alt]="item.topTitle" width="100" height="100" />
-          </div>
-          <div class="songlist">
-            <div class="song" *ngFor="let val of item.songList">{{val.songname}} - {{val.singername}}</div>
-          </div>
-        </a>
-      </div>
+      <app-cover-list
+        [list]="stores.ranks"
+        [img]="img"
+        [loading]="loading"
+        [song]="song"
+        (clicked)="goDetail($event)"
+      ></app-cover-list>
     </div>
   </app-scroll-y>
   <app-router-animation type="slide" [outlet]="outlet" slot="extra">
     <router-outlet #outlet="outlet"></router-outlet>
   </app-router-animation>
 </app-layout>
+<ng-template
+  #img
+  let-picUrl="picUrl"
+  let-topTitle="topTitle"
+>
+  <img [appLazy]="picUrl" [alt]="topTitle" width="100%" />
+</ng-template>
+<ng-template
+  #song
+  let-songname="songname"
+  let-singername="singername"
+>
+  {{songname}} - {{singername}}
+</ng-template>

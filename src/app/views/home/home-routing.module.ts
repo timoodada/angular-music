@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home.component';
 import {DetailComponent} from './detail/detail.component';
@@ -8,8 +8,8 @@ import {LayoutModule} from '../../components/layout/layout.module';
 import {ScrollYModule} from '../../components/scroll-y/scroll-y.module';
 import {LazyModule} from '../../directives/lazy/lazy.module';
 import {SliderModule} from '../../components/slider/slider.module';
-import {PipeModule} from '../../pipes/pipe.module';
 import {MusicListModule} from '../../business/music-list/music-list.module';
+import {CoverListModule} from '../../business/cover-list/cover-list.module';
 
 const routes: Routes = [{
   path: '',
@@ -32,13 +32,14 @@ const routes: Routes = [{
     ScrollYModule,
     LazyModule,
     SliderModule,
-    PipeModule,
     MusicListModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    CoverListModule
   ],
   exports: [
     HomeComponent,
     DetailComponent
   ]
 })
-export class HomeRoutingModule {}
+export class HomeRoutingModule {
+}
