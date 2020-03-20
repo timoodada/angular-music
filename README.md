@@ -2,7 +2,7 @@
 
 使用Angular9编写的音乐播放器，所有接口抓取自QQ音乐
 
-###2020-3-20  
+### 2020-3-20  
 增加了qq登陆  
 后台服务项目：[https://github.com/timoodada/music-server](https://github.com/timoodada/music-server)
 
