@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {queryString} from '../../helpers/query';
 import {deepMerge} from '../../helpers/util';
 import {compileUrl, buildUrl} from '../../helpers/url';
-import {race, timer, Observable, throwError} from 'rxjs';
+import {race, timer, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 const proxyUrl = 'http://49.235.160.182/api/transmit/';
@@ -33,7 +33,9 @@ export class HttpService {
     return race(
       mission,
       timer(this.timeout).pipe(
-        map(() => throwError(new Error(`Timeout Of ${this.timeout}ms Exceeded`)))
+        map(() => {
+          throw new Error(`Timeout Of ${this.timeout}ms Exceeded`);
+        })
       )
     );
   }

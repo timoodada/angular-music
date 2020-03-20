@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {StorageService} from '../../../services/storage/storage.service';
 import {HttpService} from '../../../services/http/http.service';
 import {map} from 'rxjs/operators';
-import {Observable, of, throwError} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import stores from '../../';
 import {urlParser} from '../../../helpers/url';
 import {queryParse} from '../../../helpers/query';
@@ -74,7 +74,7 @@ export class UserInfoService {
           this.init();
           return of();
         } else {
-          throw throwError(new Error(res.errMsg));
+          throw new Error(res.errMsg);
         }
       }));
   }
