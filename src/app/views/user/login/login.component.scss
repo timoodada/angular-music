@@ -1,0 +1,51 @@
+@import "src/app/common/style/variable";
+@import "src/app/common/style/mixin";
+
+.login{
+  background: $color-background;
+  .back {
+    position: absolute;
+    top: 7px;
+    left: 0;
+    z-index: 50;
+    .icon-back {
+      display: block;
+      padding: 10px;
+      font-size: $font-size-large-x;
+      color: $color-theme;
+    }
+  }
+  .title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    font-size: $font-size-large-x;
+    color: $color-text;
+  }
+  .form{
+    padding: 10px 20px;
+    .row{
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      .label{
+        display: inline-block;
+        min-width: 40px;
+        color: $color-text-l;
+      }
+      .input{
+        padding: 8px 5px;
+        background: $color-highlight-background;
+        color: $color-text;
+        font-size: $font-size-medium;
+        width: 100%;
+        outline: none;
+        border-radius: 5px;
+        &::placeholder{
+          color: $color-text-d;
+        }
+      }
+    }
+  }
+}

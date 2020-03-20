@@ -23,7 +23,7 @@ export class HttpService {
 
   private baseUrl = '/';
 
-  public timeout = 20000;
+  public timeout = 30000;
 
   constructor(
     public http: HttpClient

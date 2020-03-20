@@ -54,7 +54,7 @@ export function queryString(val: any, prefix?: string): string {
   }
 }
 
-export function queryParse(val: any): object {
+export function queryParse(val: any): any {
   interface ConstantObj {
     [prop: string]: string;
   }

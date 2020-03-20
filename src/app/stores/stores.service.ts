@@ -91,6 +91,9 @@ export class StoresService implements OnDestroy {
   public get singers(): List<FormatSingerItem> {
     return this.states.get('singers');
   }
+  public get userInfo(): Map<string, any> {
+    return this.states.get('userInfo');
+  }
   // return a function to unwatch
   watch = (stateName: string, cb: (change: StateChange) => void): () => void => {
     if (typeof cb !== 'function') { return; }

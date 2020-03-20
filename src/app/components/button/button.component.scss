@@ -1,0 +1,35 @@
+@import "src/app/common/style/variable";
+@import "src/app/common/style/mixin";
+
+.button{
+  width: 100%;
+  background: $color-highlight-background;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  color: $color-text-ll;
+  font-size: $font-size-medium;
+  border: none;
+  &:active{
+    background: darken($color-highlight-background, 1.8);
+  }
+  .loading{
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    svg{
+      fill: currentColor;
+      background-size: cover;
+      width: 18px;
+      animation: 1s linear infinite cirle-anim;
+    }
+  }
+}
+@keyframes  cirle-anim{
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

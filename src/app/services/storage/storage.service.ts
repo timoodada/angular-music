@@ -7,14 +7,21 @@ export class StorageService {
   private localStorage = localStorage;
   private sessionStorage = sessionStorage;
   constructor() { }
-  get = (name: string): any[] | object => {
-    return JSON.parse(this.localStorage.getItem(name) || this.sessionStorage.getItem(name));
+  get = (name: string): any[] | object | string => {
+    let ret = this.localStorage.getItem(name) || this.sessionStorage.getItem(name);
+    try {
+      ret = JSON.parse(ret);
+    } catch (err) {}
+    return ret;
   }
-  set = (name: string, value: any[] | object, extraordinary?: boolean) => {
+  set = (name: string, value: any[] | object | string, extraordinary?: boolean) => {
+    if (typeof value !== 'string') {
+      value = JSON.stringify(value);
+    }
     if (extraordinary) {
-      this.sessionStorage.setItem(name, JSON.stringify(value));
+      this.sessionStorage.setItem(name, value);
     } else {
-      this.localStorage.setItem(name, JSON.stringify(value));
+      this.localStorage.setItem(name, value);
     }
   }
   remove = (name: string) => {

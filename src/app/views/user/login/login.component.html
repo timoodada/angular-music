@@ -1,0 +1,23 @@
+<div class="fixed-router login">
+  <app-layout>
+    <div slot="header">
+      <div class="back" (click)="back()">
+        <i class="icon-back"></i>
+      </div>
+      <div class="title">
+        <span>用户登录</span>
+      </div>
+    </div>
+    <form class="form" onsubmit="return false;" (submit)="submit()">
+      <div class="row">
+        <span class="label">QQ</span>
+        <input class="input" type="text" name="username" [(ngModel)]="formData.username" placeholder="请输入QQ号">
+      </div>
+      <div class="row">
+        <span class="label">密码</span>
+        <input class="input" type="password" name="password" [(ngModel)]="formData.password" placeholder="请输入QQ密码">
+      </div>
+      <app-button type="submit" [loading]="loading">登陆</app-button>
+    </form>
+  </app-layout>
+</div>

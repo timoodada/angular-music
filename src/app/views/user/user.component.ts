@@ -7,6 +7,7 @@ import {PlayModeService} from '../../stores/actions/play-mode/play-mode.service'
 import {PlayerEventService} from '../../business/player/player-event.service';
 import {FavoriteService} from '../../stores/actions/favorite/favorite.service';
 import {RecentService} from '../../stores/actions/recent/recent.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -24,7 +25,8 @@ export class UserComponent implements OnInit {
     private playMode: PlayModeService,
     private playerEvent: PlayerEventService,
     private favoriteService: FavoriteService,
-    private recentService: RecentService
+    private recentService: RecentService,
+    private router: Router
   ) { }
   onTabChange = (val) => {
     this.currentTab = val;
@@ -68,6 +70,13 @@ export class UserComponent implements OnInit {
     }).catch(() => {
       // cancel
     });
+  }
+  onClickUsername = () => {
+    if (this.stores.userInfo.get('status') === 1) {
+      //
+    } else {
+      this.router.navigate(['/user/login']);
+    }
   }
 
   ngOnInit() {
