@@ -77,7 +77,12 @@ export class StoresService implements OnDestroy {
     return this.states.get('fullscreen');
   }
   public get favorite(): List<Music> {
-    return this.states.get('favorite');
+    return this.states.get('userInfo').get('status') === 1 ?
+      this.states.get('remoteFavorite') :
+      this.states.get('favorite');
+  }
+  public get remoteFavorite(): List<Music> {
+    return this.states.get('remoteFavorite');
   }
   public get recent(): List<Music> {
     return this.states.get('recent');

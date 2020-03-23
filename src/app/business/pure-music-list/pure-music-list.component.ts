@@ -44,7 +44,9 @@ export class PureMusicListComponent implements OnInit {
     }
   }
 
-  delItem = (val: Music) => {
+  delItem = (val: Music, event) => {
+    event.stopPropagation();
+    event.preventDefault();
     this.remove.emit(val);
   }
 

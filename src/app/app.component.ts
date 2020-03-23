@@ -4,12 +4,17 @@ import './stores/index';
 import {ModalService} from './services/modal/modal.service';
 import {ModalComponent} from './components/modal/modal.component';
 import {ToastComponent} from './components/toast/toast.component';
+import {StoresService} from './stores/stores.service';
+import {FavoriteService} from './stores/actions/favorite/favorite.service';
 import {UserInfoService} from './stores/actions/user-info/user-info.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [
+    StoresService
+  ]
 })
 export class AppComponent implements OnInit {
   public title = 'Angular Music';
@@ -25,6 +30,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private modalService: ModalService,
+    private stores: StoresService,
+    private favorite: FavoriteService,
     private userInfo: UserInfoService
   ) {
     router.events.subscribe(e => {
@@ -37,5 +44,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userInfo.init();
+  }
 }

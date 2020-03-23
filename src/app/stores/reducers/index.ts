@@ -12,6 +12,7 @@ import history from './history';
 import hotWords from './hot-words';
 import singers from './singers';
 import userInfo from './user-info';
+import remoteFavorite from './remote-favorite';
 
 export default combineReducers({
   ranks,
@@ -25,5 +26,6 @@ export default combineReducers({
   history,
   hotWords,
   singers,
-  userInfo
+  userInfo,
+  remoteFavorite
 });

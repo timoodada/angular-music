@@ -3,7 +3,7 @@
 */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {slideAnimation} from './router.animate';
+import {routeAnimation} from './router.animate';
 import {RouterOutlet} from '@angular/router';
 
 const HISTORIES_KEY = '__HISTORIES_KEY__';
@@ -46,7 +46,7 @@ const isHistoryPush = (location: any, update: any): boolean => {
   templateUrl: './router-animation.component.html',
   styleUrls: ['./router-animation.component.scss'],
   animations: [
-    slideAnimation
+    routeAnimation
   ]
 })
 export class RouterAnimationComponent implements OnInit {

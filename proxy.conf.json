@@ -10,5 +10,29 @@
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
+  },
+  "/qzone": {
+    "target": "http://127.0.0.1:8085/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/splcloud": {
+    "target": "http://127.0.0.1:8085/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/soso": {
+    "target": "http://127.0.0.1:8085/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/lyric": {
+    "target": "http://127.0.0.1:8085/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
   }
 }

@@ -6,8 +6,6 @@ import {compileUrl, buildUrl} from '../../helpers/url';
 import {race, timer, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-const proxyUrl = 'http://49.235.160.182/api/transmit/';
-
 interface Data {
   [prop: string]: any;
 }
@@ -66,15 +64,5 @@ export class HttpService {
         callbackFuncName
       )
     );
-  }
-
-  musicPost = (url: string, postData?: Data | string): Observable<any> => {
-    return this.post(
-      proxyUrl + encodeURIComponent(url),
-      postData
-    );
-  }
-  musicGet = (url: string, params?: Data, options?: any): Observable<any> => {
-    return this.get(proxyUrl + encodeURIComponent(buildUrl(url, params)), null, options);
   }
 }

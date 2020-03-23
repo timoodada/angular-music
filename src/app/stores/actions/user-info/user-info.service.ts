@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import {StorageService} from '../../../services/storage/storage.service';
 import {HttpService} from '../../../services/http/http.service';
 import {map} from 'rxjs/operators';
-import {Observable, of} from 'rxjs';
-import stores from '../../';
+import {Observable} from 'rxjs';
+import stores, {getState} from '../../';
 import {urlParser} from '../../../helpers/url';
 import {queryParse} from '../../../helpers/query';
 
-const sheetList = 'https://c.y.qq.com/splcloud/fcgi-bin/songlist_list.fcg?utf8=1&uin=447334358&rnd=0.4079468670735906&g_tk_new_20200303=547543278&g_tk=547543278&loginUin=447334358&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=0';
 
 function setCookie(name, value, time = 0) {
   const exp = new Date();
@@ -26,9 +25,7 @@ export class UserInfoService {
   constructor(
     private storage: StorageService,
     private http: HttpService
-  ) {
-    this.init();
-  }
+  ) {}
   setUserInfo = (value) => {
     stores.dispatch({
       type: 'SET_USER_INFO',
@@ -40,6 +37,7 @@ export class UserInfoService {
       parse.path.replace(parse.origin, '') + decodeURIComponent(parse.query)
     ).subscribe(res => {
       if (res.code === 0) {
+        const currentUserInfo = getState('userInfo');
         const userInfo: any = {};
         Object.keys(res.base.data.map_userinfo).forEach((key) => {
           userInfo.id = key;
@@ -48,7 +46,7 @@ export class UserInfoService {
           userInfo.g_tk = queryParse(parse.query).g_tk;
         });
         this.setUserInfo(
-          Object.assign({
+          currentUserInfo.merge({
             status: 1
           }, userInfo)
         );
@@ -60,6 +58,13 @@ export class UserInfoService {
     if (!url) { return; }
     const parse = urlParser(url);
     this.getUserInfo(parse);
+    const favoriteParse = urlParser(
+      this.storage.get(this.API_FAVORITE) as string
+    );
+    const userInfo = getState('userInfo');
+    this.setUserInfo(
+      userInfo.set('g_tk_new', queryParse(favoriteParse.query).g_tk_new_20200303)
+    );
   }
   login = (formData): Observable<any> => {
     return this.http.post('/api/login', formData)
@@ -72,7 +77,7 @@ export class UserInfoService {
             setCookie(item.name, item.value, item.expires > 0 ? item.expires : 0);
           });
           this.init();
-          return of();
+          return null;
         } else {
           throw new Error(res.errMsg);
         }

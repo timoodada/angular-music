@@ -39,6 +39,7 @@ export class PlayingListComponent implements OnInit {
   }
   public playModes = PlayMode;
   public showAddSong = false;
+  public loading = false;
 
   constructor(
     private playList: PlayListService,
@@ -70,7 +71,13 @@ export class PlayingListComponent implements OnInit {
   toggleFavorite = (e, music: Music) => {
     e.stopPropagation();
     e.preventDefault();
-    this.favoriteService.toggleFavorite(music);
+    if (this.loading) { return; }
+    this.loading = true;
+    this.favoriteService.toggleFavorite(music).subscribe(() => {
+      this.loading = false;
+    }, () => {
+      this.loading = false;
+    });
   }
   delOne = (e, music: Music) => {
     e.stopPropagation();

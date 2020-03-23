@@ -11,7 +11,7 @@ export class SearchApiService {
   ) {}
 
   getList = (keywords: string, page: string | number) => {
-    return this.http.musicGet(`https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp`, {
+    return this.http.get(`/soso/fcgi-bin/search_for_qq_cp`, {
       _: Date.now(),
       format: 'json',
       inCharset: 'utf-8',

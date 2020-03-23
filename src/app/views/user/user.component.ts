@@ -27,7 +27,7 @@ export class UserComponent implements OnInit {
     private favoriteService: FavoriteService,
     private recentService: RecentService,
     private router: Router
-  ) { }
+  ) {}
   onTabChange = (val) => {
     this.currentTab = val;
   }
@@ -47,7 +47,7 @@ export class UserComponent implements OnInit {
   onDel = (val: Music) => {
     switch (this.currentTab) {
       case 0:
-        this.favoriteService.toggleFavorite(val);
+        this.favoriteService.toggleFavorite(val).subscribe();
         break;
       case 1:
         this.recentService.del(val);
@@ -79,7 +79,6 @@ export class UserComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

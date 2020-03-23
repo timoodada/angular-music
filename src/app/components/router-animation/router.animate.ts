@@ -32,7 +32,7 @@ const commonQuery = query(
       { optional: true }
     );
 
-export const slideAnimation = trigger('routeAnimation', [
+export const routeAnimation = trigger('routeAnimation', [
   transition('bridge <=> backward, forward => backward', [
     commonQuery,
     query(

@@ -62,9 +62,12 @@ export class PlayListService {
         }, comm: {uin: 0, format: 'json', ct: 23, cv: 0}
       }
     );
-    return this.http.musicPost(
-      `https://u.y.qq.com/cgi-bin/musicu.fcg?_=${Date.now()}`,
-      data
+    return this.http.post(
+      `/cgi-bin/musicu.fcg?_=${Date.now()}`,
+      data,
+      {
+        headers: {'Content-Type': 'application/json'}
+      }
     ).pipe(
       map(res => {
         res = res.req_0.data;
@@ -73,8 +76,8 @@ export class PlayListService {
     );
   }
   _getLyric = (musicid) => {
-    return this.http.musicGet(
-      `https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric.fcg`,
+    return this.http.get(
+      `/lyric/fcgi-bin/fcg_query_lyric.fcg`,
       {
         uin: 0,
         format: 'json',

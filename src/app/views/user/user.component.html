@@ -4,7 +4,7 @@
       <i class="icon-back"></i>
     </div>
     <div class="user-info">
-      <div class="avatar">
+      <div class="avatar" *ngIf="stores.userInfo.get('status') === 1">
         <img [src]="stores.userInfo.get('avatar')" alt="avatar" *ngIf="stores.userInfo.get('avatar')">
       </div>
       <span class="nickname" (click)="onClickUsername()">{{stores.userInfo.get('status') === 1 ? stores.userInfo.get('nickname') : '未登陆'}}</span>
@@ -26,7 +26,7 @@
         <i class="icon-play"></i>
         <span class="text">随机播放全部</span>
       </div>
-      <div class="clear" (click)="clear()">
+      <div class="clear" (click)="clear()" *ngIf="stores.userInfo.get('status') !== 1 || currentTab !== 0">
         <span><i class="icon-clear"></i>&nbsp;清空</span>
       </div>
     </div>

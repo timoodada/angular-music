@@ -26,7 +26,7 @@ export class BannersService {
   }
 
   getBanners(): Banners {
-    return this.http.musicGet('https://u.y.qq.com/cgi-bin/musicu.fcg', {
+    return this.http.get('/cgi-bin/musicu.fcg', {
       hostUin: 0,
       format: 'json',
       inCharset: 'utf8',
