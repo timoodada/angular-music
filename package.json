@@ -1,6 +1,10 @@
 {
   "name": "angular-music",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timoodada/angular-music.git"
+  },
   "scripts": {
     "start": "ng serve --proxy-config proxy.conf.json --port 4200 --host 0.0.0.0",
     "build": "ng build --prod",

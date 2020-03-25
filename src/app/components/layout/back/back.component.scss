@@ -1,0 +1,32 @@
+@import "src/app/common/style/variable";
+@import "src/app/common/style/mixin";
+
+.back-header{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .back {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    .icon-back {
+      display: block;
+      padding: 10px;
+      font-size: $font-size-large-x;
+      color: $color-theme;
+    }
+  }
+  .title{
+    width: 80%;
+    @include no-wrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 42px;
+    font-size: $font-size-large;
+    color: $color-text;
+  }
+}

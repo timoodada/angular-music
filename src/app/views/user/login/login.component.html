@@ -1,13 +1,8 @@
 <div class="fixed-router login">
   <app-layout>
-    <div slot="header">
-      <div class="back" (click)="back()">
-        <i class="icon-back"></i>
-      </div>
-      <div class="title">
-        <span>用户登录</span>
-      </div>
-    </div>
+    <app-back (back)="back()">
+      <span>用户登录</span>
+    </app-back>
     <form class="form" onsubmit="return false;" (submit)="submit()">
       <div class="row">
         <span class="label">QQ</span>

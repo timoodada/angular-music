@@ -8,7 +8,7 @@ export const modalAnimation = trigger('modalAnimation', [
       query('.modal-wrapper', [
         style({transformOrigin: 'center center', transform: 'scale(1)'}),
         animate('300ms ease', style({transform: 'scale(0)'}))
-      ])
+      ], { optional: true })
     ])
   ]),
   transition(':enter', [
@@ -19,7 +19,7 @@ export const modalAnimation = trigger('modalAnimation', [
         style({transformOrigin: 'center center', transform: 'scale(0)'}),
         animate('180ms ease', style({transform: 'scale(1.1)'})),
         animate('120ms ease', style({transform: 'scale(1)'}))
-      ])
+      ], { optional: true })
     ])
   ])
 ]);

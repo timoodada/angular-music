@@ -83,9 +83,16 @@ export class UserInfoService {
         }
       }));
   }
-  logout = () => {
+  logout = (): Promise<void> => {
     this.storage.remove(this.COOKIES);
     this.storage.remove(this.API_USER_INFO);
     this.storage.remove(this.API_FAVORITE);
+    this.setUserInfo({
+      status: 0
+    });
+    return Promise.resolve();
+  }
+  isLogin = (): boolean => {
+    return !!this.storage.get(this.COOKIES);
   }
 }

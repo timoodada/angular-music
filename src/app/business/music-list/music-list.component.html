@@ -1,12 +1,10 @@
 <app-layout>
   <div class="music-list">
-    <div
-      class="back"
-      (click)="back()"
-    >
-      <i class="icon-back"></i>
+    <div class="back-wrapper">
+      <app-back (back)="back()">
+        <span #title class="title">{{info?.ListName}}</span>
+      </app-back>
     </div>
-    <div class="title" #title>{{info ? info.ListName : ''}}</div>
     <div
       class="bg-image"
       #bgImage

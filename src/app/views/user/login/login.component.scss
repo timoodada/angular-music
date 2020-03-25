@@ -3,26 +3,6 @@
 
 .login{
   background: $color-background;
-  .back {
-    position: absolute;
-    top: 7px;
-    left: 0;
-    z-index: 50;
-    .icon-back {
-      display: block;
-      padding: 10px;
-      font-size: $font-size-large-x;
-      color: $color-theme;
-    }
-  }
-  .title{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 56px;
-    font-size: $font-size-large-x;
-    color: $color-text;
-  }
   .form{
     padding: 10px 20px;
     .row{

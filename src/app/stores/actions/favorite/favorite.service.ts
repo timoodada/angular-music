@@ -34,6 +34,11 @@ export class FavoriteService {
       value: list
     });
   };
+  private asyncSetRemoteFavorite = (list: Music[] | List<Music>) => {
+    setTimeout(() => {
+      this.setRemoteFavorites(list);
+    });
+  };
   private getFavorites = (): List<Music> => {
     return getState('favorite');
   };
@@ -205,9 +210,11 @@ export class FavoriteService {
     this.init();
     store.subscribe(() => {
       if (userInfo.get('status') === 0 && getState('userInfo').get('status') === 1) {
-        userInfo = getState('userInfo');
         this.fetchRemoteFavorite();
+      } else if (userInfo.get('status') === 1 && getState('userInfo').get('status') === 0) {
+        this.asyncSetRemoteFavorite([]);
       }
+      userInfo = getState('userInfo');
     });
   }
 

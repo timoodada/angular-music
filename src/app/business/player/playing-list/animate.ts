@@ -7,7 +7,7 @@ export const slideFromBottom = trigger('slideFromBottom', [
       query('.list-wrapper', [
         style({transform: 'translate3d(0, 0, 0)'}),
         animate('300ms ease', style({transform: 'translate3d(0, 100%, 0)'}))
-      ]),
+      ], { optional: true }),
       animate('300ms ease', style({ opacity: 0 }))
     ])
   ]),
@@ -17,7 +17,7 @@ export const slideFromBottom = trigger('slideFromBottom', [
       query('.list-wrapper', [
         style({transform: 'translate3d(0, 100%, 0)'}),
         animate('300ms ease', style({transform: 'translate3d(0, 0, 0)'}))
-      ]),
+      ], { optional: true }),
       animate('300ms ease', style({ opacity: 1 }))
     ])
   ])

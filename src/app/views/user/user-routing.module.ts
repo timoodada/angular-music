@@ -10,6 +10,9 @@ import {EmptyModule} from '../../components/empty/empty.module';
 import {LoginModule} from './login/login.module';
 import {LoginComponent} from './login/login.component';
 import {RouterAnimationModule} from '../../components/router-animation/router-animation.module';
+import {UserDetailComponent} from './user-detail/user-detail.component';
+import {UserDetailModule} from './user-detail/user-detail.module';
+import {UserGuard} from './user.guard';
 
 const routes: Routes = [{
   path: '',
@@ -17,6 +20,10 @@ const routes: Routes = [{
   children: [{
     path: 'login',
     component: LoginComponent
+  }, {
+    path: 'detail',
+    canActivate: [UserGuard],
+    component: UserDetailComponent
   }]
 }];
 
@@ -33,10 +40,11 @@ const routes: Routes = [{
     PureMusicListModule,
     EmptyModule,
     LoginModule,
-    RouterAnimationModule
+    RouterAnimationModule,
+    UserDetailModule
   ],
   exports: [
-    UserComponent
+    UserComponent,
   ]
 })
 export class UserRoutingModule {

@@ -1,0 +1,26 @@
+@import "src/app/common/style/variable";
+@import "src/app/common/style/mixin";
+
+.content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  img{
+    width: 50%;
+  }
+  .nickname{
+    display: inline-block;
+    padding: 10px 0;
+    color: $color-text-l;
+    font-size: $font-size-medium;
+  }
+}
+.description{
+  color: $color-text-l;
+  font-size: $font-size-small;
+  padding: 10px 20px;
+}
+.logout{
+  padding: 0 10px;
+}

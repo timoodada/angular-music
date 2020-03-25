@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import logo from './qq_music.png';
+import logo from './logo';
 
 @Component({
   selector: 'app-header',

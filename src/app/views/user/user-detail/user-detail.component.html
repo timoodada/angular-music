@@ -1,0 +1,13 @@
+<div class="fixed-router login">
+  <app-layout>
+    <app-back (back)="back()" slot="header"></app-back>
+    <div class="content">
+      <img [src]="stores.userInfo.get('avatar')" alt="avatar">
+      <span class="nickname">{{stores.userInfo.get('nickname')}}</span>
+    </div>
+    <p class="description">登陆后“我喜欢的”列表将于QQ远程同步，退出登陆后则应用本地储存。</p>
+    <div class="logout">
+      <app-button (click)="logout()">退出登陆</app-button>
+    </div>
+  </app-layout>
+</div>

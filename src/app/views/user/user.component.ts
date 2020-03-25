@@ -73,7 +73,7 @@ export class UserComponent implements OnInit {
   }
   onClickUsername = () => {
     if (this.stores.userInfo.get('status') === 1) {
-      //
+      this.router.navigate(['/user/detail']);
     } else {
       this.router.navigate(['/user/login']);
     }
