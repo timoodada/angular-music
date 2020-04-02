@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {LoginComponent} from './login.component';
 import {LayoutModule} from '../../../components/layout/layout.module';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ButtonModule} from '../../../components/button/button.module';
 
 
@@ -14,7 +14,8 @@ import {ButtonModule} from '../../../components/button/button.module';
         CommonModule,
         LayoutModule,
         FormsModule,
-        ButtonModule
+        ButtonModule,
+        ReactiveFormsModule
     ],
   exports: [
     LoginComponent

@@ -10,6 +10,8 @@ export class ButtonComponent implements OnInit {
   public type: 'button' | 'submit' | 'reset' = 'button';
   @Input()
   public loading = false;
+  @Input()
+  public disabled = false;
 
   constructor() { }
 

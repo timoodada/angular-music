@@ -3,16 +3,16 @@
     <app-back (back)="back()">
       <span>用户登录</span>
     </app-back>
-    <form class="form" onsubmit="return false;" (submit)="submit()">
+    <form class="form" (ngSubmit)="submit()" [formGroup]="loginForm">
       <div class="row">
         <span class="label">QQ</span>
-        <input class="input" type="text" name="username" [(ngModel)]="formData.username" placeholder="请输入QQ号">
+        <input class="input" type="text" name="username" placeholder="请输入QQ号" formControlName="username">
       </div>
       <div class="row">
         <span class="label">密码</span>
-        <input class="input" type="password" name="password" [(ngModel)]="formData.password" placeholder="请输入QQ密码">
+        <input class="input" type="password" name="password" placeholder="请输入QQ密码" formControlName="password">
       </div>
-      <app-button type="submit" [loading]="loading">登陆</app-button>
+      <app-button type="submit" [loading]="loading || loginForm.pending" [disabled]="loading">登陆</app-button>
     </form>
   </app-layout>
 </div>

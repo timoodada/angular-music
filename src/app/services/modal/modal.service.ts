@@ -1,4 +1,4 @@
-import {Injectable, TemplateRef, Type} from '@angular/core';
+import {ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector, TemplateRef, Type} from '@angular/core';
 import {ModalComponent} from '../../components/modal/modal.component';
 import {ToastComponent} from '../../components/toast/toast.component';
 
@@ -20,35 +20,52 @@ interface ConfirmOption {
   providedIn: 'root'
 })
 export class ModalService {
-  private el: ModalComponent;
-  private toastEl: ToastComponent;
-  private toastTimer: any;
-  constructor() {}
-  init(el: ModalComponent | ToastComponent) {
-    if (el instanceof  ModalComponent) {
-      this.el = el;
-    } else if (el instanceof ToastComponent) {
-      this.toastEl = el;
-    }
+  private createView = (data: ModalOptions): [ComponentRef<ModalComponent>, HTMLElement] => {
+    const container = document.createElement('div');
+    container.className = 'modal-container';
+    document.body.append(container);
+    const componentRef = this.componentFactoryResolver.resolveComponentFactory(ModalComponent)
+      .create(this.injector, [], container);
+    componentRef.instance.title = data.title;
+    componentRef.instance.content = data.content;
+    componentRef.instance.footer = data.actions;
+    this.applicationRef.attachView(componentRef.hostView);
+    setTimeout(() => componentRef.instance.show = true, 20);
+    return [componentRef, container];
   }
-  close = () => {
-    this.el.show = false;
+  private createToastView = (title: string): [ComponentRef<ToastComponent>, HTMLElement] => {
+    const container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.append(container);
+    const componentRef = this.componentFactoryResolver.resolveComponentFactory(ToastComponent)
+      .create(this.injector, [], container);
+    componentRef.instance.title = title;
+    this.applicationRef.attachView(componentRef.hostView);
+    setTimeout(() => componentRef.instance.show = true, 20);
+    return [componentRef, container];
   }
-  show = (data: ModalOptions) => {
-    this.el.title = data.title;
-    this.el.content = data.content;
-    this.el.footer = data.actions;
-    setTimeout(() => this.el.show = true, 20);
+  private destroyView = (params: [ComponentRef<ModalComponent | ToastComponent>, HTMLElement]) => {
+    const [componentRef, container] = params;
+    componentRef.instance.show = false;
+    setTimeout(() => {
+      componentRef.destroy();
+      container.remove();
+    }, 500);
   }
+  constructor(
+    private injector: Injector,
+    private applicationRef: ApplicationRef,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {}
   alert = ({title = '提示', content}) => {
     return new Promise((resolve, reject) => {
-      this.show({
+      const modal = this.createView({
         title,
         content,
         actions: [{
           text: '确认',
           callback: () => {
-            this.close();
+            this.destroyView(modal);
             resolve();
           }
         }]
@@ -58,34 +75,29 @@ export class ModalService {
   confirm = (option: ConfirmOption) => {
     if (!option.title) { option.title = '提示'; }
     return new Promise((resolve, reject) => {
-      this.show({
+      const componentRef = this.createView({
         title: option.title,
         content: option.content,
         actions: [{
           text: '取消',
           callback: () => {
-            this.close();
+            this.destroyView(componentRef);
             reject(new Error('closed'));
           }
         }, {
           text: '确认',
           callback: () => {
-            this.close();
+            this.destroyView(componentRef);
             resolve();
           }
         }]
       });
     });
   }
-  toast = (title: string, interval = 1000) => {
-    clearTimeout(this.toastTimer);
-    this.toastEl.show = false;
-    this.toastTimer = setTimeout(() => {
-      this.toastEl.title = title;
-      this.toastEl.show = true;
-      this.toastTimer = setTimeout(() => {
-        this.toastEl.show = false;
-      }, interval);
-    }, 20);
+  toast = (title: string, interval = 2000) => {
+    const toast = this.createToastView(title);
+    setTimeout(() => {
+      this.destroyView(toast);
+    }, interval);
   }
 }

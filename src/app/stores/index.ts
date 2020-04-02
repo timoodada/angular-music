@@ -5,7 +5,7 @@ import {Map} from 'immutable';
 
 const isProd = environment.production;
 
-declare interface ExtendWindow extends Window {
+interface ExtendWindow extends Window {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any;
 }
 
